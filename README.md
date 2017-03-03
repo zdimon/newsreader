@@ -2,8 +2,10 @@
 
 ##Description.
 
-Server-client system of retriewing and representing a stuctured information from pressa.ru service.
-Information comes in follows json format:
+Server-client system of retrieving and representing a structured information from the pressa.ru service.
+
+The information comes in follows JSON format:
+
 
     {
         "date": "2017-03-03", 
@@ -25,3 +27,15 @@ Information comes in follows json format:
         ]
     }
 
+It can be requested by follows URL:
+
+    http://pressa.ru/mts/api/top10/2017-03-03.json
+
+The information should be retrieved and saved on the server side.
+
+It makes possible to work offline without internet connection.
+
+As soon as the server get the internet connection it makes a request and retrievs new data from the pressa.ru service.
+
+
+ 
