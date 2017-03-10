@@ -5,7 +5,7 @@
 Server-client system of retrieving and representing a structured information from the pressa.ru service.
 
 The information comes in follows JSON format:
-
+  
 
     {
         "date": "2017-03-03", 
@@ -15,6 +15,7 @@ The information comes in follows JSON format:
                 'title': ..,
                 'short_text': ...,
                 'text': ...,
+                'text_continue': ...,
                 'image': ...,
                 'small_image': ...,
                 'small_image_portrait': ...,
