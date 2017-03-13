@@ -8,6 +8,21 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var users = require('./routes/users');
 
+var exec = require('child_process').exec;
+var fs = require('fs');
+
+fs.lstat(__dirname+'/public/node_modules', function(err, stats) {
+    if(err) {
+        cmd = "ln -s "+__dirname+"/node_modules public/node_modules"
+        exec(cmd, function(err,stdout, stdin){
+                    console.log(stdout)
+                    console.log('create simlink')
+                }
+            )
+        }
+    });
+
+
 var app = express();
 
 // view engine setup

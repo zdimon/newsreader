@@ -1,7 +1,19 @@
 doctype html
 html
-  head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body
-    block content
+    head
+        meta(charset="utf-8")
+        title= title
+        link(rel='stylesheet', href='/stylesheets/style.css')
+        link(rel='stylesheet', href='node_modules/bootstrap/dist/css/bootstrap.min.css')
+        script(src='node_modules/jquery/dist/jquery.min.js')
+        script(src='node_modules/angular/angular.min.js')
+        script(src='node_modules/angular-ui-router/release/angular-ui-router.min.js')
+        script(src='node_modules/bootstrap/dist/js/bootstrap.min.js')
+    body(ng-app='readerApp')
+        block content
+
+    //
+        script(src="javascripts/app.js")
+        script(src="javascripts/router.js")
+        script(src="javascripts/controller.js")
+    script(src="dist/app.min.js")
