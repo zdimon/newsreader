@@ -1,1 +1,0 @@
-(function(){angular.module("readerApp",["ui.router"])}).call(this),function(){angular.module("readerApp").controller("topCtrl",["$scope",function(r){return r.top_list=[1,2,3]}])}.call(this);
