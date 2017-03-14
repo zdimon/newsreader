@@ -106,3 +106,8 @@
     npm install concurrently --save-dev  
 
     "watch": "concurrently --kill-others 'coffee -cw -o public/javascripts reader' 'jade -w -o public/templates reader' 'gulp watch'"
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> edc10f2c4a12533e63630a585975bce947cc13db

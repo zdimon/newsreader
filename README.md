@@ -1,16 +1,31 @@
+<<<<<<< HEAD
 # News reader.
 
 ## Description.
+=======
+#News reader.
+
+##Description.
+>>>>>>> edc10f2c4a12533e63630a585975bce947cc13db
 
 Server-client system of retrieving and representing a structured information from the pressa.ru service.
 
 The information comes in follows JSON format:
+<<<<<<< HEAD
 
 
     {
         "date": "2017-03-03",
         "articles": [
             {
+=======
+  
+
+    {
+        "date": "2017-03-03", 
+        "articles": [
+            { 
+>>>>>>> edc10f2c4a12533e63630a585975bce947cc13db
                 'id': ..,
                 'title': ..,
                 'short_text': ...,
@@ -37,3 +52,9 @@ The information should be retrieved and saved on the server side.
 It makes possible to work offline without internet connection.
 
 As soon as the server get the internet connection it makes a request and retrievs new data from the pressa.ru service.
+<<<<<<< HEAD
+=======
+
+
+ 
+>>>>>>> edc10f2c4a12533e63630a585975bce947cc13db
