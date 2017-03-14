@@ -1,16 +1,16 @@
-#Workflow
+# Workflow
 
-##Initialization
+## Initialization
 
     npm init
     npm install bootstrap --save
     npm install angular --save
     npm install jquery --save
-    
-    
+
+
     express
-    
-    
+
+
 ###Main template loyout.jade
 
     doctype html
@@ -26,10 +26,10 @@
             script(src='node_modules/bootstrap/dist/js/bootstrap.min.js')
         body(ng-app='readerApp')
             block content
-                
-    
 
-###Creating simlink on node_modules
+
+
+### Creating simlink on node_modules
 
     var exec = require('child_process').exec;
     var fs = require('fs');
@@ -44,24 +44,24 @@
                 )
             }
         });   
-        
-        
-        
-        
-        
-        
-        
-###Mimification
+
+
+
+
+
+
+
+### Minifycations
 
 
     npm install gulp  --save-dev
     npm install gulp-concat --save-dev
     npm install gulp-uglify --save-dev
-  
-  
-  
+
+
+
     ///gulpfile.js
-  
+
     console.log('Start');
 
     var concat = require('gulp-concat');
@@ -75,9 +75,9 @@
         .pipe(uglify())
         .pipe(gulp.dest('./dist/'))
     });
-    
-            
-####Watchers
+
+
+#### Watchers
 
 
     var appjs = [
@@ -85,7 +85,6 @@
                  './public/javascripts/controller.js',
                  './public/javascripts/router.js'
                 ]
-
 
     gulp.task('default', function() {
       gulp.src(appjs)
@@ -98,3 +97,12 @@
     gulp.task('watch', function () {
         gulp.watch('public/**/*.js', ['default']);
     });
+
+
+> Running commands simultaneously.
+
+    npm install concurrently --save-dev  
+
+    "watch": "concurrently --kill-others 'coffee -cw -o public/javascripts reader' 'jade -w -o public/templates reader' 'gulp watch'"
+
+  

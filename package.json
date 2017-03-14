@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
-    "watch": "concurrently --kill-others \"coffee -cw -o public/javascripts reader\" \"jade -w -o public/templates reader\""
+    "watch": "concurrently --kill-others 'coffee -cw -o public/javascripts reader' 'jade -w -o public/templates reader' 'gulp watch'"
   },
   "dependencies": {
     "angular": "^1.6.3",

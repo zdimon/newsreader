@@ -1,1 +1,1 @@
-app = angular.module 'readerApp', ['ui.router']
+app = angular.module 'readerApp', ['ui.router'] 
