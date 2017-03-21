@@ -3,12 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www",
-    "watch": "concurrently --kill-others 'coffee -cw -o public/javascripts reader' 'jade -w -o public/templates reader' 'gulp watch'"
+    "start": "nodemon --ignore data ./bin/www",
+    "watch": "concurrently --kill-others 'coffee -cw -o public/javascripts reader' 'coffee -cw server' 'jade -w -o public/templates reader' 'gulp watch'"
   },
   "dependencies": {
     "angular": "^1.6.3",
     "angular-ui-router": "^0.4.2",
+    "async-polling": "^0.2.1",
     "body-parser": "~1.15.2",
     "bootstrap": "^3.3.7",
     "cookie-parser": "~1.4.3",
