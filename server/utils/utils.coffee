@@ -1,5 +1,5 @@
 module.exports =
-    getNowDate: ()->
+    getNowDate: ()-> # generate current date 2017-03-31
         today = new Date()
         dd =  today.getDate()
         if dd<10

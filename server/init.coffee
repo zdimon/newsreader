@@ -2,6 +2,7 @@ exec = require('child_process').exec
 fs = require 'fs'
 path = require('path');
 
+
 fs.lstat global.app_root+'/public/node_modules', (err, stats)->
     if err
         cmd = "ln -s "+global.app_root+"/node_modules public/node_modules"
@@ -11,6 +12,9 @@ fs.lstat global.app_root+'/public/node_modules', (err, stats)->
 
 data_dir = path.join(global.app_root, global.app_config.data_dir)
 top10_dir = path.join data_dir, 'top10'
+
+
+# create data dir
 
 if !fs.existsSync data_dir
     console.log 'Creating data dir......'
