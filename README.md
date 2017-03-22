@@ -15,7 +15,7 @@
 
 > server will be started on 3000 port by default
 
-##Project settings
+## Project settings
 
 Copy config file
 
