@@ -25,7 +25,9 @@ Edit URL to API server
 
     nano public/javascripts/config.js
 
-    
+set SERVER_URL
+
+    var SERVER_URL = 'http://<your domain>'
 
 ## Proxy with nginx
 
