@@ -2,8 +2,9 @@
 
 ## Requirements
 
-    sudo apt-get install npm nodejs-legacy
-    sudo npm install nodemon
+    apt-get update
+    sudo apt-get install nano git npm nodejs-legacy supervisor
+    sudo npm install -g nodemon
 
 ## Deploy
 
@@ -53,8 +54,6 @@ Optionally you can proxy static files.
 
 
 ## Run service in supervisor.
-
-    sudo apt-get install supervisor
     
 ### nano /etc/supervisor/conf.d/reader.conf
 
