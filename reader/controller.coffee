@@ -1,5 +1,9 @@
 angular.module 'readerApp'
-.controller 'topCtrl', [  '$scope', ($scope)->  
+.controller 'indexCtrl', [  '$scope', ($scope)->
         $scope.top_list = [1,2,3,4]
+
+    ]
+.controller 'journalsCtrl', [  '$scope', ($scope)->
+        $scope.journals_list = [1,2,3,4]
 
     ]

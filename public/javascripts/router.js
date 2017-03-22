@@ -2,15 +2,28 @@
 (function() {
   angular.module('readerApp').config([
     '$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
-      var index;
-      $urlRouterProvider.otherwise('/');
-      index = {
-        name: 'index',
-        url: '/',
-        controller: 'topCtrl',
-        templateUrl: 'templates/index.html'
-      };
-      return $stateProvider.state(index);
+      $urlRouterProvider.otherwise('reader/index');
+      return $stateProvider.state('menu', {
+        url: '/reader',
+        templateUrl: 'templates/menu.html',
+        controller: function() {}
+      }).state('menu.index', {
+        url: '/index',
+        views: {
+          'content': {
+            templateUrl: 'templates/index.html',
+            controller: 'indexCtrl'
+          }
+        }
+      }).state('menu.journals', {
+        url: '/journals',
+        views: {
+          'content': {
+            templateUrl: 'templates/journals.html',
+            controller: 'journalsCtrl'
+          }
+        }
+      });
     }
   ]);
 

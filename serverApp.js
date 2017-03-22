@@ -15,7 +15,7 @@ var polling =  require('./server/utils/polling');
 
 
 var app = express();
-
+app.locals.pretty = true;
 // view engine setup
 app.set('views', path.join(__dirname, 'server', 'views'));
 app.set('view engine', 'jade');

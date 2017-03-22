@@ -1,0 +1,24 @@
+ion-side-menus(enable-menu-with-back-views="false")
+    ion-side-menu-content
+        ion-nav-bar.bar-stable
+            ion-nav-back-button
+            ion-nav-buttons(side="left")
+                button(class="button button-icon button-clear ion-navicon" menu-toggle="left")
+
+        ion-nav-view(name="content")
+
+    ion-side-menu(side="left" id="side-menu21")
+        ion-header-bar.bar-stable
+            div.title
+                пресса.ру
+
+        ion-content(padding="false" class="side-menu-left has-header")
+            ion-list(id="menu-list6")
+                ion-item(id="menu-list-item1" ui-sref="menu.index" menu-close="")
+                    Главная
+                ion-item(id="menu-list-item1" ui-sref="menu.journals" menu-close="")
+                    Журналы
+                ion-item(id="menu-list-item11" ui-sref="menu.magazines" menu-close="")
+                    Газеты
+                ion-item(id="menu-list-item11" ui-sref="menu.articles" menu-close="")
+                    Статьи
