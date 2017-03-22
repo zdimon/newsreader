@@ -1,6 +1,6 @@
 angular.module 'readerApp'
 .controller 'indexCtrl', [  '$scope', ($scope)->
-        $scope.top_list = [1,2,3]
+        $scope.top_list = [1,2,3, 4] 
 
     ]
 .controller 'journalsCtrl', [  '$scope', ($scope)->
