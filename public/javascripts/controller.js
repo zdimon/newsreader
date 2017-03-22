@@ -2,7 +2,7 @@
 (function() {
   angular.module('readerApp').controller('indexCtrl', [
     '$scope', function($scope) {
-      return $scope.top_list = [1, 2, 3, 4];
+      return $scope.top_list = [1, 2, 3];
     }
   ]).controller('journalsCtrl', [
     '$scope', function($scope) {

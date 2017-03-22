@@ -5,7 +5,8 @@
   "scripts": {
     "start": "nodemon --ignore data ./bin/www",
     "prod": "ws 8080",
-    "watch": "concurrently --kill-others 'coffee -cw -o public/javascripts reader' 'coffee -cw server' 'jade -w -o public/templates reader' 'gulp watch'"
+    "watch": "concurrently --kill-others 'coffee -cw -o public/javascripts reader' 'coffee -cw server' 'jade -w -o public/templates reader' 'gulp watch'",
+    "build": "coffee -c -o public/javascripts reader || coffee -c server || jade -w -o public/templates reader"
   },
   "dependencies": {
     "angular": "^1.6.3",
