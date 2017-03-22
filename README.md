@@ -10,9 +10,61 @@
     git clone git@github.com:zdimon/newsreader.git
     cd newsreader
     npm install
-    npm start
-
+    npm run prod
+    
 > server will be started on 3000 port by default
+
+
+## Proxy with nginx
+
+
+    server {
+        listen      80;
+        client_max_body_size 100M;
+        server_name <server-name>;
+        
+        location / {
+               proxy_pass http://127.0.0.1:3000;
+        }
+
+Optionally you can proxy static files.
+
+ 
+        location /javascripts {
+            alias /home/zdimon/newsreader/public/javascripts/;
+        }
+
+        location /stylesheets {
+            alias <path-to-project-dir>/public/stylesheets/;
+        }
+
+        location /templates {
+            alias <path-to-project-dir>/public/templates/;
+        }
+
+
+       location /media {
+            alias <path-to-project-dir>/public/media/;
+        }
+
+       location /fonts {
+            alias <path-to-project-dir>/public/fonts/;
+        }
+
+
+## Run service in supervisor.
+
+    sudo apt-get install supervisor
+    
+### nano /etc/supervisor/conf.d/reader.conf
+
+    [program:reader_server]
+    command=/home/zdimon/newsreader/start.sh
+    directory=/home/zdimon/newsreader
+    user=zdimon
+    autostart=true
+    autorestart=true
+    
 
 ## Description.
 
