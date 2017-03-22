@@ -9,6 +9,7 @@ watch = require('gulp-watch');
 var appjs = [
              './public/javascripts/app.js',
              './public/javascripts/controller.js',
+             './public/javascripts/service.js',
              './public/javascripts/router.js'
             ]
 
