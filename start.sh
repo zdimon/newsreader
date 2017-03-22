@@ -1,3 +1,3 @@
 #!/bin/bash
-cd ~/newsreader
+cd /home/zdimon/newsreader
 nodemon ./bin/www
