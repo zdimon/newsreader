@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon --ignore data ./bin/www",
-    "prod": "node ./bin/www",
+    "prod": "nodemon ./bin/www",
     "watch": "concurrently --kill-others 'coffee -cw -o public/javascripts reader' 'coffee -cw server' 'jade -w -o public/templates reader' 'gulp watch'",
     "build": "coffee -c -o public/javascripts reader || coffee -c server || jade -w -o public/templates reader"
   },

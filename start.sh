@@ -1,2 +1,2 @@
 #!/bin/bash
-node ./bin/www
+nodemon ./bin/www

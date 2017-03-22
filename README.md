@@ -2,8 +2,8 @@
 
 ## Requirements
 
-    sudo apt-get install npm
-    sudo apt-get install nodejs-legacy
+    sudo apt-get install npm nodejs-legacy
+    sudo npm install nodemon
 
 ## Deploy
 
@@ -59,12 +59,23 @@ Optionally you can proxy static files.
 ### nano /etc/supervisor/conf.d/reader.conf
 
     [program:reader_server]
-    command=/home/zdimon/newsreader/start.sh
-    directory=/home/zdimon/newsreader
+    command=<path-to-project-dir>/start.sh
+    directory=<path-to-project-dir>
     user=zdimon
     autostart=true
     autorestart=true
     
+    
+### Commands
+
+**monitoring**
+    
+    supervisorctl
+
+**restarting**
+
+    service supervisor restart
+
 
 ## Description.
 
