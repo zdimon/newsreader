@@ -12,9 +12,20 @@
     cd newsreader
     npm install
     npm run prod
-    
+
 > server will be started on 3000 port by default
 
+##Project settings
+
+Copy config file
+
+    cp public/javascripts/_config.js public/javascripts/config.js
+
+Edit URL to API server
+
+    nano public/javascripts/config.js
+
+    
 
 ## Proxy with nginx
 
@@ -23,14 +34,14 @@
         listen      80;
         client_max_body_size 100M;
         server_name <server-name>;
-        
+
         location / {
                proxy_pass http://127.0.0.1:3000;
         }
 
 Optionally you can proxy static files.
 
- 
+
         location /javascripts {
             alias /home/zdimon/newsreader/public/javascripts/;
         }
@@ -54,7 +65,7 @@ Optionally you can proxy static files.
 
 
 ## Run service in supervisor.
-    
+
 ### nano /etc/supervisor/conf.d/reader.conf
 
     [program:reader_server]
@@ -63,12 +74,12 @@ Optionally you can proxy static files.
     user=zdimon
     autostart=true
     autorestart=true
-    
-    
+
+
 ### Commands
 
 **monitoring**
-    
+
     supervisorctl
 
 **restarting**
