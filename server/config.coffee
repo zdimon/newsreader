@@ -1,3 +1,3 @@
 module.exports =
-    host: 'pressa.ru'
+    host: 'pressa.ru' 
     data_dir: 'data'
