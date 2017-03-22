@@ -1,2 +1,2 @@
 #!/bin/bash
-supervisor ./bin/www
+supervisor -i node_modules,public/node_modules,data ./bin/www

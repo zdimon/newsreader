@@ -4,7 +4,7 @@
 
     apt-get update
     sudo apt-get install nano git npm nodejs-legacy supervisor
-    sudo npm install -g nodemon
+    sudo npm install supervisor -g
 
 ## Deploy
 
