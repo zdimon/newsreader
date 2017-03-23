@@ -7,10 +7,10 @@ watch = require('gulp-watch');
 
 
 var appjs = [
-             './public/javascripts/app.js',
-             './public/javascripts/controller.js',
-             './public/javascripts/service.js',
-             './public/javascripts/router.js'
+             './public/dist/js/app.js',
+             './public/dist/js/controller.js',
+             './public/dist/js/service.js',
+             './public/dist/js/router.js'
             ]
 
 
@@ -18,10 +18,10 @@ gulp.task('default', function() {
   gulp.src(appjs)
     .pipe(concat('app.min.js'))
     .pipe(uglify())
-    .pipe(gulp.dest('./public/dist'))
+    .pipe(gulp.dest('./public/dist/js'))
 });
 
 
 gulp.task('watch', function () {
-    gulp.watch('public/javascripts/*.js', ['default']);
+    gulp.watch('public/dist/js/*.js', ['default']);
 });

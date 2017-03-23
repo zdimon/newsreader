@@ -31,7 +31,7 @@ set SERVER_URL
 
     var SERVER_URL = 'http://<your domain>'
 
-## Proxy with nginx
+## Proxy API server
 
 
     server {
@@ -43,35 +43,18 @@ set SERVER_URL
                proxy_pass http://127.0.0.1:3000;
         }
 
-##Media directory
+##Proxy media directory with images.
 
         location /data {
         alias <path-to-project-dir>/data/;
     }   
 
-Optionally you can proxy static files.
+##Proxy static files.
 
-
-        location /javascripts {
-            alias <path-to-project-dir>/javascripts/;
+        location /dist {
+            alias <path-to-project-dir>/public/dist/;
         }
 
-        location /stylesheets {
-            alias <path-to-project-dir>/public/stylesheets/;
-        }
-
-        location /templates {
-            alias <path-to-project-dir>/public/templates/;
-        }
-
-
-       location /media {
-            alias <path-to-project-dir>/public/media/;
-        }
-
-       location /fonts {
-            alias <path-to-project-dir>/public/fonts/;
-        }
 
 
 ## Run service in supervisor.

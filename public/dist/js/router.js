@@ -5,13 +5,13 @@
       $urlRouterProvider.otherwise('reader/index');
       return $stateProvider.state('reader', {
         url: '/reader',
-        templateUrl: 'templates/menu.html',
+        templateUrl: 'dist/templates/menu.html',
         controller: function() {}
       }).state('reader.index', {
         url: '/index',
         views: {
           'content': {
-            templateUrl: 'templates/index.html',
+            templateUrl: 'dist/templates/index.html',
             controller: 'indexCtrl'
           }
         }
@@ -19,7 +19,7 @@
         url: '/top/detail/:id',
         views: {
           'content': {
-            templateUrl: 'templates/top_detail.html',
+            templateUrl: 'dist/templates/top_detail.html',
             controller: 'topDetailCtrl'
           }
         }
@@ -27,7 +27,7 @@
         url: '/read/:id',
         views: {
           'content': {
-            templateUrl: 'templates/read.html',
+            templateUrl: 'dist/templates/read.html',
             controller: 'readCtrl'
           }
         }
@@ -35,7 +35,7 @@
         url: '/journals',
         views: {
           'content': {
-            templateUrl: 'templates/journals.html',
+            templateUrl: 'dist/templates/journals.html',
             controller: 'journalsCtrl'
           }
         }
