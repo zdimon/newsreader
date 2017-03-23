@@ -3,7 +3,7 @@ ion-view(title="{{ article.title }}")
         div
             h3 {{ article.title }}
             a(ui-sref="reader.read({id: article.issue_id})" class="button button-balanced  button-block") Читать в номере
-            img(ng-src="{{ article.small_image }}")
+            img(ng-src="/data/top10/images/{{ top_list.date }}/{{ article.id }}.png")
             p {{ article.author }}
             p(ng-bind-html="article.text" class="justify")
             p(ng-bind-html="article.text_continue" class="justify")
