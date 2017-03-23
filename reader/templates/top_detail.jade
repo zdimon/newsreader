@@ -5,5 +5,5 @@ ion-view(title="{{ article.title }}" id="page1")
             a(ui-sref="reader.read({id: article.issue_id})" class="button button-balanced  button-block") Читать в номере
             img(ng-src="{{ article.small_image }}")
             p {{ article.author }}
-            p(ng-bind-html="article.text")
-            p(ng-bind-html="article.text_continue")
+            p(ng-bind-html="article.text" class="justify")
+            p(ng-bind-html="article.text_continue" class="justify")
