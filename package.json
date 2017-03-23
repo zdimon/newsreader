@@ -20,14 +20,15 @@
     "jade": "~1.11.0",
     "jquery": "^3.1.1",
     "morgan": "~1.7.0",
-    "serve-favicon": "~2.3.0",
-    "local-web-server": "^1.2.7"
+    "serve-favicon": "~2.3.0"
+
   },
   "devDependencies": {
     "concurrently": "^3.4.0",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
     "gulp-uglify": "^2.1.0",
-    "gulp-watch": "^4.3.11"
+    "gulp-watch": "^4.3.11",
+    "local-web-server": "^1.2.7"
   }
 }
