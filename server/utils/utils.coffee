@@ -1,6 +1,9 @@
 module.exports =
-    getNowDate: ()-> # generate current date 2017-03-31
+    getNowDate: (diff=0)-> # generate current date 2017-03-31
         today = new Date()
+        if diff >0
+            today.setDate today.getDate()-diff
+        console.log today        
         dd =  today.getDate()
         if dd<10
             dd='0'+dd
