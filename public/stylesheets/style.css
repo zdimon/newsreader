@@ -24,4 +24,14 @@ ion-list.manual-list-fullwidth div.list > .item, .list.card.manual-card-fullwidt
   list-style-type: decimal;
   padding-left:40px;
 }
- 
+
+
+.top10_img_link {
+     position: absolute;
+     top: 10px;
+     left: 10px;
+     max-width: 80px;
+     max-height: 80px;
+     width: 100%;
+     height: 100%;
+}
