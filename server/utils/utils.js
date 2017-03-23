@@ -10,7 +10,6 @@
       if (diff > 0) {
         today.setDate(today.getDate() - diff);
       }
-      console.log(today);
       dd = today.getDate();
       if (dd < 10) {
         dd = '0' + dd;
@@ -20,6 +19,15 @@
         mm = '0' + mm;
       }
       return (today.getFullYear()) + "-" + mm + "-" + dd;
+    },
+    count_in_object: function(obj) {
+      var count, i, len, prop;
+      count = 0;
+      for (i = 0, len = obj.length; i < len; i++) {
+        prop = obj[i];
+        ++count;
+      }
+      return count;
     }
   };
 

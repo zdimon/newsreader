@@ -16,10 +16,12 @@ makeresponse = (options, onResult)->
                 res.on 'data', (chunk)-> #collect data
                     out = out + chunk
                 res.on 'end', ()->
-                    fs.writeFile dest, out, (err)-> # write to disk
-                        if err
-                            console.log(err)
-                        console.log "The file #{dest} was saved!"
+                    jsdata = JSON.parse(out)
+                    if parseInt(Object.keys(jsdata.articles).length) > 9
+                        fs.writeFile dest, out, (err)-> # write to disk
+                            if err
+                                console.log(err)
+                            console.log "The file #{dest} was saved!"
                     onResult(res.statusCode,out) #apply callback
             )
 
@@ -34,12 +36,14 @@ get_top_from_remote = (end)->
     )
     end()
 
-get_top_from_remote ()-> #invoke gettop function
+#get_top_from_remote ()-> #invoke gettop function
 
+
+
+top_polling =  polling(get_top_from_remote, 60000*30)
+top_polling.run()#periodically invocation
 
 poolling =
     get_top_from_remote: get_top_from_remote
 
 module.exports = poolling #export for using outside
-
-#polling(gettop, 3000).run() #periodically invocation

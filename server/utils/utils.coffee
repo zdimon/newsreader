@@ -3,7 +3,6 @@ module.exports =
         today = new Date()
         if diff >0
             today.setDate today.getDate()-diff
-        console.log today        
         dd =  today.getDate()
         if dd<10
             dd='0'+dd
@@ -11,3 +10,9 @@ module.exports =
         if mm<10
             mm='0'+mm
         "#{today.getFullYear()}-#{mm}-#{dd}"
+
+    count_in_object: (obj)->
+        count = 0;
+        for prop in obj
+            ++count;
+        count
