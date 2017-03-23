@@ -12,7 +12,7 @@ fs.lstat global.app_root+'/public/node_modules', (err, stats)->
 
 data_dir = path.join(global.app_root, global.app_config.data_dir)
 top10_dir = path.join data_dir, 'top10'
-
+top10_image_dir = path.join data_dir, 'top10', 'images'
 
 # create data dir
 
@@ -24,3 +24,7 @@ if !fs.existsSync data_dir
 if !fs.existsSync top10_dir
     console.log 'Creating top10_dir ......'
     fs.mkdirSync top10_dir
+
+if !fs.existsSync top10_image_dir
+    console.log 'Creating top10_image_dir ......'
+    fs.mkdirSync top10_image_dir

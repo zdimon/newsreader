@@ -43,11 +43,17 @@ set SERVER_URL
                proxy_pass http://127.0.0.1:3000;
         }
 
+##Media directory
+
+        location /data {
+        alias <path-to-project-dir>/data/;
+    }   
+
 Optionally you can proxy static files.
 
 
         location /javascripts {
-            alias /home/zdimon/newsreader/public/javascripts/;
+            alias <path-to-project-dir>/javascripts/;
         }
 
         location /stylesheets {

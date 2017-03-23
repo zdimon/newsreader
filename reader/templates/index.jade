@@ -2,9 +2,9 @@ ion-view(title="ТОП10" id="page1")
     ion-content(padding="true" class="has-header")
         div
             ion-list
-                ion-item(class="item-thumbnail-left" ng-repeat="a in top_list" ng-click="go(a.id)")
+                ion-item(class="item-thumbnail-left" ng-repeat="a in top_list.articles" ng-click="go(a.id)")
                     //a(ui-sref="reader.journals" class="item-thumbnail-left")
-                    img(ng-src="{{ a.small_image_portrait }}" class="top10_img_link" )
+                    img(ng-src="/data/top10/images/{{ top_list.date }}/{{ a.id }}.png" class="top10_img_link" )
                     h2 {{ a.title }}
                     p {{ a.author }}
                     p {{ a.journal }}

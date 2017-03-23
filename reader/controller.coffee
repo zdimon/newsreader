@@ -1,7 +1,7 @@
 angular.module 'readerApp'
 .controller 'indexCtrl', [  '$scope', 'Top10', '$state', '$rootScope', ($scope, Top10, $state, $rootScope)->
         Top10.get_top10 (r)->
-            $rootScope.top_list = r.articles
+            $rootScope.top_list = r
         $scope.go = (id)->
             $state.go 'reader.top_detail',
                 id: id
@@ -10,15 +10,15 @@ angular.module 'readerApp'
     ]
 .controller 'topDetailCtrl', [  '$scope', '$stateParams', '$rootScope', 'Top10', ($scope, $stateParams, $rootScope, Top10)->
         if $rootScope.top_list
-            angular.forEach $rootScope.top_list, (k,v)-> #search in
+            angular.forEach $rootScope.top_list.articles, (k,v)-> #search in
                 if parseInt(k.id) == parseInt($stateParams.id)
                     $scope.article = k
         else
             Top10.get_top10 (r)->
-                $rootScope.top_list = r.articles
-                angular.forEach $rootScope.top_list, (k,v)-> #search in
+                $rootScope.top_list = r
+                angular.forEach $rootScope.top_list.articles, (k,v)-> #search in
                     if parseInt(k.id) == parseInt($stateParams.id)
-                        $scope.article = k                          
+                        $scope.article = k
 
 ]
 
