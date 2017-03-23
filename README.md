@@ -1,6 +1,6 @@
 # News reader.
 
-## Requirements
+## Requirements (Ubuntu 16)
 
     apt-get update
     sudo apt-get install nano git npm nodejs-legacy supervisor nginx
@@ -91,7 +91,7 @@ Optionally you can proxy static files.
     service supervisor restart
 
 
-## Description.
+## Description API.
 
 
 Server-client system of retrieving and representing a structured information from the pressa.ru service.
@@ -113,6 +113,7 @@ The information comes in follows JSON format:
                 'small_image': ...,
                 'small_image_portrait': ...,
                 'journal': ...,
+                'journal_name': ...,
                 'issue': ...,
                 'issue_id': ...,
                 'reader_url': ...,
