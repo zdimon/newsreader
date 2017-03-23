@@ -12,12 +12,23 @@
       };
     }
   ]).controller('topDetailCtrl', [
-    '$scope', '$stateParams', '$rootScope', function($scope, $stateParams, $rootScope) {
-      return angular.forEach($rootScope.top_list, function(k, v) {
-        if (parseInt(k.id) === parseInt($stateParams.id)) {
-          return $scope.article = k;
-        }
-      });
+    '$scope', '$stateParams', '$rootScope', 'Top10', function($scope, $stateParams, $rootScope, Top10) {
+      if ($rootScope.top_list) {
+        return angular.forEach($rootScope.top_list, function(k, v) {
+          if (parseInt(k.id) === parseInt($stateParams.id)) {
+            return $scope.article = k;
+          }
+        });
+      } else {
+        return Top10.get_top10(function(r) {
+          $rootScope.top_list = r.articles;
+          return angular.forEach($rootScope.top_list, function(k, v) {
+            if (parseInt(k.id) === parseInt($stateParams.id)) {
+              return $scope.article = k;
+            }
+          });
+        });
+      }
     }
   ]).controller('readCtrl', [
     '$scope', '$stateParams', function($scope, $stateParams) {
