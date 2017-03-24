@@ -5,7 +5,7 @@ path = require 'path'
 fs = require 'fs'
 polling = require '../utils/polling'
 
-getTop10FromFS = (date)->
+getTop10FromFS = (date)-> #get top 10 list from file
     try ## if file exist
         dest = path.join(global.app_root, global.app_config.data_dir, "top10/#{date}.json")
         cont = JSON.parse(fs.readFileSync dest, 'utf8')
@@ -13,9 +13,7 @@ getTop10FromFS = (date)->
         throw new SyntaxError("TOP10 does not exist for #{date} !!!");
 
 router.get '/', (req, res, next)->
-    #get top 10 list from file
     date = utils.getNowDate()
-
     try
         res.send(getTop10FromFS(date))
     catch

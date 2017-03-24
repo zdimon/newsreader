@@ -39,3 +39,13 @@ ion-list.manual-list-fullwidth div.list > .item, .list.card.manual-card-fullwidt
 .justify {
     text-align: justify;
 }
+
+.journal_tail {
+width: 210px;
+height: 290px;
+padding: 5px;
+margin: 2px
+border: 1px solid silver;
+display: inline-block
+
+}

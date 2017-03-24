@@ -1,7 +1,15 @@
-angular.module('readerApp', ['ionic'])
+angular.module('readerApp', ['ionic', 'ion-gallery'])
 
-.config ([ '$ionicConfigProvider', '$sceDelegateProvider', ($ionicConfigProvider, $sceDelegateProvider)->
+.config ([ '$ionicConfigProvider', '$sceDelegateProvider', 'ionGalleryConfigProvider', ($ionicConfigProvider, $sceDelegateProvider, ionGalleryConfigProvider)->
     $sceDelegateProvider.resourceUrlWhitelist [ 'self','*://www.youtube.com/**', '*://player.vimeo.com/video/**']
+
+    ionGalleryConfigProvider.setGalleryConfig({
+                          action_label: 'Close',
+                          toggle: false,
+                          row_size: 2,
+                          fixed_row_size: false
+                          });
+
 ])
 
 .run ['$ionicPlatform', ($ionicPlatform)->
