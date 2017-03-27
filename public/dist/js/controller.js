@@ -65,6 +65,22 @@
         }
       ];
     }
+  ]).controller('magazinesCtrl', [
+    '$scope', '$stateParams', function($scope, $stateParams) {
+      return $scope.items = [
+        {
+          src: '/images/cover1.png',
+          sub: 'This is a <b>subtitle</b>',
+          thumb: '/images/high1.jpg'
+        }, {
+          src: '/images/cover2.png',
+          sub: ''
+        }, {
+          src: '/images/cover1.png',
+          thumb: '/images/high1.jpg'
+        }
+      ];
+    }
   ]).controller('readCtrl', [
     '$scope', '$stateParams', function($scope, $stateParams) {
       return $scope.journals_list = [1, 2, 3, 4];

@@ -39,6 +39,14 @@
             controller: 'journalsCtrl'
           }
         }
+      }).state('reader.magazines', {
+        url: '/magazines',
+        views: {
+          'content': {
+            templateUrl: 'dist/templates/magazines.html',
+            controller: 'magazinesCtrl'
+          }
+        }
       });
     }
   ]);

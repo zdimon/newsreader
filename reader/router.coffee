@@ -24,7 +24,7 @@ angular.module 'readerApp'
         url: '/read/:id'
         views:
             'content':
-                templateUrl: 'dist/templates/read.html' 
+                templateUrl: 'dist/templates/read.html'
                 controller: 'readCtrl'
     .state 'reader.journals',
         url: '/journals'
@@ -32,4 +32,10 @@ angular.module 'readerApp'
             'content':
                 templateUrl: 'dist/templates/journals.html'
                 controller: 'journalsCtrl'
+    .state 'reader.magazines',
+        url: '/magazines'
+        views:
+            'content':
+                templateUrl: 'dist/templates/magazines.html'
+                controller: 'magazinesCtrl'                
 ]

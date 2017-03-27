@@ -67,6 +67,25 @@ angular.module 'readerApp'
 
     ]
 
+.controller 'magazinesCtrl', [  '$scope', '$stateParams', ($scope, $stateParams)->
+        $scope.items = [
+          {
+            src:'/images/cover1.png',
+            sub: 'This is a <b>subtitle</b>'
+            thumb:'/images/high1.jpg'
+          },
+          {
+            src:'/images/cover2.png',
+            sub: ''
+          },
+          {
+            src:'/images/cover1.png',
+            thumb:'/images/high1.jpg'
+          }
+      ]
+
+    ]
+
 
 .controller 'readCtrl', [  '$scope', '$stateParams', ($scope, $stateParams)->
         $scope.journals_list = [1,2,3,4]
