@@ -2,3 +2,4 @@ node_modules
 npm-debug.log
 public/javascripts/config.js
 data
+npm-debug.*

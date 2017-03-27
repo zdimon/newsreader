@@ -14,25 +14,28 @@
 
   polling = require('../utils/polling');
 
-  getTop10FromFS = function(date) {
-    var cont, dest;
+  getTop10FromFS = function(offset) {
+    var cont, date, dest;
+    if (offset == null) {
+      offset = 0;
+    }
+    date = utils.getNowDate(offset);
     try {
       dest = path.join(global.app_root, global.app_config.data_dir, "top10/" + date + ".json");
       return cont = JSON.parse(fs.readFileSync(dest, 'utf8'));
     } catch (error) {
-      throw new SyntaxError("TOP10 does not exist for " + date + " !!!");
+      offset = offset + 1;
+      return getTop10FromFS(offset);
     }
   };
 
   router.get('/', function(req, res, next) {
-    var date, e;
-    date = utils.getNowDate();
+    var e;
     try {
       return res.send(getTop10FromFS(date));
     } catch (error) {
       try {
-        date = utils.getNowDate(1);
-        return res.send(getTop10FromFS(date));
+        return res.send(getTop10FromFS());
       } catch (error) {
         e = error;
         polling.get_top_from_remote(function() {});
