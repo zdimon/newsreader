@@ -28,3 +28,15 @@ if !fs.existsSync top10_dir
 if !fs.existsSync top10_image_dir
     console.log 'Creating top10_image_dir ......'
     fs.mkdirSync top10_image_dir
+
+
+# create tasks.json
+fileName = 'tasks.json'
+fs.exists fileName, (exists)->
+    if not exists
+        console.log 'Not exist!!'
+        data = JSON.stringify([{"load_top_10": "loadTop10"}])
+        console.log data
+        fs.writeFile fileName, data, (err)->
+            if err
+                console.log err

@@ -2,4 +2,5 @@ node_modules
 npm-debug.log
 public/javascripts/config.js
 data
+tasks.json
 npm-debug.*
