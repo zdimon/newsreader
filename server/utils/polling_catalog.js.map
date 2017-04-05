@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "polling_catalog.js",
+  "sourceRoot": "",
+  "sources": [
+    "polling_catalog.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;AAAA,MAAA;;EAAA,OAAA,GAAU,OAAA,CAAQ,eAAR;;EACV,IAAA,GAAO,OAAA,CAAQ,MAAR;;EACP,EAAA,GAAK,OAAA,CAAQ,IAAR;;EACL,IAAA,GAAO,OAAA,CAAQ,MAAR;;EACP,KAAA,GAAQ,OAAA,CAAQ,gBAAR;;EACR,OAAA,GAAU,OAAA,CAAQ,SAAR;;EACV,KAAA,GAAQ,OAAA,CAAQ,OAAR,CAAA,CAAiB,qBAAjB;;EAGR,KAAA,CAAM,gBAAN;AATA"
+}
