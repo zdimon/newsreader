@@ -6,6 +6,7 @@
     apt-get update
     sudo apt-get install nano git npm nodejs-legacy supervisor nginx
     sudo npm install supervisor -g
+    sudo npm install -g coffeescript
 
 
 > If you want to clone repository via ssh you need to generate ssh key 'ssh-keygen' and then add to the github.com account.
