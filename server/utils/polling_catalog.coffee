@@ -1,16 +1,18 @@
-polling = require 'async-polling'
 http = require 'http'
 fs = require 'fs'
 path = require 'path'
 utils = require '../utils/utils'
 request = require('request');
-debug = require('debug')('app-pooling-catalog')
+log = require('winston-color')
+log.level = process.env.LOG_LEVEL
+log.debug "Importing polling catalog"
+
+get_catalog_from_server = ()->
+    log.debug "CATALOG: Start request from .."
 
 
-debug 'Poling catalog'
 
+poolling =
+    get_catalog_from_server: get_catalog_from_server
 
-#poolling =
-#    get_top_from_remote: get_top_from_remote
-
-#module.exports = poolling #export for using outside
+module.exports = poolling #export for using outside
