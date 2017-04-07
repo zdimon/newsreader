@@ -4,3 +4,5 @@ public/javascripts/config.js
 data
 tasks.json
 npm-debug.*
+newsreader.komodoproject
+.komodotools
