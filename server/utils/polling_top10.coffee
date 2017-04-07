@@ -56,7 +56,7 @@ download_image = (jsdata)->
         image_path = path.join(date_dir,"#{i.id}.png")
         log.verbose "debug", i.small_image
         request(i.small_image).pipe(fs.createWriteStream(image_path)).on 'close', ()->
-             win.log "debug", "saved #{i.small_image}"
+             log.verbose "saved #{i.small_image}"
 
 
 out =
