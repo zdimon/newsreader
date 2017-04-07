@@ -1,8 +1,12 @@
 node_modules
 npm-debug.log
 public/javascripts/config.js
-data
+public/data
 tasks.json
 npm-debug.*
+<<<<<<< HEAD
 newsreader.komodoproject
+=======
+.idea
+>>>>>>> 7d7c35576db63653e78b5bd638122c697d9f9706
 .komodotools

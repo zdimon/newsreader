@@ -1,19 +1,12 @@
 polling = require 'async-polling'
-http = require 'http'
-global.remote_host = 'pressa.ru'
-fs = require 'fs'
-path = require 'path'
-utils = require '../utils/utils'
-request = require 'request'
-log = require('winston-color')
-log.level = process.env.LOG_LEVEL
+
 
 
 ##############Importing pooling modules#########
 catalog = require './polling_catalog'
 issue = require './polling_issues'
 top10 = require './polling_top10'
-
+article = require './polling_articles'
 
 
 ##########Imploing pooling services##############
@@ -30,5 +23,7 @@ top_polling.run() #periodically invocation
 catalog_polling =  polling(catalog.get_catalog_from_server, 60000*30)
 catalog_polling.run() #periodically invocation
 
-
+##########Article#########
+article_polling =  polling(article.get_articles_from_server, 60000*30)
+article_polling.run() #periodically invocation
 

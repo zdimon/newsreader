@@ -16,7 +16,7 @@
 
   log.level = process.env.LOG_LEVEL;
 
-  log.debug("Importing issues");
+  log.debug("Importing polling issues module");
 
 
   /*
