@@ -5,7 +5,7 @@ utils = require '../utils/utils'
 request = require('request');
 log = require('winston-color')
 log.level = process.env.LOG_LEVEL
-log.debug "Importing pooling top 10 module"
+log.debug "Importing pooling top 10 module" 
 
 
 makeresponse = (options, onResult)->
