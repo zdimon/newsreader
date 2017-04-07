@@ -5,7 +5,7 @@ utils = require '../utils/utils'
 request = require('request');
 log = require('winston-color')
 log.level = process.env.LOG_LEVEL
-log.debug "Importing issues"
+log.debug "Importing polling issues module"
 
 ###
     Function makes a request to server and pass json

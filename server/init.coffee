@@ -5,6 +5,7 @@ log = require('winston-color')
 log.level = process.env.LOG_LEVEL
 log.debug "Initialization...."
 
+
 fs.lstat global.app_root+'/public/node_modules', (err, stats)->
     if err
         cmd = "ln -s "+global.app_root+"/node_modules public/node_modules"

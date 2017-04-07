@@ -1,6 +1,8 @@
 node_modules
 npm-debug.log
 public/javascripts/config.js
-data
+public/data
 tasks.json
 npm-debug.*
+.idea
+.komodotools
