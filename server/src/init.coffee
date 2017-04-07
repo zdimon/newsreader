@@ -3,6 +3,14 @@ fs = require 'fs'
 path = require('path');
 log = require('winston-color')
 log.level = process.env.LOG_LEVEL
+
+#log.debug "#####Building coffeescript#######"
+
+#execSync = require('child_process').execSync
+#execSync('coffee -cw server', {stdio:[0,1,2]})
+#log.debug code.text  
+
+
 log.debug "Initialization...."
 
 

@@ -6,7 +6,7 @@ polling = require 'async-polling'
 catalog = require './polling_catalog'
 issue = require './polling_issues'
 top10 = require './polling_top10'
-article = require './polling_articles'
+article = require './polling_articles' 
 
 
 ##########Imploing pooling services##############

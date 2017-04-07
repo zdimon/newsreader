@@ -2,5 +2,6 @@
 <!-- Komodo Project File - DO NOT EDIT -->
 <project id="095787dd-a960-44ac-b06e-10c41cf86477" kpf_version="5" name="newsreader.komodoproject">
 <preference-set idref="095787dd-a960-44ac-b06e-10c41cf86477" id="project" preftype="project">
+  <long id="prefs_version">1</long>
 </preference-set>
 </project>

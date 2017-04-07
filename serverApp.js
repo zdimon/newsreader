@@ -1,6 +1,6 @@
-global.app_config = require('./server/config');
+global.app_config = require('./server/dist/config');
 global.app_root = __dirname;
-require('./server/init');
+require('./server/dist/init');
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -8,9 +8,9 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var index = require('./server/routes/index');
-var top10 = require('./server/routes/top10');
-var polling =  require('./server/utils/polling');
+var index = require('./server/dist/routes/index');
+var top10 = require('./server/dist/routes/top10');
+var polling =  require('./server/dist/utils/polling');
 
 
 
