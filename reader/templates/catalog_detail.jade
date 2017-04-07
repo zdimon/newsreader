@@ -1,4 +1,11 @@
 ion-view(title="{{ catalog.name }}" id="page1")
     ion-content(padding="true" class="has-header")
-        h2 Содержимое
-        {{ catalog }}--
+        ion-list
+            ion-item.item-thumbnail-left(ng-repeat="c in catalog.journals" ng-click="go(c.id)")
+                img(ng-src="http://pressa.ru/{{c.thumb}}")
+                h2 {{c.id}} {{ c.name }}
+                p.
+                    {{c.description}}
+                p.
+                    Последнй выпуск
+                button(ion-button block) Читать статьи
