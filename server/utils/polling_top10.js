@@ -87,7 +87,7 @@
       image_path = path.join(date_dir, i.id + ".png");
       log.verbose("debug", i.small_image);
       results.push(request(i.small_image).pipe(fs.createWriteStream(image_path)).on('close', function() {
-        return win.log("debug", "saved " + i.small_image);
+        return log.verbose("saved " + i.small_image);
       }));
     }
     return results;

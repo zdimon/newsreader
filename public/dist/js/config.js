@@ -1,1 +1,1 @@
-var SERVER_URL = 'http://reader.local'
+var SERVER_URL = 'http://reader.local/'

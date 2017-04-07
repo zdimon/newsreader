@@ -85,6 +85,46 @@
     '$scope', '$stateParams', function($scope, $stateParams) {
       return $scope.journals_list = [1, 2, 3, 4];
     }
+  ]).controller('catalogCtrl', [
+    '$scope', '$stateParams', '$state', function($scope, $stateParams, $state) {
+      $scope.catalog = {
+        1: {
+          id: 1,
+          name: 'Женские',
+          thumb: 'test/cover.png'
+        },
+        2: {
+          id: 2,
+          name: 'Мужские',
+          thumb: 'test/cover.png'
+        }
+      };
+      return $scope.go = function(id) {
+        return $state.go('reader.catalog_detail', {
+          id: id
+        });
+      };
+    }
+  ]).controller('catalogDetailCtrl', [
+    '$scope', '$stateParams', '$state', function($scope, $stateParams, $state) {
+      $scope.detail = {
+        1: {
+          id: 1,
+          name: 'Женские',
+          thumb: 'test/cover.png'
+        },
+        2: {
+          id: 2,
+          name: 'Мужские',
+          thumb: 'test/cover.png'
+        }
+      };
+      return $scope.go = function(id) {
+        return $state.go('reader.top_detail', {
+          id: id
+        });
+      };
+    }
   ]);
 
 }).call(this);

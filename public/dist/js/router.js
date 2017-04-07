@@ -47,6 +47,22 @@
             controller: 'magazinesCtrl'
           }
         }
+      }).state('reader.catalog', {
+        url: '/catalog',
+        views: {
+          'content': {
+            templateUrl: 'dist/templates/catalog.html',
+            controller: 'catalogCtrl'
+          }
+        }
+      }).state('reader.catalog_detail', {
+        url: '/catalog/detail/:id',
+        views: {
+          'content': {
+            templateUrl: 'dist/templates/catalog_detail.html',
+            controller: 'catalogDetailCtrl'
+          }
+        }
       });
     }
   ]);

@@ -80,14 +80,40 @@ angular.module 'readerApp'
           },
           {
             src:'/images/cover1.png',
-            thumb:'/images/high1.jpg'
-          }
+            thumb:'/images/high1.jpg'   
+          }         
       ]
 
-    ]
+    ]             
 
 
 .controller 'readCtrl', [  '$scope', '$stateParams', ($scope, $stateParams)->
         $scope.journals_list = [1,2,3,4]
-
+        
     ]
+
+
+.controller 'catalogCtrl', [  '$scope', '$stateParams', '$state', ($scope, $stateParams, $state)->
+        $scope.catalog = {
+                1: {id: 1, name: 'Женские', thumb: 'test/cover.png'},
+                2: {id: 2, name: 'Мужские', thumb: 'test/cover.png'},        
+            }
+        $scope.go = (id)->
+            $state.go 'reader.catalog_detail',
+                id: id 
+
+]
+
+
+.controller 'catalogDetailCtrl', [  '$scope', '$stateParams', '$state', ($scope, $stateParams, $state)->
+        $scope.detail = {
+                1: {id: 1, name: 'Женские', thumb: 'test/cover.png'},
+                2: {id: 2, name: 'Мужские', thumb: 'test/cover.png'},        
+            }
+        $scope.go = (id)->
+            $state.go 'reader.top_detail',
+                id: id 
+
+]
+
+
