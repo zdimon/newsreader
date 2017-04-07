@@ -93,11 +93,8 @@ angular.module 'readerApp'
     ]
 
 
-.controller 'catalogCtrl', [  '$scope', '$stateParams', '$state', ($scope, $stateParams, $state)->
-        $scope.catalog = {
-                1: {id: 1, name: 'Женские', thumb: 'test/cover.png'},
-                2: {id: 2, name: 'Мужские', thumb: 'test/cover.png'},        
-            }
+.controller 'catalogCtrl', [  '$scope', '$stateParams', '$state', '$rootScope', ($scope, $stateParams, $state, $rootScope)->
+       
         $scope.go = (id)->
             $state.go 'reader.catalog_detail',
                 id: id 
@@ -105,11 +102,9 @@ angular.module 'readerApp'
 ]
 
 
-.controller 'catalogDetailCtrl', [  '$scope', '$stateParams', '$state', ($scope, $stateParams, $state)->
-        $scope.detail = {
-                1: {id: 1, name: 'Женские', thumb: 'test/cover.png'},
-                2: {id: 2, name: 'Мужские', thumb: 'test/cover.png'},        
-            }
+.controller 'catalogDetailCtrl', [  '$scope', '$stateParams', '$state', '$rootScope', ($scope, $stateParams, $state, $rootScope)->
+        $scope.catalog = $rootScope.catalog.categories[$stateParams.id]
+        console.log $scope.catalog
         $scope.go = (id)->
             $state.go 'reader.top_detail',
                 id: id 

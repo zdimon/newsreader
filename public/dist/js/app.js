@@ -11,8 +11,12 @@
       });
     }
   ]).run([
-    '$ionicPlatform', function($ionicPlatform) {
+    '$ionicPlatform', '$rootScope', 'Catalog', function($ionicPlatform, $rootScope, Catalog) {
       return $ionicPlatform.ready(function() {
+        Catalog.get_catalog(function(rez) {
+          $rootScope.$broadcast('get-catalog', rez);
+          return $rootScope.catalog = rez;
+        });
         if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
           cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
           cordova.plugins.Keyboard.disableScroll(true);

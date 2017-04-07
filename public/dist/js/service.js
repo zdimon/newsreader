@@ -13,6 +13,19 @@
         get_top10: get_top10
       };
     }
+  ]).factory('Catalog', [
+    '$http', function($http) {
+      var get_catalog;
+      get_catalog = function(callback) {
+        return $http({
+          method: 'GET',
+          url: SERVER_URL + "/catalog"
+        }).success(callback);
+      };
+      return {
+        get_catalog: get_catalog
+      };
+    }
   ]);
 
 }).call(this);

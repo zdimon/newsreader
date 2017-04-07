@@ -23,6 +23,7 @@ fs.lstat global.app_root+'/public/node_modules', (err, stats)->
 
 data_dir = path.join(global.app_root, global.app_config.data_dir)
 top10_dir = path.join data_dir, 'top10'
+catalog_dir = path.join data_dir, 'catalog'
 top10_image_dir = path.join data_dir, 'top10', 'images'
 journal_dir = path.join(global.app_root, global.app_config.data_dir, 'journals')
 
@@ -44,6 +45,10 @@ if !fs.existsSync top10_image_dir
 if !fs.existsSync journal_dir
     log.info 'Creating journal_dir ......'
     fs.mkdirSync journal_dir
+    
+if !fs.existsSync catalog_dir
+    log.info 'Creating catalog_dir ......'
+    fs.mkdirSync catalog_dir    
 
 # create tasks.json
 fileName = 'tasks.json'

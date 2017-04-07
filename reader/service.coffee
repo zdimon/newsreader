@@ -11,3 +11,17 @@ angular.module 'readerApp'
         }
 
 ]
+
+.factory 'Catalog', [  '$http', ($http)->
+        get_catalog = (callback)->
+            $http(
+                method: 'GET'
+                url: "#{SERVER_URL}/catalog"
+            ).success(callback)
+
+        return {
+            get_catalog
+        }
+
+]
+

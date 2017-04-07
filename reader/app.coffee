@@ -12,8 +12,12 @@ angular.module('readerApp', ['ionic', 'ion-gallery'])
 
 ])
 
-.run ['$ionicPlatform', ($ionicPlatform)->
+.run ['$ionicPlatform', '$rootScope', 'Catalog', ($ionicPlatform, $rootScope, Catalog)->
     $ionicPlatform.ready ()->
+        Catalog.get_catalog (rez)->
+              $rootScope.$broadcast('get-catalog',rez);        
+              $rootScope.catalog = rez
+              #console.log rez
     # Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     # for form inputs)
         if window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard

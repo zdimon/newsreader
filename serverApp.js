@@ -10,6 +10,7 @@ var bodyParser = require('body-parser');
 
 var index = require('./server/dist/routes/index');
 var top10 = require('./server/dist/routes/top10');
+var catalog = require('./server/dist/routes/catalog');
 var polling =  require('./server/dist/utils/polling');
 
 
@@ -30,6 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/top10', top10);
+app.use('/catalog', catalog)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
