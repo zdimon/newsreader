@@ -7,23 +7,22 @@ log = require('winston-color')
 log.level = process.env.LOG_LEVEL
 
 
-getCatalogFromFS = (offset=0)-> #get top 10 list from file
+getArticlesFromFS = (offset=0)-> #get top 10 list from file
    
     date = utils.getNowDate(offset)
     
-    try ## if file exist
+    #try ## if file exist
         #dest = path.join(global.app_root, global.app_config.data_dir, "catalog/#{date}.json")
-        dest = path.join(global.app_root, global.app_config.data_dir, "catalog/catalog.json")
-        cont = JSON.parse(fs.readFileSync dest, 'utf8')
-    catch
-
-        offset = offset+1
-        getCatalogFromFS(offset)
+    dest = path.join(global.app_root,'public','test', 'articles.json')
+    cont = JSON.parse(fs.readFileSync dest, 'utf8')
+    #catch
+    #    offset = offset+1
+    #    getArticlesFromFS(offset) 
 
 
 router.get '/', (req, res, next)->
     try
-        res.send(getCatalogFromFS())
+        res.send(getArticlesFromFS())
     catch e
         log.error "Error geting catalog! #{e}"
         #polling.get_top_from_remote ()-> #get top 10 from the remote server

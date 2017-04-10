@@ -23,7 +23,7 @@ makeresponse = (options, onResult)->
                     if parseInt(Object.keys(jsdata.articles).length) > 9
                         fs.writeFile dest, out, (err)-> # write to disk
                             if err
-                                console.log(err)
+                                log.error(err)
                             console.log "The file #{dest} was saved!"
                     onResult(res.statusCode,out) #apply callback
             )

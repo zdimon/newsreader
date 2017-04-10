@@ -98,10 +98,36 @@
       $scope.catalog = $rootScope.catalog.categories[$stateParams.id];
       console.log($scope.catalog);
       return $scope.go = function(id) {
-        return $state.go('reader.top_detail', {
-          id: id
+        console.log(id);
+        return $state.go('reader.articles', {
+          journal_id: id
         });
       };
+    }
+  ]).controller('articlesCtrl', [
+    '$scope', '$stateParams', '$state', '$rootScope', 'Articles', function($scope, $stateParams, $state, $rootScope, Articles) {
+      Articles.get_articles(function(rez) {
+        $scope.articles = rez.articles;
+        return console.log(rez);
+      });
+      return $scope.go = function(article_id) {
+        return $state.go('reader.article_detail', {
+          journal_id: $stateParams.journal_id,
+          article_id: article_id
+        });
+      };
+    }
+  ]).controller('articleDetailCtrl', [
+    '$scope', '$stateParams', '$state', '$rootScope', 'Articles', function($scope, $stateParams, $state, $rootScope, Articles) {
+      return Articles.get_articles(function(rez) {
+        $scope.articles = rez.articles;
+        return angular.forEach($scope.articles, function(v, k) {
+          if (parseInt(v.id) === parseInt($stateParams.article_id)) {
+            $scope.article = v;
+            return console.log(v.id);
+          }
+        });
+      });
     }
   ]);
 

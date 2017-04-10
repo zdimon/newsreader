@@ -26,6 +26,19 @@
         get_catalog: get_catalog
       };
     }
+  ]).factory('Articles', [
+    '$http', '$rootScope', function($http, $rootScope) {
+      var get_articles;
+      get_articles = function(callback) {
+        return $http({
+          method: 'GET',
+          url: SERVER_URL + "/articles"
+        }).success(callback);
+      };
+      return {
+        get_articles: get_articles
+      };
+    }
   ]);
 
 }).call(this);

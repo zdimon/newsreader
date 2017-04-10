@@ -102,13 +102,39 @@ angular.module 'readerApp'
 ]
 
 
-.controller 'catalogDetailCtrl', [  '$scope', '$stateParams', '$state', '$rootScope', ($scope, $stateParams, $state, $rootScope)->
+.controller 'catalogDetailCtrl', [  '$scope', '$stateParams', '$state', '$rootScope',  ($scope, $stateParams, $state, $rootScope)->
         $scope.catalog = $rootScope.catalog.categories[$stateParams.id]
         console.log $scope.catalog
         $scope.go = (id)->
-            $state.go 'reader.top_detail',
-                id: id 
+            console.log id
+            $state.go 'reader.articles',
+                journal_id: id 
 
+]
+
+
+.controller 'articlesCtrl', [  '$scope', '$stateParams', '$state', '$rootScope', 'Articles', ($scope, $stateParams, $state, $rootScope, Articles)->
+        
+        Articles.get_articles (rez)->
+            $scope.articles = rez.articles
+            console.log rez
+        $scope.go = (article_id)->
+            $state.go 'reader.article_detail',
+                journal_id: $stateParams.journal_id
+                article_id: article_id
+]
+
+
+.controller 'articleDetailCtrl', [  '$scope', '$stateParams', '$state', '$rootScope', 'Articles', ($scope, $stateParams, $state, $rootScope, Articles)->
+    Articles.get_articles (rez)->
+        $scope.articles = rez.articles
+        angular.forEach $scope.articles, (v,k)->
+            #console.log $stateParams.article_id
+            if parseInt(v.id) == parseInt($stateParams.article_id)
+                $scope.article = v    
+                console.log v.id
+        
+             
 ]
 
 
