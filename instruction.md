@@ -1,13 +1,13 @@
 ##Инструкции
-Клонировать репозиторий
+1. Клонировать репозиторий
     
     git clone git@github.com:zdimon/newsreader.git
     
-Запустить обновление.
+2. Запустить обновление.
 
-    ./update.sh
+    cd newsreader; sudo ./update.sh
     
-Отредактировать конфигурационный файл /public/dist/config.js где прописать валидный URL сервера.
+3. Создать конфигурационный файл /public/dist/config.js где указать валидный URL сервера.
 
     echo "var SERVER_URL = 'http://localhost:3000'" > public/dist/js/config.js
 
@@ -23,4 +23,7 @@
     }
 
 
+4. Запустить сервер.
+
+    ./start.sh        
         
