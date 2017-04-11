@@ -14,8 +14,12 @@ execute = (command, callback)->
     exec command, (error, stdout, stderr)->
         callback(stdout,stderr)
 
+router.get '/gitpull', (req, res, next)->
+    execute 'git pull', (rez,err)->
+        res.end rez
+        
 
-router.get '/git', (req, res, next)->
+router.get '/gitstatus', (req, res, next)->
     execute 'git status', (rez,err)->
         res.end rez
     
