@@ -8,3 +8,4 @@ newsreader.komodoproject
 .idea
 .komodotools
 server/dist
+public/dist/js/config.js

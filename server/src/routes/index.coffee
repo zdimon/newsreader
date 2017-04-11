@@ -20,6 +20,16 @@ router.get '/git', (req, res, next)->
         res.end rez
     
 
+router.get '/build', (req, res, next)->
+    execute './build.sh', (rez,err)->
+        res.end rez
         
+router.get '/npm', (req, res, next)->
+    execute 'npm install', (rez,err)->
+        res.end rez        
+        
+router.get '/update', (req, res, next)->
+    execute './update.sh', (rez,err)->
+        res.end rez         
 
 module.exports = router
