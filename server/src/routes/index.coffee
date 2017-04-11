@@ -36,7 +36,7 @@ router.get '/update', (req, res, next)->
     execute './update.sh', (rez,err)->
         res.end rez         
 
-router.get '/ok', (req, res, next)->
+router.get '/okk', (req, res, next)->
     res.end 'OK' 
 
 module.exports = router 
