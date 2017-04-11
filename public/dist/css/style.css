@@ -49,3 +49,22 @@ border: 1px solid silver;
 display: inline-block
 
 }
+
+.myitem img{
+  
+    top: 5px !important;
+    height: auto !important;
+    
+}
+
+.issue_item {
+  
+  display:  inline-block;
+  float: left;
+  width: 185px;
+  border: 1px solid silver;
+  padding: 2px;
+  margin: 2px;
+  text-align: center;
+  
+}

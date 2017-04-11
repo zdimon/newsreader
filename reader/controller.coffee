@@ -102,15 +102,38 @@ angular.module 'readerApp'
 ]
 
 
-.controller 'catalogDetailCtrl', [  '$scope', '$stateParams', '$state', '$rootScope',  ($scope, $stateParams, $state, $rootScope)->
-        $scope.catalog = $rootScope.catalog.categories[$stateParams.id]
+.controller 'catalogDetailCtrl', [  '$scope', '$stateParams', '$state', '$rootScope', 'Catalog', ($scope, $stateParams, $state, $rootScope, Catalog)->
+        if $rootScope.catalog
+            $scope.catalog = $rootScope.catalog.categories[$stateParams.id]
+        else
+            Catalog.get_catalog (rez)->
+                $rootScope.catalog = rez
+                $scope.catalog = $rootScope.catalog.categories[$stateParams.id]
         console.log $scope.catalog
+        $scope.go = (id)->
+            $state.go 'reader.journal_detail',
+                catalog_id: $stateParams.id
+                journal_id: id 
+
+]
+
+
+.controller 'journalDetailCtrl', [  '$scope', '$stateParams', '$state', '$rootScope', 'Catalog', ($scope, $stateParams, $state, $rootScope, Catalog)->
+        if $rootScope.catalog
+            $scope.journal = $rootScope.catalog.categories[$stateParams.catalog_id].journals[$stateParams.journal_id]
+        else
+            Catalog.get_catalog (rez)->
+                $rootScope.catalog = rez
+                $scope.journal = $rootScope.catalog.categories[$stateParams.catalog_id].journals[$stateParams.journal_id]
+        
         $scope.go = (id)->
             console.log id
             $state.go 'reader.articles',
                 journal_id: id 
 
 ]
+
+
 
 
 .controller 'articlesCtrl', [  '$scope', '$stateParams', '$state', '$rootScope', 'Articles', ($scope, $stateParams, $state, $rootScope, Articles)->

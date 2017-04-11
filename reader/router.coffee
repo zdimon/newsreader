@@ -44,12 +44,20 @@ angular.module 'readerApp'
             'content':
                 templateUrl: 'dist/templates/catalog.html'
                 controller: 'catalogCtrl'
+                
     .state 'reader.catalog_detail',
         url: '/catalog/detail/:id'
         views:
             'content':
                 templateUrl: 'dist/templates/catalog_detail.html'
                 controller: 'catalogDetailCtrl'
+                
+    .state 'reader.journal_detail',
+        url: '/journal/detail/:catalog_id/:journal_id'
+        views:
+            'content':
+                templateUrl: 'dist/templates/journal_detail.html'
+                controller: 'journalDetailCtrl'                
                 
     .state 'reader.articles',
         url: '/catalog/articles/:journal_id'

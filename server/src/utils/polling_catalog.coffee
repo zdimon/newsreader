@@ -7,6 +7,59 @@ log = require('winston-color')
 log.level = process.env.LOG_LEVEL
 log.debug "Importing polling catalog module"
 
+
+download_images = (data)->
+    log.debug 'CALALOG: Downloading images'
+    
+    #console.log data['categories']
+    for k,v of data.categories
+        for jk, jv of v.journals
+            console.log "#{jv.id}-#{jv.thumb}"
+            image_dir =  path.join(global.app_root, global.app_config.data_dir, 'catalog','images', "#{jv.id}")
+            if !fs.existsSync image_dir
+                log.info "Creating image_dir for #{jv.id}"
+                fs.mkdirSync image_dir
+            image_path = path.join(image_dir,"cover.png")
+            request(jv.thumb).pipe(fs.createWriteStream(image_path)).on 'close', ()->
+                 log.verbose "saved #{jv.thumb}"           
+            #image_path = path.join(date_dir,"#{i.id}.png")    
+
+
+download_issues = (jsondata)->
+    for k,v of jsondata.categories
+        for jk, jv of v.journals
+            for ik, iv of jv.issues
+                process_issue(iv)
+            
+            
+
+
+process_issue = (jsdata)->
+    journal_dir = path.join(global.app_root, global.app_config.data_dir, 'journals', "#{jsdata.journal_id}")
+    console.log journal_dir
+    
+    if !fs.existsSync journal_dir
+        log.verbose "Creating #{journal_dir}"
+        fs.mkdirSync journal_dir
+    issue_dir = path.join(journal_dir, "#{jsdata.id}")
+    if !fs.existsSync issue_dir
+        log.verbose "Creating #{issue_dir}"
+        fs.mkdirSync issue_dir
+    issue_page_dir = path.join(issue_dir,"pages")
+    if !fs.existsSync issue_page_dir
+        log.verbose "Creating #{issue_page_dir}"
+        fs.mkdirSync issue_page_dir
+    issue_covers_dir = path.join(issue_dir,"thumbnails")
+    if !fs.existsSync issue_covers_dir
+        log.verbose "Creating #{issue_covers_dir}"
+        fs.mkdirSync issue_covers_dir
+    request(jsdata.thumb).pipe(fs.createWriteStream("#{issue_dir}/cover.png")).on 'close', ()->
+    # save json file about journal if it does not exist
+    dest = path.join(issue_dir,"info.json")
+    ou = JSON.stringify(jsdata)
+    cont = fs.writeFileSync dest, ou
+    
+
 get_catalog_from_server = ()->
 
     url = 'http://pressa.ru/zd/catalog.json'
@@ -22,7 +75,9 @@ get_catalog_from_server = ()->
             fs.writeFile dest, out, (err)-> # write to disk
                 if err
                     log.error(err)
-                console.log "The file #{dest} has been saved!"            
+                console.log "The file #{dest} has been saved!"
+                download_images(jsdata)
+                download_issues(jsdata)
             #log.debug out
         )
          

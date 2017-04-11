@@ -1,8 +1,5 @@
 ion-view(title="Каталог" id="page1")
     ion-content(padding="true" class="has-header")
         ion-list
-            ion-item.item-thumbnail-left(ng-repeat="c in catalog.categories" ng-click="go(c.id)")
-                img(ng-src="{{c.thumb}}")
+            ion-item(ng-repeat="c in catalog.categories" ng-click="go(c.id)")           
                 h2  {{ c.name }}
-                p.
-                    Журнал о женской красоте

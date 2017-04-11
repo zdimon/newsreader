@@ -63,6 +63,14 @@
             controller: 'catalogDetailCtrl'
           }
         }
+      }).state('reader.journal_detail', {
+        url: '/journal/detail/:catalog_id/:journal_id',
+        views: {
+          'content': {
+            templateUrl: 'dist/templates/journal_detail.html',
+            controller: 'journalDetailCtrl'
+          }
+        }
       }).state('reader.articles', {
         url: '/catalog/articles/:journal_id',
         views: {

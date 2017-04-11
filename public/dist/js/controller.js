@@ -94,9 +94,33 @@
       };
     }
   ]).controller('catalogDetailCtrl', [
-    '$scope', '$stateParams', '$state', '$rootScope', function($scope, $stateParams, $state, $rootScope) {
-      $scope.catalog = $rootScope.catalog.categories[$stateParams.id];
+    '$scope', '$stateParams', '$state', '$rootScope', 'Catalog', function($scope, $stateParams, $state, $rootScope, Catalog) {
+      if ($rootScope.catalog) {
+        $scope.catalog = $rootScope.catalog.categories[$stateParams.id];
+      } else {
+        Catalog.get_catalog(function(rez) {
+          $rootScope.catalog = rez;
+          return $scope.catalog = $rootScope.catalog.categories[$stateParams.id];
+        });
+      }
       console.log($scope.catalog);
+      return $scope.go = function(id) {
+        return $state.go('reader.journal_detail', {
+          catalog_id: $stateParams.id,
+          journal_id: id
+        });
+      };
+    }
+  ]).controller('journalDetailCtrl', [
+    '$scope', '$stateParams', '$state', '$rootScope', 'Catalog', function($scope, $stateParams, $state, $rootScope, Catalog) {
+      if ($rootScope.catalog) {
+        $scope.journal = $rootScope.catalog.categories[$stateParams.catalog_id].journals[$stateParams.journal_id];
+      } else {
+        Catalog.get_catalog(function(rez) {
+          $rootScope.catalog = rez;
+          return $scope.journal = $rootScope.catalog.categories[$stateParams.catalog_id].journals[$stateParams.journal_id];
+        });
+      }
       return $scope.go = function(id) {
         console.log(id);
         return $state.go('reader.articles', {

@@ -1,9 +1,9 @@
 ion-view(title="{{ catalog.name }}" id="page1")
     ion-content(padding="true" class="has-header")
         ion-list
-            ion-item.item-thumbnail-left(ng-repeat="c in catalog.journals" ng-click="go(c.id)")
-                img(ng-src="http://pressa.ru/{{c.thumb}}")
-                h2 {{c.id}} {{ c.name }}
+            ion-item( class="item-thumbnail-left myitem", ng-repeat="c in catalog.journals" ng-click="go(c.id)")
+                img(ng-src="data/catalog/images/{{c.id}}/cover.png" style="max-height: none")
+                h2 {{ c.name }}
                 p.
                     {{c.description}}
                 p.
