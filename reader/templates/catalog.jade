@@ -1,5 +1,6 @@
-ion-view(title="Каталог" id="page1")
-    ion-content(padding="true" class="has-header")
-        ion-list
-            ion-item(ng-repeat="c in catalog.categories" ng-click="go(c.id)")           
-                h2  {{ c.name }}
+script(type="text/ng-template" id="dist/templates/catalog.html")
+    ion-view(title="Каталог" id="page1")
+        ion-content(padding="true" class="has-header")
+            ion-list
+                ion-item(ng-repeat="c in catalog.categories" ng-click="go(c.id)")           
+                    h2  {{ c.name }}

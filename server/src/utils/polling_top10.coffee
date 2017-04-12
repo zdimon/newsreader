@@ -54,9 +54,9 @@ download_image = (jsdata)->
         fs.mkdirSync date_dir
     for i in jsdata.articles
         image_path = path.join(date_dir,"#{i.id}.png")
-        log.verbose "debug", i.small_image
-        request(i.small_image).pipe(fs.createWriteStream(image_path)).on 'close', ()->
-             log.verbose "saved #{i.small_image}"
+        if !fs.existsSync image_path
+            request(i.small_image).pipe(fs.createWriteStream(image_path)).on 'close', ()->
+                log.verbose "saved #{i.small_image}"
 
 
 out =

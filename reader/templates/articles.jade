@@ -1,8 +1,9 @@
-ion-view(title="Статьи" id="page1")
-    ion-content(padding="true" class="has-header")
-        ion-list
-            ion-item.item-thumbnail-left(ng-repeat="a in articles" ng-click="go(a.id)")
-                img(ng-src="{{a.image}}")
-                h2  {{ a.title }}
-                p.
-                    {{ a.short_text }}
+script(type="text/ng-template" id="dist/templates/articles.html")
+    ion-view(title="Статьи" id="page1")
+        ion-content(padding="true" class="has-header")
+            ion-list
+                ion-item.item-thumbnail-left(ng-repeat="a in articles" ng-click="go(a.id)")
+                    img(ng-src="{{a.image}}")
+                    h2  {{ a.title }}
+                    p.
+                        {{ a.short_text }}

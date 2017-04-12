@@ -3,6 +3,7 @@ fs = require 'fs'
 path = require 'path'
 utils = require '../utils/utils'
 request = require('request');
+issue = require './polling_issues'
 log = require('winston-color')
 log.level = process.env.LOG_LEVEL
 log.debug "Importing polling catalog module"
@@ -55,8 +56,9 @@ process_issue = (jsdata)->
     request(jsdata.thumb).pipe(fs.createWriteStream("#{issue_dir}/cover.png")).on 'close', ()->
     # save json file about journal if it does not exist
     dest = path.join(issue_dir,"info.json")
-    ou = JSON.stringify(jsdata)
-    cont = fs.writeFileSync dest, ou
+    if !dest
+        ou = JSON.stringify(jsdata)
+        cont = fs.writeFileSync dest, ou
     
 
 get_catalog_from_server = ()->

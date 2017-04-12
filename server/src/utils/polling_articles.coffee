@@ -30,8 +30,7 @@ get_and_save_article = (url,dest)->
             fs.writeFile dest, out, (err)-> # write to disk
                 if err
                     log.error(err)
-                console.log "ARTICLE: End loading file #{dest} has been saved!"            
-            #log.debug out
+                console.log "ARTICLE: End loading file #{dest} has been saved!"                        
         )
          
     req.on 'socket', (socket)-> 

@@ -1,11 +1,12 @@
-ion-view(title="{{ catalog.name }}" id="page1")
-    ion-content(padding="true" class="has-header")
-        ion-list
-            ion-item( class="item-thumbnail-left myitem", ng-repeat="c in catalog.journals" ng-click="go(c.id)")
-                img(ng-src="data/catalog/images/{{c.id}}/cover.png" style="max-height: none")
-                h2 {{ c.name }}
-                p.
-                    {{c.description}}
-                p.
-                    Количество выпусков: {{c.ammount}}
+script(type="text/ng-template" id="dist/templates/catalog_detail.html")
+    ion-view(title="{{ catalog.name }}" id="page1")
+        ion-content(padding="true" class="has-header")
+            ion-list
+                ion-item( class="item-thumbnail-left myitem", ng-repeat="c in catalog.journals" ng-click="go(c.id)")
+                    img(ng-src="data/catalog/images/{{c.id}}/cover.png" style="max-height: none")
+                    h2 {{ c.name }}
+                    p.
+                        {{c.description}}
+                    p.
+                        Количество выпусков: {{c.ammount}}
                 
