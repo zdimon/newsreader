@@ -18,8 +18,17 @@ read_catalog = ()->
     catch    
         return {code: 1, message: 'file does not exist!' }
     
-get_and_save_article = (url,dest)->
-    log.debug "ARTICLE: Start loading from#{url}"
+download_images = (jsdata)->
+    for i in jsdata.articles
+        image_path = path.join global.app_root, global.app_config.data_dir, "articles", "#{i.journal_id}", "#{i.issue_id}", "#{i.id}.png"
+        request(i.small_image).pipe(fs.createWriteStream(image_path)).on 'close', ()->
+            log.verbose "saved #{i.small_image}"
+        image_pathb = path.join global.app_root, global.app_config.data_dir, "articles", "#{i.journal_id}", "#{i.issue_id}", "#{i.id}_big.png"
+        request(i.image).pipe(fs.createWriteStream(image_pathb)).on 'close', ()->
+            log.verbose "saved #{i.small_image}"            
+    
+get_and_save_article = (url,dest,callback)->
+    log.debug "ARTICLE: Start loading from #{url}"
     
     req = http.get(url,(res)->
         out = ''
@@ -30,11 +39,12 @@ get_and_save_article = (url,dest)->
             fs.writeFile dest, out, (err)-> # write to disk
                 if err
                     log.error(err)
-                console.log "ARTICLE: End loading file #{dest} has been saved!"                        
+                console.log "ARTICLE: End loading file #{dest} has been saved!"
+                callback(jsdata)
         )
          
     req.on 'socket', (socket)-> 
-        socket.setTimeout 15000
+        socket.setTimeout 30000
         socket.on 'timeout', ()->
             req.abort()
     req.on 'error', (err)->
@@ -62,7 +72,8 @@ get_articles_from_server = ()->
                             fs.mkdirSync issue_dir
                         dest = path.join issue_dir, "articles.json"
                         if !fs.existsSync dest
-                            get_and_save_article(url,dest)
+                            get_and_save_article url,dest, (jsdata)->
+                                download_images(jsdata)
                         
      
             
