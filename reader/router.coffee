@@ -60,14 +60,14 @@ angular.module 'readerApp'
                 controller: 'journalDetailCtrl'                
                 
     .state 'reader.articles',
-        url: '/catalog/articles/:journal_id'
+        url: '/catalog/articles/:journal_id/:issue_id'
         views:
             'content':
                 templateUrl: 'dist/templates/articles.html'
                 controller: 'articlesCtrl'
                 
     .state 'reader.article_detail',
-        url: '/catalog/articles/detail/:journal_id/:article_id'
+        url: '/catalog/articles/detail/:journal_id/:issue_id/:article_id'
         views:
             'content':
                 templateUrl: 'dist/templates/article_detail.html'

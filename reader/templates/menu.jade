@@ -18,9 +18,10 @@ ion-side-menus(enable-menu-with-back-views="false")
                     ТОП10
                 ion-item(id="menu-list-item1" ui-sref="reader.catalog" menu-close="").
                     Каталог                    
-                ion-item(id="menu-list-item1" ui-sref="reader.journals" menu-close="").
+                ion-item(id="menu-list-item1" ui-sref="reader.catalog_detail({id: 145}) " menu-close="").
                     Журналы
-                ion-item(id="menu-list-item11" ui-sref="reader.magazines" menu-close="").
-                    Газеты
-                ion-item(id="menu-list-item11" ui-sref="reader.articles" menu-close="").
-                    Статьи
+                //-
+                    ion-item(id="menu-list-item11" ui-sref="reader.magazines" menu-close="").
+                        Газеты
+                    ion-item(id="menu-list-item11" ui-sref="reader.articles" menu-close="").
+                        Статьи

@@ -10,21 +10,27 @@ log.debug "Importing polling articles module"
 #
 #http://pressa.ru/zd/txt/101963.json
 
-get_articles_from_server = ()->
-    url = 'http://pressa.ru/zd/txt/101963.json'
-    log.debug "ARTICLES: Start request from #{url}"
-
+read_catalog = ()->
+    try 
+        dest = path.join(global.app_root, global.app_config.data_dir, "catalog/catalog.json")
+        cont = JSON.parse(fs.readFileSync dest, 'utf8')
+        return cont
+    catch    
+        return {code: 1, message: 'file does not exist!' }
+    
+get_and_save_article = (url,dest)->
+    log.debug "ARTICLE: Start loading from#{url}"
+    
     req = http.get(url,(res)->
         out = ''
         res.on 'data', (chunk)-> #collect data
             out = out + chunk
         res.on 'end', ()->
             jsdata = JSON.parse(out)
-            dest = path.join(global.app_root,"public", "test", "articles.json")
             fs.writeFile dest, out, (err)-> # write to disk
                 if err
                     log.error(err)
-                console.log "The file #{dest} has been saved!"            
+                console.log "ARTICLE: End loading file #{dest} has been saved!"            
             #log.debug out
         )
          
@@ -34,7 +40,32 @@ get_articles_from_server = ()->
             req.abort()
     req.on 'error', (err)->
         if err.code == 'ECONNRESET'
-            log.error 'Timeout occurs!!'         
+            log.error "ARTICLE: timeout #{url}"
+    
+
+get_articles_from_server = ()->
+    log.debug "ARTICLES: Start request from #{url}"
+    log.debug "ARTICLES: rtead catalog"
+    cat = read_catalog()
+    loaded = []
+    for k,v of cat.categories
+        for jk, jv of v.journals
+            for ik, iv of jv.issues
+                if iv.has_articles
+                    if iv.id not in loaded
+                        url = "http://pressa.ru/zd/txt/#{iv.id}.json"
+                        loaded.push iv.id
+                        journal_dir = path.join global.app_root, global.app_config.data_dir, "articles", "#{iv.journal_id}"                       
+                        if !fs.existsSync journal_dir
+                            fs.mkdirSync journal_dir
+                        issue_dir = path.join journal_dir, "#{iv.id}"                       
+                        if !fs.existsSync issue_dir
+                            fs.mkdirSync issue_dir
+                        dest = path.join issue_dir, "articles.json"
+                        if !fs.existsSync dest
+                            get_and_save_article(url,dest)
+                        
+     
             
 
 poolling =

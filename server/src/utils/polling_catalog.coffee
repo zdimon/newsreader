@@ -14,14 +14,14 @@ download_images = (data)->
     #console.log data['categories']
     for k,v of data.categories
         for jk, jv of v.journals
-            console.log "#{jv.id}-#{jv.thumb}"
             image_dir =  path.join(global.app_root, global.app_config.data_dir, 'catalog','images', "#{jv.id}")
             if !fs.existsSync image_dir
                 log.info "Creating image_dir for #{jv.id}"
                 fs.mkdirSync image_dir
             image_path = path.join(image_dir,"cover.png")
-            request(jv.thumb).pipe(fs.createWriteStream(image_path)).on 'close', ()->
-                 log.verbose "saved #{jv.thumb}"           
+            if !fs.existsSync image_path
+                request(jv.thumb).pipe(fs.createWriteStream(image_path)).on 'close', ()->
+                     log.verbose "saved #{jv.thumb}"           
             #image_path = path.join(date_dir,"#{i.id}.png")    
 
 
@@ -36,7 +36,6 @@ download_issues = (jsondata)->
 
 process_issue = (jsdata)->
     journal_dir = path.join(global.app_root, global.app_config.data_dir, 'journals', "#{jsdata.journal_id}")
-    console.log journal_dir
     
     if !fs.existsSync journal_dir
         log.verbose "Creating #{journal_dir}"

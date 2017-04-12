@@ -3,5 +3,7 @@ ion-view(title="{{ journal.name }}" id="page1")
         
         div(ng-repeat="i in journal.issues" class="issue_item" ng-click="go(i.id)")
             img(ng-src="data/journals/{{i.journal_id}}/{{i.id}}/cover.png")
-            div.
+            div
                 {{i.name}}
+                span(ng-show="i.has_articles").
+                    TXT

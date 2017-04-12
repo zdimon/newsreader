@@ -27,6 +27,7 @@ catalog_dir = path.join data_dir, 'catalog'
 top10_image_dir = path.join data_dir, 'top10', 'images'
 journal_dir = path.join(global.app_root, global.app_config.data_dir, 'journals')
 catalog_image_dir =  path.join data_dir, 'catalog', 'images'
+articles_dir =  path.join data_dir, 'articles'
 
 # create data dir
 
@@ -55,6 +56,10 @@ if !fs.existsSync catalog_image_dir
     log.info 'Creating catalog_image_dir ......'
     fs.mkdirSync catalog_image_dir    
 
+if !fs.existsSync articles_dir
+    log.info 'Creating articles_dir ......'
+    fs.mkdirSync articles_dir
+    
 
 
 # create tasks.json

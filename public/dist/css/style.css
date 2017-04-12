@@ -68,3 +68,14 @@ display: inline-block
   text-align: center;
   
 }
+
+.issue_item span {
+  
+  width: 60px;
+  font-size: 12px;
+  display: inline-block;
+  border: 1px solid red;
+  border-radius: 5px;
+  float: right;
+  
+}

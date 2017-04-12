@@ -26,13 +26,13 @@ angular.module 'readerApp'
 ]
 
 .factory 'Articles', [  '$http', '$rootScope', ($http, $rootScope)->
-        get_articles = (callback)->
+        get_articles = (journal_id, issue_id, callback)->
             #if ($rootScope.articles)
             #    callback($rootScope.articles)
             #else
             $http(
                 method: 'GET'
-                url: "#{SERVER_URL}/articles"
+                url: "#{SERVER_URL}/articles/#{journal_id}/#{issue_id}.json"
             ).success(callback)
 
         return {

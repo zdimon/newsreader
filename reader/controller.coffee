@@ -129,7 +129,8 @@ angular.module 'readerApp'
         $scope.go = (id)->
             console.log id
             $state.go 'reader.articles',
-                journal_id: id 
+                issue_id: id
+                journal_id: $stateParams.journal_id
 
 ]
 
@@ -138,18 +139,19 @@ angular.module 'readerApp'
 
 .controller 'articlesCtrl', [  '$scope', '$stateParams', '$state', '$rootScope', 'Articles', ($scope, $stateParams, $state, $rootScope, Articles)->
         
-        Articles.get_articles (rez)->
+        Articles.get_articles $stateParams.journal_id, $stateParams.issue_id, (rez)->
             $scope.articles = rez.articles
             console.log rez
         $scope.go = (article_id)->
             $state.go 'reader.article_detail',
                 journal_id: $stateParams.journal_id
+                issue_id: $stateParams.issue_id
                 article_id: article_id
 ]
 
 
 .controller 'articleDetailCtrl', [  '$scope', '$stateParams', '$state', '$rootScope', 'Articles', ($scope, $stateParams, $state, $rootScope, Articles)->
-    Articles.get_articles (rez)->
+    Articles.get_articles $stateParams.journal_id, $stateParams.issue_id, (rez)->
         $scope.articles = rez.articles
         angular.forEach $scope.articles, (v,k)->
             #console.log $stateParams.article_id
