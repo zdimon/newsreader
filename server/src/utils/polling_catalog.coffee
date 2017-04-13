@@ -8,6 +8,7 @@ log = require('winston-color')
 log.level = process.env.LOG_LEVEL
 log.debug "Importing polling catalog module"
 article = require './polling_articles'
+pages = require './polling_pages'
 
 download_images = (data)->
     log.debug 'CALALOG: Downloading images'
@@ -56,9 +57,13 @@ process_issue = (jsdata)->
     request(jsdata.thumb).pipe(fs.createWriteStream("#{issue_dir}/cover.png")).on 'close', ()->
     # save json file about journal if it does not exist
     dest = path.join(issue_dir,"info.json")
-    if !dest
-        ou = JSON.stringify(jsdata)
-        cont = fs.writeFileSync dest, ou
+    if !fs.existsSync dest
+        #ou = JSON.parse(jsdata)
+        cont = fs.writeFile dest, JSON.stringify(jsdata), (err)->
+            if err
+                log.error "#{err}"
+            else
+                pages.process_issue(jsdata)
     
 
 get_catalog_from_server = ()->
