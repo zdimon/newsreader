@@ -7,7 +7,7 @@ issue = require './polling_issues'
 log = require('winston-color')
 log.level = process.env.LOG_LEVEL
 log.debug "Importing polling catalog module"
-
+article = require './polling_articles'
 
 download_images = (data)->
     log.debug 'CALALOG: Downloading images'
@@ -79,6 +79,7 @@ get_catalog_from_server = ()->
                 console.log "The file #{dest} has been saved!"
                 download_images(jsdata)
                 download_issues(jsdata)
+                article.get_articles_from_server()
             #log.debug out
         )
          
