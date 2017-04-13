@@ -1,3 +1,5 @@
+SERVER_URL = "http://"+window.location.hostname+':'+window.location.port;
+
 angular.module 'readerApp'
 .factory 'Top10', [  '$http', ($http)->
         get_top10 = (callback)->
