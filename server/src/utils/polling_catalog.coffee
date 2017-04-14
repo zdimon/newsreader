@@ -62,8 +62,7 @@ process_issue = (jsdata)->
         cont = fs.writeFile dest, JSON.stringify(jsdata), (err)->
             if err
                 log.error "#{err}"
-            else
-                pages.process_issue(jsdata)
+        pages.process_issue(jsdata)
     
 
 get_catalog_from_server = ()->
