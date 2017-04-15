@@ -9,10 +9,11 @@ log.level = process.env.LOG_LEVEL
 log.debug "Importing polling catalog module"
 article = require './polling_articles'
 pages = require './polling_pages'
+requestSync = require('sync-request');
 
 download_images = (data)->
     log.debug 'CALALOG: Downloading images'
-    
+    #console.log data
     #console.log data['categories']
     for k,v of data.categories
         for jk, jv of v.journals
@@ -22,8 +23,11 @@ download_images = (data)->
                 fs.mkdirSync image_dir
             image_path = path.join(image_dir,"cover.png")
             if !fs.existsSync image_path
-                request(jv.thumb).pipe(fs.createWriteStream(image_path)).on 'close', ()->
-                     log.verbose "saved #{jv.thumb}"           
+                res = requestSync('GET', jv.thumb)
+                fs.writeFileSync image_path, res.getBody()
+                log.debug "CATALOG: Image saved #{jv.id}"                
+                #request(jv.thumb).pipe(fs.createWriteStream(image_path)).on 'close', ()->
+                #     log.verbose "saved #{jv.thumb}"           
             #image_path = path.join(date_dir,"#{i.id}.png")    
 
 
@@ -54,14 +58,13 @@ process_issue = (jsdata)->
     if !fs.existsSync issue_covers_dir
         log.verbose "Creating #{issue_covers_dir}"
         fs.mkdirSync issue_covers_dir
-    request(jsdata.thumb).pipe(fs.createWriteStream("#{issue_dir}/cover.png")).on 'close', ()->
+    #request(jsdata.thumb).pipe(fs.createWriteStream("#{issue_dir}/cover.png")).on 'close', ()->
     # save json file about journal if it does not exist
     dest = path.join(issue_dir,"info.json")
     if !fs.existsSync dest
         #ou = JSON.parse(jsdata)
-        cont = fs.writeFile dest, JSON.stringify(jsdata), (err)->
-            if err
-                log.error "#{err}"
+        cont = fs.writeFileSync dest, JSON.stringify(jsdata)
+        log.verbose "CATALOG: creating info.json for #{jsdata.journal_id}-#{jsdata.id}"
         pages.process_issue(jsdata)
     
 
@@ -69,14 +72,24 @@ get_catalog_from_server = ()->
 
     url = 'http://pressa.ru/zd/catalog.json'
     log.debug "CATALOG: Start request from #{url}"
-
+    dest = path.join(global.app_root,global.app_config.data_dir, "catalog", "catalog.json")
+    res = requestSync('GET', url)
+    out = res.getBody('utf8')
+    jsdata = JSON.parse(out)
+    fs.writeFileSync dest, out
+     
+    #download_images(jsdata)
+    article.get_articles_from_server()
+    download_issues(jsdata)
+    log.debug "CATALOG: finished"   
+    ###
     req = http.get(url,(res)->
         out = ''
         res.on 'data', (chunk)-> #collect data
             out = out + chunk
         res.on 'end', ()->
             jsdata = JSON.parse(out)
-            dest = path.join(global.app_root,global.app_config.data_dir, "catalog", "catalog.json")
+            
             fs.writeFile dest, out, (err)-> # write to disk
                 if err
                     log.error(err)
@@ -94,7 +107,7 @@ get_catalog_from_server = ()->
     req.on 'error', (err)->
         if err.code == 'ECONNRESET'
             log.error 'Timeout occurs!!'
-            
+    ###        
 
 
 poolling =

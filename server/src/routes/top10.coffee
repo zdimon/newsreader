@@ -3,7 +3,6 @@ router = express.Router()
 utils = require '../utils/utils'
 path = require 'path'
 fs = require 'fs'
-polling = require '../utils/polling'
 
 
 getTop10FromFS = (offset=0)-> #get top 10 list from file
@@ -20,11 +19,7 @@ router.get '/', (req, res, next)->
     try
         res.send(getTop10FromFS(date))
     catch
-        try ## request for yesterday
-            res.send(getTop10FromFS())
-        catch e
-            polling.get_top_from_remote ()-> #get top 10 from the remote server
-            res.send {status: 1, message: e.message}
+        res.send {status: 1, message: 'Top 10 is empty!'}
 
 
 module.exports = router;

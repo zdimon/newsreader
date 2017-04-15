@@ -6,6 +6,7 @@ request = require('request');
 log = require('winston-color')
 log.level = process.env.LOG_LEVEL
 log.debug "Importing polling articles module"  
+requestSync = require('sync-request');
 
 #
 #http://pressa.ru/zd/txt/101963.json
@@ -19,13 +20,16 @@ read_catalog = ()->
         return {code: 1, message: 'file does not exist!' }
     
 download_images = (jsdata)->
+    jsdata = JSON.parse(jsdata)
     for i in jsdata.articles
         image_path = path.join global.app_root, global.app_config.data_dir, "articles", "#{i.journal_id}", "#{i.issue_id}", "#{i.id}.png"
-        request(i.small_image).pipe(fs.createWriteStream(image_path)).on 'close', ()->
-            log.verbose "saved #{i.small_image}"
+        res = requestSync('GET', i.small_image)
+        fs.writeFileSync image_path, res.getBody()
         image_pathb = path.join global.app_root, global.app_config.data_dir, "articles", "#{i.journal_id}", "#{i.issue_id}", "#{i.id}_big.png"
-        request(i.image).pipe(fs.createWriteStream(image_pathb)).on 'close', ()->
-            log.verbose "saved #{i.small_image}"            
+        res = requestSync('GET', i.image)
+        fs.writeFileSync image_pathb, res.getBody()
+        log.debug "ARTICLE: Image saved #{i.id}"
+          
     
 get_and_save_article = (url,dest,callback)->
     log.debug "ARTICLE: Start loading from #{url}"
@@ -52,9 +56,42 @@ get_and_save_article = (url,dest,callback)->
             log.error "ARTICLE: timeout #{url}"
     
 
+manage_with_dirs = (issue)->
+    journal_dir = path.join global.app_root, global.app_config.data_dir, "articles", "#{issue.journal_id}"                       
+    if !fs.existsSync journal_dir
+        fs.mkdirSync journal_dir
+    issue_dir = path.join journal_dir, "#{issue.id}"                       
+    if !fs.existsSync issue_dir
+        fs.mkdirSync issue_dir
+
+process_queue_articles = (lst)->
+    if lst.length == 0
+        return
+    for i in lst
+        index = lst.indexOf(i);
+        if index > -1
+            dest_done = path.join global.app_root, global.app_config.data_dir, "articles", "#{i.journal_id}/#{i.id}/done.dat"
+            if !fs.existsSync dest_done
+                manage_with_dirs(i)
+                url = "http://pressa.ru/zd/txt/#{i.id}.json"
+                log.debug "ARTICLE: loading #{url}"
+                res = requestSync('GET', url)
+                out = res.getBody('utf8')
+                dest = path.join global.app_root, global.app_config.data_dir, "articles", "#{i.journal_id}/#{i.id}/articles.json"
+                fs.writeFileSync dest, out, 'utf-8'
+                console.log "ARTICLE: file #{dest} has been saved!"
+                download_images(out)
+                now = new Date()
+                fs.writeFileSync dest_done, "1"            
+            lst.splice index, 1            
+            process_queue_articles(lst)
+
+            
+            
+
+
 get_articles_from_server = ()->
-    log.debug "ARTICLES: Start request from #{url}"
-    log.debug "ARTICLES: rtead catalog"
+    log.debug "ARTICLES: Reading catalog"
     cat = read_catalog()
     loaded = []
     for k,v of cat.categories
@@ -63,22 +100,19 @@ get_articles_from_server = ()->
                 if iv.has_articles
                     if iv.id not in loaded
                         url = "http://pressa.ru/zd/txt/#{iv.id}.json"
-                        loaded.push iv.id
-                        journal_dir = path.join global.app_root, global.app_config.data_dir, "articles", "#{iv.journal_id}"                       
-                        if !fs.existsSync journal_dir
-                            fs.mkdirSync journal_dir
-                        issue_dir = path.join journal_dir, "#{iv.id}"                       
-                        if !fs.existsSync issue_dir
-                            fs.mkdirSync issue_dir
-                        dest = path.join issue_dir, "articles.json"
-                        if !fs.existsSync dest
-                            get_and_save_article url,dest, (jsdata)->
-                                download_images(jsdata)
-                        
+                        loaded.push iv
+    process_queue_articles(loaded)
+    ###
+        dest = path.join issue_dir, "articles.json"
+        if !fs.existsSync dest
+            get_and_save_article url,dest, (jsdata)->
+                download_images(jsdata)
+    ###
      
             
 
 poolling =
     get_articles_from_server: get_articles_from_server
+    get_and_save_article: get_and_save_article
 
 module.exports = poolling #export for using outside

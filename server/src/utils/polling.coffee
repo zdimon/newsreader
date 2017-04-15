@@ -1,5 +1,7 @@
 polling = require 'async-polling'
-
+path = require 'path'
+global.app_config = require('../config')
+global.app_root = path.resolve __dirname, '../../..'
 
 
 ##############Importing pooling modules#########

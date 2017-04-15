@@ -7,6 +7,7 @@ issue = require './polling_issues'
 log = require('winston-color')
 log.level = process.env.LOG_LEVEL
 log.debug "Importing polling pages module"
+requestSync = require('sync-request');
 
 read_catalog = (path,clb)->
     fs.readFile path, 'utf8', (err,data)->
@@ -16,40 +17,30 @@ read_catalog = (path,clb)->
             clb(JSON.parse(data))
       
 process_pages = (pages)->
+    
     count = 0
     issue_path = path.join global.app_root, global.app_config.data_dir, "journals/#{pages.journal_id}/#{pages.issue_id}/thumbnail_done.dat"
-    if !fs.existsSync issue_path
-        for pk,pv of pages.pages
-            count = count + 1
-            im_url = "http://#{global.remote_host}#{pv.cover}"
-            console.log im_url
-            image_path = path.join global.app_root, global.app_config.data_dir, "journals/#{pages.journal_id}/#{pages.issue_id}/thumbnails/#{pv.number}.jpg"
-            request(im_url).pipe(fs.createWriteStream(image_path)).on 'close', ()->
-                log.verbose "saved #{im_url}"        
-            if count == parseInt(pages.check_sum)
-                #console.log issue_path
-                fs.writeFile issue_path, '', (err)->
-                    if err
-                        log.error err
-            #console.log pv.number+'-'+count+'-'+pages.check_sum
+    for pk,pv of pages.pages
+        count = count + 1
+        im_url = "http://#{global.remote_host}#{pv.cover}"
+        log.verbose "PAGES: saving... #{pages.journal_id}-#{pages.issue_id}-#{pv.number} page"
+        image_path = path.join global.app_root, global.app_config.data_dir, "journals/#{pages.journal_id}/#{pages.issue_id}/thumbnails/#{pv.number}.jpg"
+        res = requestSync('GET', im_url)
+        fs.writeFileSync image_path, res.getBody()
+        #request(im_url).pipe(fs.createWriteStream(image_path)).on 'close', ()->
+        #    log.verbose "saved #{im_url}"        
+        if count == parseInt(pages.check_sum)
+            #console.log issue_path
+            fs.writeFileSync issue_path, ''
               
 process_issue = (issue)->
     url = "http://#{global.remote_host}/zd/#{issue.id}.json"
     issue_done_path = path.join global.app_root, global.app_config.data_dir, "journals/#{issue.journal_id}/#{issue.id}/thumbnail_done.dat"
     if !fs.existsSync issue_done_path
-        req = http.get url,(res)->
-            out = ''
-            res.on 'data', (chunk)-> #collect data
-                out = out + chunk
-            res.on 'end', ()->
-                process_pages JSON.parse(out)
-        req.on 'socket', (socket)-> 
-            socket.setTimeout 20000
-            socket.on 'timeout', ()->
-                req.abort()
-        req.on 'error', (err)->
-            if err.code == 'ECONNRESET'
-                log.error "PAGES: timeout #{url}"
+    #console.log issue
+        res = requestSync('GET', url)
+        process_pages JSON.parse(res.getBody())
+
 
     
     

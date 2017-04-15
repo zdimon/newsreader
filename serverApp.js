@@ -8,13 +8,12 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+
 var index = require('./server/dist/routes/index');
 var top10 = require('./server/dist/routes/top10');
 var catalog = require('./server/dist/routes/catalog');
 var articles = require('./server/dist/routes/articles');
-var polling =  require('./server/dist/utils/polling');
-
-
+//var polling =  require('./server/dist/utils/polling');
 
 var app = express();
 app.locals.pretty = true;
