@@ -15,6 +15,10 @@ read_catalog = (path,clb)->
             clb(null,"#{err}")
         else
             clb(JSON.parse(data))
+            
+            
+process_big_pages = ()->
+    
       
 process_pages = (pages)->
     

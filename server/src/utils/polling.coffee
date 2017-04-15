@@ -1,6 +1,7 @@
 polling = require 'async-polling'
 path = require 'path'
 global.app_config = require('../config')
+#require('../init')
 global.app_root = path.resolve __dirname, '../../..'
 
 

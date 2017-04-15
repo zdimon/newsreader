@@ -20,7 +20,12 @@ read_catalog = ()->
         return {code: 1, message: 'file does not exist!' }
     
 download_images = (jsdata)->
-    jsdata = JSON.parse(jsdata)
+    try
+        jsdata = JSON.parse(jsdata)
+    catch
+        log.error "Wrong json"
+        console.log jsdata
+        return
     for i in jsdata.articles
         image_path = path.join global.app_root, global.app_config.data_dir, "articles", "#{i.journal_id}", "#{i.issue_id}", "#{i.id}.png"
         res = requestSync('GET', i.small_image)
@@ -29,6 +34,7 @@ download_images = (jsdata)->
         res = requestSync('GET', i.image)
         fs.writeFileSync image_pathb, res.getBody()
         log.debug "ARTICLE: Image saved #{i.id}"
+    
           
     
 get_and_save_article = (url,dest,callback)->
