@@ -6,6 +6,15 @@ script(type="text/ng-template" id="dist/templates/menu.html")
                 ion-nav-buttons(side="left")
                     button(class="button button-icon button-clear ion-navicon" menu-toggle="left")
     
+                ion-nav-buttons(side="right")
+
+                    button(class="button button-icon button-clear ion-chevron-left" style="width: 70px" ng-show="show_backward" ng-click="go_backward({{backward_id}})")
+                         
+                        
+                    button(class="button button-icon button-clear ion-chevron-right" style="width: 70px" ng-show="show_forward" ng-click="go_forward({{forward_id}})")
+                        
+                                         
+                
             ion-nav-view(name="content")
     
         ion-side-menu(side="left" id="side-menu21")

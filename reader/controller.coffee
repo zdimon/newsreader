@@ -163,8 +163,19 @@ angular.module 'readerApp'
             $scope.pages = rez.pages
             $scope.page = rez.pages.pages[$stateParams.page_id]
             console.log $scope.page
-        
-        
+            $rootScope.show_forward = true
+            $rootScope.show_backward = true
+            $rootScope.go_forward = ()->
+                $state.go 'reader.page_detail',
+                  journal_id: $stateParams.journal_id
+                  issue_id: $stateParams.issue_id
+                  page_id: parseInt($stateParams.page_id)+1
+            $rootScope.go_backward = ()->
+                $state.go 'reader.page_detail',
+                  journal_id: $stateParams.journal_id
+                  issue_id: $stateParams.issue_id
+                  page_id: parseInt($stateParams.page_id)-1 
+                  
 ]
 
 
