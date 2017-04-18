@@ -9,6 +9,7 @@ getTop10FromFS = (offset=0)-> #get top 10 list from file
     date = utils.getNowDate(offset)
     try ## if file exist
         dest = path.join(global.app_root, global.app_config.data_dir, "top10/#{date}.json")
+        console.log dest
         cont = JSON.parse(fs.readFileSync dest, 'utf8')
     catch
         offset = offset+1

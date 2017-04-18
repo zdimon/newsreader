@@ -8,11 +8,17 @@ script(type="text/ng-template" id="dist/templates/menu.html")
     
                 ion-nav-buttons(side="right")
 
+                    button(class="button button-icon button-clear " style="width: 160px" ng-show="is_articles")
+                        Текстовый режим
+                    
+                    button(class="button button-icon button-clear " style="width: 160px" ng-show="is_graphics")
+                        Графический режим
+
                     button(class="button button-icon button-clear ion-chevron-left" style="width: 70px" ng-show="show_backward" ng-click="go_backward({{backward_id}})")
-                         
                         
                     button(class="button button-icon button-clear ion-chevron-right" style="width: 70px" ng-show="show_forward" ng-click="go_forward({{forward_id}})")
                         
+
                                          
                 
             ion-nav-view(name="content")
