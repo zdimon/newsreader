@@ -57,7 +57,22 @@ angular.module 'readerApp'
         views:
             'content':
                 templateUrl: 'dist/templates/journal_detail.html'
-                controller: 'journalDetailCtrl'                
+                controller: 'journalDetailCtrl'
+            
+    .state 'reader.issue_detail',
+        url: '/issue/detail/:journal_id/:issue_id'
+        views:
+            'content':
+                templateUrl: 'dist/templates/issue_detail.html'
+                controller: 'issueDetailCtrl'
+                
+    .state 'reader.page_detail',
+        url: '/issue/detail/:journal_id/:issue_id/:page_id'
+        views:
+            'content':
+                templateUrl: 'dist/templates/page_detail.html'
+                controller: 'pageDetailCtrl'
+                
                 
     .state 'reader.articles',
         url: '/catalog/articles/:journal_id/:issue_id'

@@ -126,15 +126,46 @@ angular.module 'readerApp'
                 $rootScope.catalog = rez
                 $scope.journal = $rootScope.catalog.categories[$stateParams.catalog_id].journals[$stateParams.journal_id]
         
-        $scope.go = (id)->
-            console.log id
-            $state.go 'reader.articles',
-                issue_id: id
-                journal_id: $stateParams.journal_id
+        $scope.go = (id,txt)->
+            
+            if txt
+                $state.go 'reader.articles',
+                    issue_id: id
+                    journal_id: $stateParams.journal_id
+            else
+                console.log txt
+                $state.go 'reader.issue_detail',
+                    issue_id: id
+                    journal_id: $stateParams.journal_id              
 
 ]
 
 
+.controller 'issueDetailCtrl', [  '$scope', '$stateParams', '$state', '$rootScope', 'Issue', ($scope, $stateParams, $state, $rootScope, Issue)->
+        Issue.get_pages $stateParams.journal_id, $stateParams.issue_id, (rez)->
+            $scope.issue = rez
+            $scope.pages = rez.pages
+        
+        $scope.go = (page_id)->
+            $state.go 'reader.page_detail',
+                journal_id: $stateParams.journal_id
+                issue_id: $stateParams.issue_id
+                page_id: page_id
+]
+
+
+
+.controller 'pageDetailCtrl', [  '$scope', '$stateParams', '$state', '$rootScope', 'Issue', ($scope, $stateParams, $state, $rootScope, Issue)->
+        
+        Issue.get_pages $stateParams.journal_id, $stateParams.issue_id, (rez)->
+            console.log 'Pages'
+            $scope.issue = rez
+            $scope.pages = rez.pages
+            $scope.page = rez.pages.pages[$stateParams.page_id]
+            console.log $scope.page
+        
+        
+]
 
 
 .controller 'articlesCtrl', [  '$scope', '$stateParams', '$state', '$rootScope', 'Articles', ($scope, $stateParams, $state, $rootScope, Articles)->

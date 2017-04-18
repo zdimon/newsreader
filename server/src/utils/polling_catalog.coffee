@@ -36,8 +36,14 @@ download_issues = (jsondata)->
         for jk, jv of v.journals
             for ik, iv of jv.issues
                 process_issue(iv)
-            
-            
+          
+       
+process_cover = (jsdata, path)->
+    image_path = "#{path}/cover.png"
+    if !fs.existsSync image_path
+        log.debug "CATALOG: save cover #{path}"
+        res = requestSync('GET', jsdata.thumb)        
+        fs.writeFileSync image_path, res.getBody()        
 
 
 process_issue = (jsdata)->
@@ -61,12 +67,17 @@ process_issue = (jsdata)->
     #request(jsdata.thumb).pipe(fs.createWriteStream("#{issue_dir}/cover.png")).on 'close', ()->
     # save json file about journal if it does not exist
     dest = path.join(issue_dir,"info.json")
+    
     if !fs.existsSync dest
         #ou = JSON.parse(jsdata)
         cont = fs.writeFileSync dest, JSON.stringify(jsdata)
         log.verbose "CATALOG: creating info.json for #{jsdata.journal_id}-#{jsdata.id}"
         pages.process_issue(jsdata)
-    
+        process_cover(jsdata,issue_dir)
+    dest_pages = path.join(issue_dir,"pages.json")
+    if !fs.existsSync dest_pages
+        log.debug "NO PAGES! #{dest_pages}"
+        pages.save_page_json(jsdata)
 
 get_catalog_from_server = ()->
 

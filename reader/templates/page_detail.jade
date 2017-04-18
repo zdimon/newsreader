@@ -1,0 +1,7 @@
+script(type="text/ng-template" id="dist/templates/page_detail.html")
+    ion-view(title="Страница {{ page }}" )
+        ion-content(padding="true" class="has-header")
+            scroll(direction="x")
+                img(ng-src="data/journals/{{issue.info.journal_id}}/{{issue.info.id}}/pages/{{ page.number }}.jpg")
+                    
+           
