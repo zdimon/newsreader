@@ -5,7 +5,7 @@ script(type="text/ng-template" id="dist/templates/index.html")
                 ion-list
                     ion-item(class="item-thumbnail-left" ng-repeat="a in top_list.articles" ng-click="go(a.id)")
                         //a(ui-sref="reader.journals" class="item-thumbnail-left")
-                        img(ng-src="/data/top10/images/{{ top_list.date }}/{{ a.id }}.png" class="top10_img_link")
+                        img(ng-src="/data/top10/images/{{ top_list.date }}/{{ a.id }}_crop.png" class="top10_img_link")
                         h2 {{ a.title }}
                         p {{ a.author }}
                         p {{ a.journal }}
