@@ -154,9 +154,19 @@ crop_image = (jsondata)->
         #console.log cont
     catch e
         log.error "Invalid json #{e} issue #{jsondata.id}"
+        write_problems(jsondata.id, jsondata.journal_id)
 
-    
-    
+  
+write_problems = (id,journal_id)->
+    path_to_problems = path.join global.app_root, global.app_config.data_dir, "articles", "problems.json"
+    if !fs.existsSync path_to_problems
+        fs.writeFileSync path_to_problems, '[]', 'utf-8'
+    cont = JSON.parse(fs.readFileSync path_to_problems, 'utf8')
+    el = {journal_id: journal_id, id: id}
+    if el not in cont
+        cont.push el
+        fs.writeFileSync path_to_problems, JSON.stringify(cont), 'utf-8'
+        
     
 poolling =
     get_articles_from_server: get_articles_from_server

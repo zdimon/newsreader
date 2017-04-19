@@ -10,6 +10,7 @@ articles = require './utils/polling_articles'
 catalog = require './utils/polling_catalog'
 issue = require './utils/polling_issues'
 top = require './utils/polling_top10'
+problem = require './utils/polling_problem'
 log.debug "Testing....#{global.app_root}"
 
 ###
@@ -25,5 +26,6 @@ page.process_catalog (err)->
 
 #issue.check_issues()
 #top.get_top10_from_server()
-articles.crop_images()
+#rticles.crop_images()
+problem.process_problem()
 #catalog.get_catalog_from_server()  
