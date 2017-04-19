@@ -7,6 +7,7 @@ log = require('winston-color')
 log.level = process.env.LOG_LEVEL
 log.debug "Importing polling articles module"  
 requestSync = require('sync-request');
+easyimg = require 'easyimage'
 
 #
 #http://pressa.ru/zd/txt/101963.json
@@ -85,6 +86,7 @@ process_queue_articles = (lst)->
                 out = res.getBody('utf8')
                 dest = path.join global.app_root, global.app_config.data_dir, "articles", "#{i.journal_id}/#{i.id}/articles.json"
                 fs.writeFileSync dest, out, 'utf-8'
+                crop_image(out)
                 console.log "ARTICLE: file #{dest} has been saved!"
                 download_images(out)
                 now = new Date()
@@ -115,10 +117,50 @@ get_articles_from_server = ()->
                 download_images(jsdata)
     ###
      
-            
+crop_images = ()->     
+    log.verbose "ARTICLE: cropping images"
+    cat = read_catalog()
+    loaded = []
+    for k,v of cat.categories
+        for jk, jv of v.journals
+            for ik, iv of jv.issues
+                if iv.has_articles
+                    loaded.push iv
+    for i,v of loaded
+       crop_image v
+    
+crop_image = (jsondata)->
+    log.verbose "ARTICLE: cropping process #{jsondata.id}"
+    path_to_json = path.join global.app_root, global.app_config.data_dir, "articles", "#{jsondata.journal_id}/#{jsondata.id}/articles.json"
+    log.debug path_to_json
+    try
+        cont = JSON.parse(fs.readFileSync path_to_json, 'utf8')
+        for i,v of cont.articles
+            path_to_image = path.join global.app_root, global.app_config.data_dir, "articles", "#{jsondata.journal_id}/#{jsondata.id}/#{v.id}.png"
+            path_to_image_crop = path.join global.app_root, global.app_config.data_dir, "articles", "#{jsondata.journal_id}/#{jsondata.id}/#{v.id}.png"
+            opt = {
+                src: path_to_image,
+                dst: path_to_image_crop,
+                x: 0,
+                y:0,
+                cropwidth:80,
+                cropheight:80
+            }                
+            easyimg.crop(opt).then (file)->
+                log.debug "Image croped #{file.width}x#{file.height}"
+            , (err)->
+                console.log err
+            #console.log v.id 
+        #console.log cont
+    catch e
+        log.error "Invalid json #{e} issue #{jsondata.id}"
 
+    
+    
+    
 poolling =
     get_articles_from_server: get_articles_from_server
     get_and_save_article: get_and_save_article
+    crop_images: crop_images
 
 module.exports = poolling #export for using outside

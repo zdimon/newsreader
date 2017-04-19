@@ -75,11 +75,14 @@ process_catalog = (clb)->
                         process_issue iv
             clb()
         
+crop_issues = ()->
+    log.debug "PAGE: cropping"
 
     
 poolling =
     process_catalog: process_catalog
     process_issue: process_issue
     save_page_json: save_page_json
+    crop_issues: crop_issues
 
 module.exports = poolling #export for using outside
