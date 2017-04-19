@@ -79,7 +79,7 @@ process_issue = (jsdata)->
         log.debug "NO PAGES! #{dest_pages}"
         pages.save_page_json(jsdata)
 
-get_catalog_from_server = ()->
+get_catalog_from_server = (end)->
 
     url = 'http://pressa.ru/zd/catalog.json'
     log.debug "CATALOG: Start request from #{url}"
@@ -93,7 +93,8 @@ get_catalog_from_server = ()->
     article.get_articles_from_server()
     download_issues(jsdata)
     issue.check_issues()
-    log.debug "CATALOG: finished"   
+    log.debug "CATALOG: finished"
+    end()
     ###
     req = http.get(url,(res)->
         out = ''

@@ -39,13 +39,15 @@ makeresponse = (options, onResult)->
 
 
 
-get_top10_from_server = ()->
+get_top10_from_server = (end)->
+    log.debug "TOP10: start"
     options =
       host: global.remote_host,
       path: "/mts/api/top10/#{utils.getNowDate()}.json"
     makeresponse(options, (code,res)->
         console.log "Request is compleated with code #{code}"
     )
+    end()
     
 
 download_image = (jsdata)->
