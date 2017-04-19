@@ -6,19 +6,30 @@ fs = require 'fs'
 log = require('winston-color')
 log.level = process.env.LOG_LEVEL
 
+dest_pb =  path.join global.app_root, global.app_config.data_dir, 'problem_journal.json'
+jsondata = JSON.parse(fs.readFileSync dest_pb, 'utf8')
+console.log jsondata
 
-getCatalogFromFS = (offset=0)-> #get top 10 list from file
+
+getCatalogFromFS = ()-> #get top 10 list from file
    
-    date = utils.getNowDate(offset)
-    
-    try ## if file exist
+    #date = utils.getNowDate(offset)
+    #console.log jsondata
+    #try ## if file exist
         #dest = path.join(global.app_root, global.app_config.data_dir, "catalog/#{date}.json")
-        dest = path.join(global.app_root, global.app_config.data_dir, "catalog/catalog.json")
-        cont = JSON.parse(fs.readFileSync dest, 'utf8')
-    catch
+    dest = path.join(global.app_root, global.app_config.data_dir, "catalog/catalog.json")
+    cont = JSON.parse(fs.readFileSync dest, 'utf8')
+    for k,v of cont.categories
+        for jk, jv of v.journals
+            if jv.id in jsondata
+                delete cont.categories[k].journals[jv.id]
+                
+    return cont
+        #console.log jsondata
+    #catch
 
-        offset = offset+1
-        getCatalogFromFS(offset)
+    #    offset = offset+1
+    #    getCatalogFromFS(offset)
 
 
 router.get '/', (req, res, next)->
