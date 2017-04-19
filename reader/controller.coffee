@@ -1,5 +1,11 @@
+
+init = ($rootScope)->
+    $rootScope.show_forward = false
+    $rootScope.show_backward = false
+
 angular.module 'readerApp'
 .controller 'indexCtrl', [  '$scope', 'Top10', '$state', '$rootScope', ($scope, Top10, $state, $rootScope)->
+        init($rootScope)
         Top10.get_top10 (r)->
             $rootScope.top_list = r
         $scope.go = (id)->
@@ -9,6 +15,7 @@ angular.module 'readerApp'
 
     ]
 .controller 'topDetailCtrl', [  '$scope', '$stateParams', '$rootScope', 'Top10', ($scope, $stateParams, $rootScope, Top10)->
+        init($rootScope)
         if $rootScope.top_list
             angular.forEach $rootScope.top_list.articles, (k,v)-> #search in
                 if parseInt(k.id) == parseInt($stateParams.id)
@@ -22,7 +29,8 @@ angular.module 'readerApp'
 
 ]
 
-.controller 'journalsCtrl', [  '$scope', '$stateParams', ($scope, $stateParams)->
+.controller 'journalsCtrl', [  '$scope', '$stateParams', '$rootScope', ($scope, $stateParams, $rootScope)->
+        init($rootScope)
         $scope.journals_list = [1,2,3,4,5,6]
 
         $scope.items = [
@@ -67,7 +75,8 @@ angular.module 'readerApp'
 
     ]
 
-.controller 'magazinesCtrl', [  '$scope', '$stateParams', ($scope, $stateParams)->
+.controller 'magazinesCtrl', [  '$scope', '$stateParams', '$rootScope', ($scope, $stateParams,$rootScope)->
+        init($rootScope)
         $scope.items = [
           {
             src:'/images/cover1.png',
@@ -87,13 +96,15 @@ angular.module 'readerApp'
     ]             
 
 
-.controller 'readCtrl', [  '$scope', '$stateParams', ($scope, $stateParams)->
+.controller 'readCtrl', [  '$scope', '$stateParams', '$rootScope', ($scope, $stateParams, $rootScope)->
+        init($rootScope)
         $scope.journals_list = [1,2,3,4]
         
     ]
 
 
 .controller 'catalogCtrl', [  '$scope', '$stateParams', '$state', '$rootScope', ($scope, $stateParams, $state, $rootScope)->
+        init($rootScope)
        
         $scope.go = (id)->
             $state.go 'reader.catalog_detail',
@@ -103,6 +114,7 @@ angular.module 'readerApp'
 
 
 .controller 'catalogDetailCtrl', [  '$scope', '$stateParams', '$state', '$rootScope', 'Catalog', ($scope, $stateParams, $state, $rootScope, Catalog)->
+        init($rootScope)
         if $rootScope.catalog
             $scope.catalog = $rootScope.catalog.categories[$stateParams.id]
         else
@@ -119,6 +131,7 @@ angular.module 'readerApp'
 
 
 .controller 'journalDetailCtrl', [  '$scope', '$stateParams', '$state', '$rootScope', 'Catalog', ($scope, $stateParams, $state, $rootScope, Catalog)->
+        init($rootScope)
         if $rootScope.catalog
             $scope.journal = $rootScope.catalog.categories[$stateParams.catalog_id].journals[$stateParams.journal_id]
         else
@@ -142,6 +155,7 @@ angular.module 'readerApp'
 
 
 .controller 'issueDetailCtrl', [  '$scope', '$stateParams', '$state', '$rootScope', 'Issue', ($scope, $stateParams, $state, $rootScope, Issue)->
+        init($rootScope)
         Issue.get_pages $stateParams.journal_id, $stateParams.issue_id, (rez)->
             $scope.issue = rez
             $scope.pages = rez.pages
@@ -156,6 +170,7 @@ angular.module 'readerApp'
 
 
 .controller 'pageDetailCtrl', [  '$scope', '$stateParams', '$state', '$rootScope', 'Issue', ($scope, $stateParams, $state, $rootScope, Issue)->
+        init($rootScope)
         
         Issue.get_pages $stateParams.journal_id, $stateParams.issue_id, (rez)->
             console.log 'Pages'
@@ -180,6 +195,7 @@ angular.module 'readerApp'
 
 
 .controller 'articlesCtrl', [  '$scope', '$stateParams', '$state', '$rootScope', 'Articles', ($scope, $stateParams, $state, $rootScope, Articles)->
+        init($rootScope)
         
         Articles.get_articles $stateParams.journal_id, $stateParams.issue_id, (rez)->
             $scope.articles = rez.articles
@@ -193,13 +209,14 @@ angular.module 'readerApp'
 
 
 .controller 'articleDetailCtrl', [  '$scope', '$stateParams', '$state', '$rootScope', 'Articles', ($scope, $stateParams, $state, $rootScope, Articles)->
+    init($rootScope)
     Articles.get_articles $stateParams.journal_id, $stateParams.issue_id, (rez)->
         $scope.articles = rez.articles
         angular.forEach $scope.articles, (v,k)->
             #console.log $stateParams.article_id
             if parseInt(v.id) == parseInt($stateParams.article_id)
                 $scope.article = v    
-                console.log v.id
+                console.log v.id 
         
              
 ]

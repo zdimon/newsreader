@@ -4,7 +4,7 @@ script(type="text/ng-template" id="dist/templates/menu.html")
             ion-nav-bar.bar-stable
                 ion-nav-back-button
                 ion-nav-buttons(side="left")
-                    button(class="button button-icon button-clear ion-navicon" menu-toggle="left")
+                    button(class="button button-icon ion-navicon" menu-toggle="left")
     
                 ion-nav-buttons(side="right")
 
@@ -24,7 +24,7 @@ script(type="text/ng-template" id="dist/templates/menu.html")
                 
             ion-nav-view(name="content")
     
-        ion-side-menu(side="left" id="side-menu21")
+        ion-side-menu(side="left")
             ion-header-bar.bar-stable
                 div.title.
                     пресса.ру
@@ -33,7 +33,7 @@ script(type="text/ng-template" id="dist/templates/menu.html")
                 ion-list(id="menu-list6")
                     ion-item(id="menu-list-item1" ui-sref="reader.index" menu-close="").
                         ТОП10
-                    ion-item(id="menu-list-item1" ui-sref="reader.catalog_detail({id: c.id}) " ng-repeat="c in catalog.categories").
+                    ion-item(id="menu-list-item1" ui-sref="reader.catalog_detail({id: c.id})" menu-close="" ng-repeat="c in catalog.categories").
                         {{ c.name }}
                     //-
                         ion-item(id="menu-list-item11" ui-sref="reader.magazines" menu-close="").
