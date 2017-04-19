@@ -92,6 +92,7 @@ get_catalog_from_server = ()->
     #download_images(jsdata)
     article.get_articles_from_server()
     download_issues(jsdata)
+    issue.check_issues()
     log.debug "CATALOG: finished"   
     ###
     req = http.get(url,(res)->
