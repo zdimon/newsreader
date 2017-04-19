@@ -55,12 +55,13 @@ download_image = (jsdata)->
         fs.mkdirSync date_dir
     for i in jsdata.articles
         image_path = path.join(date_dir,"#{i.id}.png")
+        image_path_crop = path.join(date_dir,"#{i.id}_crop.png")
         res = requestSync('GET', i.small_image)
         fs.writeFileSync image_path, res.getBody()        
         log.verbose "saved #{i.small_image}"
         opt = {
             src: image_path,
-            dst: image_path,
+            dst: image_path_crop,
             x: 0,
             y:0,
             cropwidth:80,
