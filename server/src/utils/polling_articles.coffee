@@ -72,6 +72,7 @@ manage_with_dirs = (issue)->
         fs.mkdirSync issue_dir
 
 process_queue_articles = (lst)->
+    console.log lst
     if lst.length == 0
         return
     for i in lst
@@ -86,11 +87,15 @@ process_queue_articles = (lst)->
                 out = res.getBody('utf8')
                 dest = path.join global.app_root, global.app_config.data_dir, "articles", "#{i.journal_id}/#{i.id}/articles.json"
                 fs.writeFileSync dest, out, 'utf-8'
-                crop_image(out)
                 console.log "ARTICLE: file #{dest} has been saved!"
                 download_images(out)
-                now = new Date()
-                fs.writeFileSync dest_done, "1"            
+                crop_image({journal_id: i.journal_id, id: i.id})
+                try
+                    cont = JSON.parse(fs.readFileSync path_to_json, 'utf8')
+                    fs.writeFileSync dest_done, "1" 
+                catch
+                     process_queue_articles(lst)
+                       
             lst.splice index, 1            
             process_queue_articles(lst)
 
@@ -133,28 +138,28 @@ crop_image = (jsondata)->
     log.verbose "ARTICLE: cropping process #{jsondata.id}"
     path_to_json = path.join global.app_root, global.app_config.data_dir, "articles", "#{jsondata.journal_id}/#{jsondata.id}/articles.json"
     log.debug path_to_json
-    try
-        cont = JSON.parse(fs.readFileSync path_to_json, 'utf8')
-        for i,v of cont.articles
-            path_to_image = path.join global.app_root, global.app_config.data_dir, "articles", "#{jsondata.journal_id}/#{jsondata.id}/#{v.id}.png"
-            path_to_image_crop = path.join global.app_root, global.app_config.data_dir, "articles", "#{jsondata.journal_id}/#{jsondata.id}/#{v.id}.png"
-            opt = {
-                src: path_to_image,
-                dst: path_to_image_crop,
-                x: 0,
-                y:0,
-                cropwidth:80,
-                cropheight:80
-            }                
-            easyimg.crop(opt).then (file)->
-                log.debug "Image croped #{file.width}x#{file.height}"
-            , (err)->
-                console.log err
+    #try
+    cont = JSON.parse(fs.readFileSync path_to_json, 'utf8')
+    for i,v of cont.articles
+        path_to_image = path.join global.app_root, global.app_config.data_dir, "articles", "#{jsondata.journal_id}/#{jsondata.id}/#{v.id}.png"
+        path_to_image_crop = path.join global.app_root, global.app_config.data_dir, "articles", "#{jsondata.journal_id}/#{jsondata.id}/#{v.id}.png"
+        opt = {
+            src: path_to_image,
+            dst: path_to_image_crop,
+            x: 0,
+            y:0,
+            cropwidth:80,
+            cropheight:80
+        }                
+        easyimg.crop(opt).then (file)->
+            log.debug "Image croped #{file.width}x#{file.height}"
+        , (err)->
+            console.log err
             #console.log v.id 
         #console.log cont
-    catch e
-        log.error "Invalid json #{e} issue #{jsondata.id}"
-        write_problems(jsondata.id, jsondata.journal_id)
+    #catch e
+    #    log.error "Invalid json #{e} issue #{jsondata.id}"
+        #write_problems(jsondata.id, jsondata.journal_id)
 
   
 write_problems = (id,journal_id)->
@@ -171,6 +176,7 @@ write_problems = (id,journal_id)->
 poolling =
     get_articles_from_server: get_articles_from_server
     get_and_save_article: get_and_save_article
+    process_queue_articles: process_queue_articles
     crop_images: crop_images
 
 module.exports = poolling #export for using outside

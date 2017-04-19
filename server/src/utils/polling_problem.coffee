@@ -15,7 +15,10 @@ process_problem = ()->
     cont = JSON.parse(fs.readFileSync path_to_problems, 'utf8')
     for i in cont
         log.verbose "ARTICLE PB: Working with #{i.journal_id}-#{i.id}"
-        url = "http://pressa.ru/zd/txt/#{iv.id}.json"
+        dest_done = path.join global.app_root, global.app_config.data_dir, "articles", "#{i.journal_id}/#{i.id}/done.dat"
+        if fs.existsSync dest_done
+            fs.unlinkSync dest_done
+        article.process_queue_articles([{journal_id: i.journal_id, id: i.id}])
 
 out =
     process_problem: process_problem
