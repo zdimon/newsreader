@@ -77,7 +77,7 @@ check_issues = ()->
                        problem_journals.push iv.journal_id
                     if iv.id not in problem_issues
                        problem_issues.push iv.id
-                console.log problem_journals
+                #console.log problem_journals
     
     dest_pb =  path.join global.app_root, global.app_config.data_dir, 'problem_journal.json'
     ou = JSON.stringify(problem_journals)
