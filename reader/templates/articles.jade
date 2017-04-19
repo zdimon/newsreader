@@ -2,8 +2,8 @@ script(type="text/ng-template" id="dist/templates/articles.html")
     ion-view(title="Статьи" id="page1")
         ion-content(padding="true" class="has-header")
             ion-list
-                ion-item.item-thumbnail-left(ng-repeat="a in articles" ng-click="go(a.id)")
-                    img(ng-src="data/articles/{{a.journal_id}}/{{a.issue_id}}/{{a.id}}.png")
+                ion-item( class="item-thumbnail-left" ng-repeat="a in articles" ng-click="go(a.id)" style="padding-left: 190px")
+                    img(ng-src="data/articles/{{a.journal_id}}/{{a.issue_id}}/{{a.id}}.png" style="max-height: 100px; max-width: 170px")
                     h2  {{ a.title }}
                     p.
                         {{ a.short_text }}
