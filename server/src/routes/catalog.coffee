@@ -8,8 +8,6 @@ log.level = process.env.LOG_LEVEL
 
 dest_pb =  path.join global.app_root, global.app_config.data_dir, 'problem_journal.json'
 jsondata = JSON.parse(fs.readFileSync dest_pb, 'utf8')
-console.log jsondata
-
 
 getCatalogFromFS = ()-> #get top 10 list from file
    

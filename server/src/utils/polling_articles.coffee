@@ -8,7 +8,8 @@ log.level = process.env.LOG_LEVEL
 log.debug "Importing polling articles module"  
 requestSync = require('sync-request');
 easyimg = require 'easyimage'
-
+inspector = require './polling_inspector'
+    
 #
 #http://pressa.ru/zd/txt/101963.json
 
@@ -72,7 +73,7 @@ manage_with_dirs = (issue)->
         fs.mkdirSync issue_dir
 
 process_queue_articles = (lst)->
-    console.log lst
+    #console.log lst
     if lst.length == 0
         return
     for i in lst
@@ -91,7 +92,7 @@ process_queue_articles = (lst)->
                 download_images(out)
                 crop_image({journal_id: i.journal_id, id: i.id})
                 try
-                    cont = JSON.parse(fs.readFileSync path_to_json, 'utf8')
+                    cont = JSON.parse(fs.readFileSync dest, 'utf8')
                     fs.writeFileSync dest_done, "1" 
                 catch
                      process_queue_articles(lst)
@@ -171,12 +172,118 @@ write_problems = (id,journal_id)->
     if el not in cont
         cont.push el
         fs.writeFileSync path_to_problems, JSON.stringify(cont), 'utf-8'
+       
+       
+###############################        
+ 
+
+create_list_of_issues = (clb)->
+    log.debug "Creating list of issues"
+    issues = []
+    path_to_catalog = path.join(global.app_root, global.app_config.data_dir, "catalog/catalog.json")
+    fs.readFile path_to_catalog, 'utf-8', (err,data)->
+        if err
+            clb(null,err)
+        else
+            try
+                cont = JSON.parse data
+                for k,v of cont.categories
+                    for jk, jv of v.journals
+                        for ik, iv of jv.issues
+                            if iv.has_articles
+                                if iv.id not in issues
+                                    issues.push {journal_id:iv.journal_id, id: iv.id}                
+                clb(issues)
+            catch e
+                clb(null, e)
+                
+make_http_request = (url,clb)->
+    log.debug "Making HTTP async request to #{url}"
+    
+    req = http.get(url,(res)->
+        out = ''
+        res.on 'data', (chunk)-> #collect data
+            out = out + chunk
+        res.on 'end', ()->
+                clb(out)
+        )
+         
+    req.on 'socket', (socket)-> 
+        socket.setTimeout 20000
+        socket.on 'timeout', ()->
+            req.abort()
+    req.on 'error', (err)->
+        if err.code == 'ECONNRESET'
+            log.error "ARTICLE: timeout #{url}"
+            clb(null,"Timeout error")
+              
+              
+create_dirs = (journal_id,issue_id,clb)->
+    journal_dir = path.join global.app_root, global.app_config.data_dir, "articles", "#{journal_id}"                       
+    if !fs.existsSync journal_dir
+        fs.mkdirSync journal_dir 
+    issue_dir = path.join journal_dir, "#{issue_id}"                       
+    if !fs.existsSync issue_dir
+        fs.mkdirSync issue_dir                
         
+proc_save_image_to_disk  = (lst,clb)->         
+    save_image_to_disk = (lst)->
+        log.debug "ARTICLES: saving images"
+        console.log lst
+    save_image_to_disk(lst)
+
+
+proc_save_json_to_disk = (lst,arts,clb)->     
+    log.debug "ARTICLES: saving json"
+    save_json_to_disk = (lst)->
+        if lst[0]
+            #check if already downloaded
+            if inspector.is_done({object:"articles", type: "json", id: lst[0].id})
+                lst.splice 0, 1
+                save_json_to_disk(lst)
+            else
+                url = "http://pressa.ru/zd/txt/#{lst[0].id}.json"
+                make_http_request url, (data)->
+                    try
+                        jsdata = JSON.parse(data)
+                        dest = path.join global.app_root, global.app_config.data_dir, "articles", "#{lst[0].journal_id}/#{lst[0].id}/articles.json"
+                        create_dirs(lst[0].journal_id,lst[0].id)
+                        fs.writeFile dest, JSON.stringify(jsdata), 'utf-8', (err)->
+                            if err
+                                log.error err
+                            inspector.mark_as_done({object: "article", type: "json", id: lst[0].id})
+                            lst.splice 0, 1
+                            save_json_to_disk(lst)
+                    catch
+                        log.error "JSON parse error, repeat request"
+                        save_json_to_disk(lst)
+        else
+            console.log 'Done'
+            clb(lst,arts)
+    
+    save_json_to_disk(lst)
+    
+ 
+ 
+grab_articles = ()->
+    log.debug "Grabbing articles"
+    create_list_of_issues (data,err)->
+        if err
+            log.error "#{err}"
+        else
+            #save_json_to_disk data
+            lst_for_json = data.slice()
+            lst_for_images = data.slice()
+            proc_save_json_to_disk data, data, ()->
+                proc_save_image_to_disk lst_for_images
+        log.debug "Finished"
+    
     
 poolling =
     get_articles_from_server: get_articles_from_server
     get_and_save_article: get_and_save_article
     process_queue_articles: process_queue_articles
     crop_images: crop_images
+    grab_articles: grab_articles
 
 module.exports = poolling #export for using outside
