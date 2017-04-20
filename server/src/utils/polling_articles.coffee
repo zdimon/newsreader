@@ -229,7 +229,13 @@ create_dirs = (journal_id,issue_id,clb)->
 proc_save_image_to_disk  = (lst,clb)->         
     save_image_to_disk = (lst)->
         log.debug "ARTICLES: saving images"
-        console.log lst
+        if lst[0]
+            lst.splice 0, 1
+            proc_save_image_to_disk(lst)
+            console.log lst
+        else
+            clb()
+        
     save_image_to_disk(lst)
 
 
