@@ -21,7 +21,7 @@ if !fs.existsSync inspector_log
 inspector_data = fs.readFileSync inspector_log, 'utf-8'        
 inspector_json_data = JSON.parse(inspector_data)
 
-console.log inspector_json_data
+#console.log inspector_json_data
 
 #{ object: 'article', type: 'json', id: 102214 }
 

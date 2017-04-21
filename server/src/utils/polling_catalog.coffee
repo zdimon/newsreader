@@ -90,7 +90,7 @@ get_catalog_from_server = (end)->
     fs.writeFileSync dest, out
      
     #download_images(jsdata)
-    article.get_articles_from_server()
+    article.grab_articles()
     download_issues(jsdata)
     issue.check_issues()
     log.debug "CATALOG: finished"

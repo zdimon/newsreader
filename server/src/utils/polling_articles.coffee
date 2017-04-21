@@ -226,41 +226,7 @@ create_dirs = (journal_id,issue_id,clb)->
     if !fs.existsSync issue_dir
         fs.mkdirSync issue_dir                
         
-proc_save_image_to_disk  = (lst,clb)->
-    
-    proc_dwn_images = (lst,clb)->
-        dwn_image = (lst)->
-            if lst[0]
-                log.debug lst[0].url
-                request(lst[0].url).pipe(fs.createWriteStream(lst[0].image_path)).on 'close', ()->
-                    lst.splice 0, 1
-                    dwn_image(lst)                   
-            
-            else
-                clb()
-        dwn_image(lst)
-            
-    save_image_to_disk = (lst)->
-        if lst[0]
-            log.debug "ARTICLES: saving images for #{lst[0].id}"
-            path_to_json = path.join global.app_root, global.app_config.data_dir, "articles", "#{lst[0].journal_id}/#{lst[0].id}/articles.json"
-            dt = fs.readFile path_to_json, 'utf-8', (err,data)->
-                jsdata = JSON.parse(data)
-                images = []
-                for i in jsdata.articles
-                    image_path = path.join global.app_root, global.app_config.data_dir, "articles", "#{i.journal_id}", "#{i.issue_id}", "#{i.id}.png"
-                    images.push {
-                        image_path : image_path
-                        url: i.square_image
-                    }
-                    proc_dwn_images images, ()->
-                        log.verbose "done"
-                lst.splice 0, 1
-                save_image_to_disk(lst)
-        else
-            clb()
-        
-    save_image_to_disk(lst)
+
 
 
 proc_save_json_to_disk = (lst,clb)->     
