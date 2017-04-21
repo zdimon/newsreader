@@ -264,18 +264,27 @@ proc_save_json_to_disk = (lst,clb)->
                             fs.writeFile dest, JSON.stringify(jsdata), 'utf-8', (err)->
                                 if err
                                     log.error err
-                                images = []
-                                
+                                images_small = []     
                                 for i in jsdata.articles
                                     image_path = path.join global.app_root, global.app_config.data_dir, "articles", "#{i.journal_id}", "#{i.issue_id}", "#{i.id}.png"
-                                    images.push {
+                                    images_small.push {
                                         image_path : image_path
                                         url: i.square_image
-                                    }                            
-                                proc_dwn_images images, ()->
-                                    inspector.mark_as_done({object: "article", id: lst[0].id})
-                                    lst.splice 0, 1
-                                    save_json_to_disk(lst)
+                                    }
+                                    
+                                images_big = []     
+                                for i in jsdata.articles
+                                    image_path = path.join global.app_root, global.app_config.data_dir, "articles", "#{i.journal_id}", "#{i.issue_id}", "#{i.id}_big.png"
+                                    images_big.push {
+                                        image_path : image_path
+                                        url: i.image
+                                    }
+                               
+                                proc_dwn_images images_small, ()->
+                                    proc_dwn_images images_big, ()->
+                                        inspector.mark_as_done({object: "article", id: lst[0].id})
+                                        lst.splice 0, 1
+                                        save_json_to_disk(lst)
                         catch
                             log.error "JSON parse error, repeat request"
                             save_json_to_disk(lst)
