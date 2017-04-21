@@ -11,7 +11,7 @@ inspector_log = path.join global.app_root, global.app_config.data_dir, 'inspecto
 
 if !fs.existsSync inspector_log
     data = {
-        articles: {json: [], image: []},
+        articles: [],
         issues: {},
         pages:{},
         top10: {},
@@ -28,13 +28,12 @@ console.log inspector_json_data
 mark_as_done = (obj)->
     
     if obj.object == 'article'
-        if obj.type == 'json'
-            inspector_json_data.articles.json.push obj.id
-            fs.writeFileSync inspector_log, JSON.stringify(inspector_json_data), 'utf-8'
-    inspector_data
+        inspector_json_data.articles.push obj.id
+        fs.writeFileSync inspector_log, JSON.stringify(inspector_json_data), 'utf-8'
+   
     
 is_done = (obj)->
-    if obj.id in inspector_json_data[obj.object][obj.type]
+    if obj.id in inspector_json_data[obj.object]
         return true
     else
         return false
