@@ -65,7 +65,6 @@ check_issues = ()->
     log.debug "Checking issues..."
     dest = path.join(global.app_root, global.app_config.data_dir, "catalog/catalog.json")
     jsondata = JSON.parse(fs.readFileSync dest, 'utf8')
-    problem_journals = []
     problem_issues = []
     for k,v of jsondata.categories
         for jk, jv of v.journals
@@ -73,15 +72,9 @@ check_issues = ()->
                 issue_dir = path.join(global.app_root, global.app_config.data_dir, 'journals', "#{iv.journal_id}/#{iv.id}")
                 cover_path = "#{issue_dir}/cover.png"
                 if !fs.existsSync cover_path
-                    if iv.journal_id not in problem_journals
-                       problem_journals.push iv.journal_id
                     if iv.id not in problem_issues
-                       problem_issues.push iv.id
-                #console.log problem_journals
-    
-    dest_pb =  path.join global.app_root, global.app_config.data_dir, 'problem_journal.json'
-    ou = JSON.stringify(problem_journals)
-    cont = fs.writeFileSync dest_pb, ou
+                       problem_issues.push iv
+
     dest_pb =  path.join global.app_root, global.app_config.data_dir, 'problem_issue.json'
     ou = JSON.stringify(problem_issues)
     cont = fs.writeFileSync dest_pb, ou

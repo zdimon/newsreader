@@ -85,15 +85,18 @@ get_catalog_from_server = (end)->
     log.debug "CATALOG: Start request from #{url}"
     dest = path.join(global.app_root,global.app_config.data_dir, "catalog", "catalog.json")
     res = requestSync('GET', url)
-    out = res.getBody('utf8')
-    jsdata = JSON.parse(out)
-    fs.writeFileSync dest, out
-     
-    #download_images(jsdata)
-    article.grab_articles()
-    download_issues(jsdata)
-    issue.check_issues()
-    log.debug "CATALOG: finished"
+    if res.statusCode==200
+        out = res.getBody('utf8')
+        jsdata = JSON.parse(out)
+        fs.writeFileSync dest, out
+         
+        #download_images(jsdata)
+        article.grab_articles()
+        download_issues(jsdata)
+        issue.check_issues()
+        log.debug "CATALOG: finished"
+    else
+        log.error "Error geting calalog from #{url}"
     end()
     ###
     req = http.get(url,(res)->
@@ -125,5 +128,6 @@ get_catalog_from_server = (end)->
 
 poolling =
     get_catalog_from_server: get_catalog_from_server
+    process_issue: process_issue
 
 module.exports = poolling #export for using outside
