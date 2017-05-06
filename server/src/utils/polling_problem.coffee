@@ -16,7 +16,9 @@ process_problem = ()->
     path_to_problems = path.join global.app_root, global.app_config.data_dir, "problem_issue.json"
     cont = JSON.parse(fs.readFileSync path_to_problems, 'utf8')
     for i in cont
-        console.log i
+        console.log "Process #{i.id}"
+        catalog.process_issue(i)
+        #catalog.process_cover(i)
         #issue_file = path.join(global.app_root, global.app_config.data_dir, 'journals', "#{jsdata.journal_id}")
     
         #catalog

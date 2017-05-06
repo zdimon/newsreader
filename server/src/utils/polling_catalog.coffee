@@ -38,12 +38,15 @@ download_issues = (jsondata)->
                 process_issue(iv)
           
        
-process_cover = (jsdata, path)->
-    image_path = "#{path}/cover.png"
+process_cover = (jsdata)->
+    image_path = path.join(global.app_root, global.app_config.data_dir, 'journals', "#{jsdata.journal_id}/#{jsdata.id}/cover.png")  
     if !fs.existsSync image_path
-        log.debug "CATALOG: save cover #{path}"
-        res = requestSync('GET', jsdata.thumb)        
-        fs.writeFileSync image_path, res.getBody()        
+        log.debug "CATALOG: save cover #{image_path}"
+        res = requestSync('GET', jsdata.thumb)
+        try
+            fs.writeFileSync image_path, res.getBody()
+        catch
+            log.error "Error writing #{image_path}" 
 
 
 process_issue = (jsdata)->
@@ -68,16 +71,16 @@ process_issue = (jsdata)->
     # save json file about journal if it does not exist
     dest = path.join(issue_dir,"info.json")
     
-    if !fs.existsSync dest
-        #ou = JSON.parse(jsdata)
-        cont = fs.writeFileSync dest, JSON.stringify(jsdata)
-        log.verbose "CATALOG: creating info.json for #{jsdata.journal_id}-#{jsdata.id}"
-        pages.process_issue(jsdata)
-        process_cover(jsdata,issue_dir)
+    #if !fs.existsSync dest 
+    #ou = JSON.parse(jsdata)
+    cont = fs.writeFileSync dest, JSON.stringify(jsdata)
+    log.verbose "CATALOG: creating info.json for #{jsdata.journal_id}-#{jsdata.id}"
+    pages.process_issue(jsdata)
+    process_cover(jsdata)
     dest_pages = path.join(issue_dir,"pages.json")
-    if !fs.existsSync dest_pages
-        log.debug "NO PAGES! #{dest_pages}"
-        pages.save_page_json(jsdata)
+    #if !fs.existsSync dest_pages
+    log.debug "NO PAGES! #{dest_pages}"
+    pages.save_page_json(jsdata)
 
 get_catalog_from_server = (end)->
 
@@ -129,5 +132,6 @@ get_catalog_from_server = (end)->
 poolling =
     get_catalog_from_server: get_catalog_from_server
     process_issue: process_issue
+    process_cover: process_cover
 
 module.exports = poolling #export for using outside

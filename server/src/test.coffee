@@ -24,7 +24,7 @@ page.process_catalog (err)->
 #articles.get_articles_from_server()
 
 
-#issue.check_issues()
+issue.check_issues()
 #top.get_top10_from_server()
 #articles.crop_images()
 problem.process_problem()

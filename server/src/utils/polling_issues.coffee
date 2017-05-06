@@ -61,6 +61,19 @@ process_issues = ()->
 #get_issues_from_server = ()->
 #    log.debug "Start request issues from .."
 
+check_issue = (iv)->
+    issue_dir = path.join(global.app_root, global.app_config.data_dir, 'journals', "#{iv.journal_id}/#{iv.id}")
+    cover_path = "#{issue_dir}/cover.png"
+    if !fs.existsSync cover_path
+        return false
+    info_path = "#{issue_dir}/info.json"
+    if !fs.existsSync info_path
+        return false
+    pages_path = "#{issue_dir}/pages.json"
+    if !fs.existsSync pages_path
+        return false
+    return true
+    
 check_issues = ()->
     log.debug "Checking issues..."
     dest = path.join(global.app_root, global.app_config.data_dir, "catalog/catalog.json")
@@ -69,11 +82,12 @@ check_issues = ()->
     for k,v of jsondata.categories
         for jk, jv of v.journals
             for ik, iv of jv.issues
-                issue_dir = path.join(global.app_root, global.app_config.data_dir, 'journals', "#{iv.journal_id}/#{iv.id}")
-                cover_path = "#{issue_dir}/cover.png"
-                if !fs.existsSync cover_path
+                if !check_issue(iv)
                     if iv.id not in problem_issues
                        problem_issues.push iv
+                else
+                    done_dir = path.join(global.app_root, global.app_config.data_dir, 'journals', "#{iv.journal_id}/#{iv.id}/done.dat")
+                    fs.writeFileSync done_dir, ''
 
     dest_pb =  path.join global.app_root, global.app_config.data_dir, 'problem_issue.json'
     ou = JSON.stringify(problem_issues)
@@ -82,5 +96,6 @@ check_issues = ()->
 poolling =
     process_issues: process_issues
     check_issues: check_issues
+    check_issue: check_issue
 
 module.exports = poolling #export for using outside
