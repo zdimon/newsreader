@@ -27,8 +27,11 @@ process_big_pages = (pages)->
         log.debug im_url 
         log.verbose "PAGES: saving... #{pages.journal_id}-#{pages.issue_id}-#{pv.number} big page"
         image_path = path.join global.app_root, global.app_config.data_dir, "journals/#{pages.journal_id}/#{pages.issue_id}/pages/#{pv.number}.jpg"
-        res = requestSync('GET', im_url)
-        fs.writeFileSync image_path, res.getBody()
+        try
+            res = requestSync('GET', im_url)
+            fs.writeFileSync image_path, res.getBody()
+        catch err
+            log.error "ERROR: #{im_url}" 
         #request(im_url).pipe(fs.createWriteStream(image_path)).on 'close', ()->
         #    log.verbose "saved #{im_url}"        
         if count == parseInt(pages.check_sum)
