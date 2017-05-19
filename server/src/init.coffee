@@ -60,6 +60,12 @@ if !fs.existsSync articles_dir
     log.info 'Creating articles_dir ......'
     fs.mkdirSync articles_dir
     
+    
+
+dest_pb =  path.join global.app_root, global.app_config.data_dir, 'problem_journal.json'
+if !fs.existsSync dest_pb
+    log.info 'Creating problem_journal.json ......'
+    fs.writeFileSync dest_pb, '[]'
 
 
 # create tasks.json
