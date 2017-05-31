@@ -30,6 +30,8 @@ top_polling.run() #periodically invocation
 catalog_polling =  polling(catalog.get_catalog_from_server, 60000*30)
 catalog_polling.run() #periodically invocation
 
+
+
 ##########Article#########
 #article_polling =  polling(article.get_articles_from_server, 60000*30)
 #article_polling.run() #periodically invocation

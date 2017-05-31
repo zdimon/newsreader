@@ -178,15 +178,19 @@ write_problems = (id,journal_id)->
  
 
 create_list_of_issues = (clb)->
-    log.debug "Creating list of issues"
+    log.debug "Creating list of issues...."
     issues = []
     path_to_catalog = path.join(global.app_root, global.app_config.data_dir, "catalog/catalog.json")
+    
     fs.readFile path_to_catalog, 'utf-8', (err,data)->
         if err
+            
             clb(null,err)
         else
             try
+                
                 cont = JSON.parse data
+                
                 for k,v of cont.categories
                     for jk, jv of v.journals
                         for ik, iv of jv.issues
@@ -296,10 +300,10 @@ proc_save_json_to_disk = (lst,clb)->
  
  
 grab_articles = ()->
-    log.debug "Grabbing articles"
+    log.debug "Grabbing articles..."
     create_list_of_issues (data,err)->
         if err
-            log.error "#{err}"
+            log.error "ARTICLE ERROR: #{err}"
         else
             #save_json_to_disk data
             lst_for_json = data.slice()

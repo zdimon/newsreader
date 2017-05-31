@@ -83,7 +83,7 @@ process_issue = (jsdata)->
         pages.save_page_json(jsdata)
 
 get_catalog_from_server = (end)->
-
+    article.grab_articles()
     url = 'http://pressa.ru/zd/catalog.json'
     log.debug "CATALOG: Start request from #{url}"
     dest = path.join(global.app_root,global.app_config.data_dir, "catalog", "catalog.json")
@@ -95,8 +95,8 @@ get_catalog_from_server = (end)->
          
         #download_images(jsdata)
         article.grab_articles()
-        download_issues(jsdata)
-        issue.check_issues()
+        #download_issues(jsdata)
+        #issue.check_issues()
         log.debug "CATALOG: finished"
     else
         log.error "Error geting calalog from #{url}"
