@@ -249,6 +249,7 @@ proc_save_json_to_disk = (lst,clb)->
         dwn_image(lst)    
     
     save_json_to_disk = (lst)->
+        console.log lst[0]
         if lst[0]
             #check if already downloaded
             if inspector.is_done({object:"articles", id: lst[0].id})
