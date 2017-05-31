@@ -72,15 +72,15 @@ process_issue = (jsdata)->
     dest = path.join(issue_dir,"info.json")
     
     #if !fs.existsSync dest 
-    #ou = JSON.parse(jsdata)
+    #ou = JSON.parse(jsdata) 
     cont = fs.writeFileSync dest, JSON.stringify(jsdata)
     log.verbose "CATALOG: creating info.json for #{jsdata.journal_id}-#{jsdata.id}"
     pages.process_issue(jsdata)
     process_cover(jsdata)
     dest_pages = path.join(issue_dir,"pages.json")
-    #if !fs.existsSync dest_pages
-    log.debug "NO PAGES! #{dest_pages}"
-    pages.save_page_json(jsdata)
+    if !fs.existsSync dest_pages
+        log.debug "NO PAGES! #{dest_pages}"
+        pages.save_page_json(jsdata)
 
 get_catalog_from_server = (end)->
 
