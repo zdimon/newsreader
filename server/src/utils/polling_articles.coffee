@@ -238,25 +238,29 @@ proc_save_json_to_disk = (lst,clb)->
     
     proc_dwn_images = (lst,clb)->
         dwn_image = (lst)->
-            console.log lst[0]
             if lst[0]
                 log.debug lst[0].url
                 request(lst[0].url).pipe(fs.createWriteStream(lst[0].image_path)).on 'close', ()->
                     lst.splice 0, 1
-                    dwn_image(lst)                   
+                    dwn_image(lst)
+                .on 'error', ()->
+                    lst.splice 0, 1
+                    dwn_image(lst)                    
             
             else
                 clb()
         dwn_image(lst)    
     
     save_json_to_disk = (lst)->
-        console.log lst[0]
+      
         if lst[0]
             #check if already downloaded
             if inspector.is_done({object:"articles", id: lst[0].id})
+                console.log lst[0].id
                 lst.splice 0, 1
                 save_json_to_disk(lst)
             else
+                
                 url = "http://pressa.ru/zd/txt/#{lst[0].id}.json"
                 make_http_request url, (data,err)->
                     if err
@@ -265,6 +269,7 @@ proc_save_json_to_disk = (lst,clb)->
                     else
                         try
                             jsdata = JSON.parse(data)
+                            
                             dest = path.join global.app_root, global.app_config.data_dir, "articles", "#{lst[0].journal_id}/#{lst[0].id}/articles.json"
                             create_dirs(lst[0].journal_id,lst[0].id)
                             fs.writeFile dest, JSON.stringify(jsdata), 'utf-8', (err)->
@@ -295,6 +300,7 @@ proc_save_json_to_disk = (lst,clb)->
                             log.error "JSON parse error, repeat request"
                             save_json_to_disk(lst)
         else
+            console.log lst
             clb(lst)
     
     save_json_to_disk(lst)
@@ -312,7 +318,7 @@ grab_articles = ()->
             lst_for_images = data.slice()
             proc_save_json_to_disk lst_for_json, ()->
                 #proc_save_image_to_disk lst_for_images, ()->
-                #    log.debug "Finished"
+                log.debug "Finished"
         
     
     
