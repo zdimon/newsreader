@@ -95,7 +95,7 @@ get_catalog_from_server = (end)->
          
         #download_images(jsdata)
         article.grab_articles()
-        #download_issues(jsdata)
+        download_issues(jsdata)
         #issue.check_issues()
         log.debug "CATALOG: finished"
     else
