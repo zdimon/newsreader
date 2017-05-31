@@ -199,7 +199,7 @@ angular.module 'readerApp'
         
         Articles.get_articles $stateParams.journal_id, $stateParams.issue_id, (rez)->
             $scope.articles = rez.articles
-            console.log rez
+            
         $scope.go = (article_id)->
             $state.go 'reader.article_detail',
                 journal_id: $stateParams.journal_id
@@ -212,6 +212,10 @@ angular.module 'readerApp'
     init($rootScope)
     Articles.get_articles $stateParams.journal_id, $stateParams.issue_id, (rez)->
         $scope.articles = rez.articles
+        $scope.swipLeft = ()->
+            alert 'left'
+        $scope.swipRight = ()->
+            console.log 'right'
         angular.forEach $scope.articles, (v,k)->
             #console.log $stateParams.article_id
             if parseInt(v.id) == parseInt($stateParams.article_id)
