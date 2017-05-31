@@ -238,6 +238,7 @@ proc_save_json_to_disk = (lst,clb)->
     
     proc_dwn_images = (lst,clb)->
         dwn_image = (lst)->
+            console.log lst[0]
             if lst[0]
                 log.debug lst[0].url
                 request(lst[0].url).pipe(fs.createWriteStream(lst[0].image_path)).on 'close', ()->
