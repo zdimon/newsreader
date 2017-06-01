@@ -10,6 +10,7 @@ articles = require './utils/polling_articles'
 catalog = require './utils/polling_catalog'
 issue = require './utils/polling_issues'
 top = require './utils/polling_top10'
+creator = require './utils/polling_creator'
 problem = require './utils/polling_problem'
 log.debug "Testing....#{global.app_root}"
 
@@ -30,4 +31,7 @@ page.process_catalog (err)->
 #problem.process_problem()
 #catalog.get_catalog_from_server ()->
 
-articles.grab_articles()
+#articles.grab_articles()
+
+creator.handle ()->
+    log.debug 'Processor has finished a job!'
