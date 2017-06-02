@@ -91,7 +91,6 @@ parseCatalog = (jsondata)->
     for k,v of jsondata.categories
         for jk, jv of v.journals
             for ik, iv of jv.issues
-                console.log donedata
                 if iv.id not in donedata
                     isssue_out = []
                     dest = path.join(global.app_root,global.app_config.data_dir, "queue", "#{iv.journal_id}-#{iv.id}.json")
