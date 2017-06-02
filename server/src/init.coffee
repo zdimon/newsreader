@@ -70,10 +70,15 @@ if !fs.existsSync queue_dir
     log.info 'Creating queue ......'
     fs.mkdirSync queue_dir        
 
-dest_pb =  path.join global.app_root, global.app_config.data_dir, 'problems.json'
+dest_pb =  path.join global.app_root, global.app_config.data_dir, 'problem_journal.json'
 if !fs.existsSync dest_pb
     log.info 'Creating problem_journal.json ......'
     fs.writeFileSync dest_pb, '[]'
+    
+    
+    
+    
+    
 
 
 dest_pb =  path.join global.app_root, global.app_config.data_dir, 'done.json'
