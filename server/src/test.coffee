@@ -12,6 +12,7 @@ issue = require './utils/polling_issues'
 top = require './utils/polling_top10'
 creator = require './utils/polling_creator'
 problem = require './utils/polling_problem'
+queue = require './utils/polling_queue'
 log.debug "Testing....#{global.app_root}"
 
 ###
@@ -33,5 +34,8 @@ page.process_catalog (err)->
 
 #articles.grab_articles()
 
-creator.handle ()->
-    log.debug 'Processor has finished a job!'
+queue.handle ()->
+    log.debug 'Queue has finished a job!'
+
+#creator.handle ()->
+#    log.debug 'Processor has finished a job!'
