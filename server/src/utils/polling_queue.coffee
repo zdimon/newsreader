@@ -137,7 +137,6 @@ process_queue = (lst,clb)->
             res.on 'data', (chunk)-> #collect data
                 out = out + chunk
             res.on 'end', ()->
-                console.log ('end request')
                 fs.writeFileSync lst[0].path, JSON.stringify(out)
                 lst.splice 0, 1
                 process_queue lst, clb
