@@ -29,6 +29,7 @@ journal_dir = path.join(global.app_root, global.app_config.data_dir, 'journals')
 catalog_image_dir =  path.join data_dir, 'catalog', 'images'
 articles_dir =  path.join data_dir, 'articles'
 new_dir =  path.join data_dir, 'new'
+queue_dir =  path.join data_dir, 'queue'
 
 # create data dir
 
@@ -63,7 +64,11 @@ if !fs.existsSync articles_dir
     
 if !fs.existsSync new_dir
     log.info 'Creating new_dir ......'
-    fs.mkdirSync new_dir    
+    fs.mkdirSync new_dir
+    
+if !fs.existsSync queue_dir
+    log.info 'Creating queue ......'
+    fs.mkdirSync queue        
 
 dest_pb =  path.join global.app_root, global.app_config.data_dir, 'problems.json'
 if !fs.existsSync dest_pb
