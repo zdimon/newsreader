@@ -89,7 +89,7 @@ setAsDone = (issue_id)->
     jsondata = fs.readFileSync done_path, 'utf-8'        
     jsondata = JSON.parse(jsondata)
     if issue_id not in jsondata
-        jsondata.push issue_id
+        jsondata.push parseInt(issue_id)
         fs.writeFileSync done_path, JSON.stringify(jsondata)
     
 process_queue = (lst,clb)->

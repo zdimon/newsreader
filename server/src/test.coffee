@@ -44,9 +44,9 @@ creator.handle ()->
 
 #creator.getNew()
 
-#creator.handle ()->
-#    log.debug 'Processor has finished a job!'
+creator.handle ()->
+    log.debug 'Processor has finished a job!'
     
     
-queue.handle ()->
-    log.debug 'Queue has finished a job!'
+#queue.handle ()->
+#    log.debug 'Queue has finished a job!'
