@@ -68,7 +68,7 @@ if !fs.existsSync new_dir
     
 if !fs.existsSync queue_dir
     log.info 'Creating queue ......'
-    fs.mkdirSync queue        
+    fs.mkdirSync queue_dir        
 
 dest_pb =  path.join global.app_root, global.app_config.data_dir, 'problems.json'
 if !fs.existsSync dest_pb
