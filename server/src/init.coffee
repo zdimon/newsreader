@@ -28,6 +28,7 @@ top10_image_dir = path.join data_dir, 'top10', 'images'
 journal_dir = path.join(global.app_root, global.app_config.data_dir, 'journals')
 catalog_image_dir =  path.join data_dir, 'catalog', 'images'
 articles_dir =  path.join data_dir, 'articles'
+new_dir =  path.join data_dir, 'new'
 
 # create data dir
 
@@ -60,7 +61,9 @@ if !fs.existsSync articles_dir
     log.info 'Creating articles_dir ......'
     fs.mkdirSync articles_dir
     
-    
+if !fs.existsSync new_dir
+    log.info 'Creating new_dir ......'
+    fs.mkdirSync new_dir    
 
 dest_pb =  path.join global.app_root, global.app_config.data_dir, 'problem_journal.json'
 if !fs.existsSync dest_pb

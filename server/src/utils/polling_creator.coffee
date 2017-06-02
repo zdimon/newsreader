@@ -14,6 +14,7 @@ requestSync = require('sync-request');
 ###
 
 setArticles = (jsdata,isssue_out)->
+    ###
     article_dir = path.join(global.app_root, global.app_config.data_dir, 'articles', "#{jsdata.journal_id}")
     if !fs.existsSync article_dir
         log.verbose "Creating #{article_dir}"
@@ -22,6 +23,7 @@ setArticles = (jsdata,isssue_out)->
     if !fs.existsSync article_dir
         log.verbose "Creating #{article_dir}"
         fs.mkdirSync article_dir
+    ###
     url = "http://pressa.ru/zd/txt/#{jsdata.id}.json"
     dest = path.join global.app_root, global.app_config.data_dir, "articles", "#{jsdata.journal_id}/#{jsdata.id}/articles.json"
     isssue_out.push(path: dest, uri: url, type: 'article-json')
@@ -49,28 +51,6 @@ getCatalog = ()->
     else
         return []
     
-setIssueJSON = (jsdata)->
-    journal_dir = path.join(global.app_root, global.app_config.data_dir, 'journals', "#{jsdata.journal_id}")
-    
-    if !fs.existsSync journal_dir
-        log.verbose "Creating #{journal_dir}"
-        fs.mkdirSync journal_dir
-    issue_dir = path.join(journal_dir, "#{jsdata.id}")
-    if !fs.existsSync issue_dir
-        log.verbose "Creating #{issue_dir}"
-        fs.mkdirSync issue_dir
-    issue_page_dir = path.join(issue_dir,"pages")
-    if !fs.existsSync issue_page_dir
-        log.verbose "Creating #{issue_page_dir}"
-        fs.mkdirSync issue_page_dir
-    issue_covers_dir = path.join(issue_dir,"thumbnails")
-    if !fs.existsSync issue_covers_dir
-        log.verbose "Creating #{issue_covers_dir}"
-        fs.mkdirSync issue_covers_dir
-    dest = path.join(issue_dir,"info.json")
-    
-    if !fs.existsSync dest 
-        cont = fs.writeFileSync dest, JSON.stringify(jsdata)
 
     
 getCover = (jsdata)->
@@ -90,10 +70,10 @@ getPages = (url,isssue_out, jsdata)->
     jsdatapages = JSON.parse(res.getBody())
     for k,v of jsdatapages.pages
         pathp = path.join(global.app_root, global.app_config.data_dir, 'journals', "#{jsdata.journal_id}/#{jsdata.id}","thumbnails", "#{v.number}.jpeg")
-        isssue_out.push({path: pathp, uri: v.cover, type: 'page-small'})
+        isssue_out.push({path: pathp, uri: "http://pressa.ru#{v.cover}", type: 'page-thumb'})
         im_url = "http://#{global.remote_host}/zd/page/#{v.id}/secretkey.json"
         pathp = path.join(global.app_root, global.app_config.data_dir, 'journals', "#{jsdata.journal_id}/#{jsdata.id}","pages", "#{v.number}.jpeg")
-        isssue_out.push({path: pathp, uri: im_url, type: 'page-big'})
+        isssue_out.push({path: pathp, uri: im_url, type: 'page'})
     return isssue_out
     
         
@@ -104,15 +84,22 @@ parseCatalog = (jsondata)->
                 isssue_out = []
                 if iv.has_articles
                     isssue_out = setArticles(iv,isssue_out)
-                setIssueJSON(iv)
                 url = "http://#{global.remote_host}/zd/#{iv.id}.json"               
                 isssue_out.push getCover(iv)
-                isssue_out.push getPagesJSON(iv)
+                isssue_out.push getPagesJSON(iv,url)
                 isssue_out = getPages(url, isssue_out, iv) 
                 dest = path.join(global.app_root,global.app_config.data_dir, "queue", "#{iv.journal_id}-#{iv.id}.json")
                 log.debug "QUEUE CREATOR: #{iv.journal_id}-#{iv.id}.json"
                 fs.writeFileSync dest, JSON.stringify(isssue_out)
                 #return
+    
+getNew = ()->
+    dt = new Date()
+    data = "#{dt.getFullYear()}-#{dt.getMonth() + 1}-#{dt.getDate()}"
+    url = "http://#{global.remote_host}/zd/#{data}n.json"
+    dest = path.join(global.app_root,global.app_config.data_dir, "new", "#{data}.json")
+    res = requestSync('GET', url)
+    fs.writeFileSync dest, res.getBody('utf8')
     
     
 handle = (callback)->
@@ -124,5 +111,6 @@ handle = (callback)->
 
 poolling =
     handle: handle
+    getNew: getNew
 
 module.exports = poolling #export for using outside
