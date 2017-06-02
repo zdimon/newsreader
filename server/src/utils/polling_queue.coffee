@@ -34,6 +34,8 @@ process_dirs = (file)->
     if not issue
         return false
     
+    setAsDone(issue_id)
+    
     journal_dir = path.join(global.app_root, global.app_config.data_dir, 'journals', "#{journal_id}")   
     if !fs.existsSync journal_dir
         log.verbose "Creating #{journal_dir}"
@@ -82,8 +84,13 @@ process_test = (lst)->
 
 
 
-makeRequest = (jsdata)->
-    log.debug "Making request #{jsdata}"
+setAsDone = (issue_id)->
+    done_path = path.join global.app_root, global.app_config.data_dir, 'done.json'
+    jsondata = fs.readFileSync done_path, 'utf-8'        
+    jsondata = JSON.parse(jsondata)
+    if issue_id not in jsondata
+        jsondata.push issue_id
+        fs.writeFileSync done_path, JSON.stringify(jsondata)
     
 process_queue = (lst,clb)->
     #console.log lst

@@ -65,11 +65,18 @@ if !fs.existsSync new_dir
     log.info 'Creating new_dir ......'
     fs.mkdirSync new_dir    
 
-dest_pb =  path.join global.app_root, global.app_config.data_dir, 'problem_journal.json'
+dest_pb =  path.join global.app_root, global.app_config.data_dir, 'problems.json'
 if !fs.existsSync dest_pb
     log.info 'Creating problem_journal.json ......'
     fs.writeFileSync dest_pb, '[]'
 
+
+dest_pb =  path.join global.app_root, global.app_config.data_dir, 'done.json'
+if !fs.existsSync dest_pb
+    log.info 'Creating done.json ......'
+    fs.writeFileSync dest_pb, '[]'
+    
+    
 
 # create tasks.json
 fileName = 'tasks.json'

@@ -7,11 +7,17 @@ log = require('winston-color')
 log.level = process.env.LOG_LEVEL
 log.debug "Importing polling creator module"
 requestSync = require('sync-request');
+queue = require './polling_queue'
 
 ###
     Function makes a request to server and pass json
     data to the callback function
 ###
+
+done_path = path.join global.app_root, global.app_config.data_dir, 'done.json'
+donedata = fs.readFileSync done_path, 'utf-8'        
+donedata = JSON.parse(donedata)
+    
 
 setArticles = (jsdata,isssue_out)->
     ###
@@ -76,41 +82,63 @@ getPages = (url,isssue_out, jsdata)->
         isssue_out.push({path: pathp, uri: im_url, type: 'page'})
     return isssue_out
     
+
+
+
+    
         
 parseCatalog = (jsondata)->
     for k,v of jsondata.categories
         for jk, jv of v.journals
             for ik, iv of jv.issues
-                isssue_out = []
-                if iv.has_articles
-                    isssue_out = setArticles(iv,isssue_out)
-                url = "http://#{global.remote_host}/zd/#{iv.id}.json"               
-                isssue_out.push getCover(iv)
-                isssue_out.push getPagesJSON(iv,url)
-                isssue_out = getPages(url, isssue_out, iv) 
-                dest = path.join(global.app_root,global.app_config.data_dir, "queue", "#{iv.journal_id}-#{iv.id}.json")
-                log.debug "QUEUE CREATOR: #{iv.journal_id}-#{iv.id}.json"
-                fs.writeFileSync dest, JSON.stringify(isssue_out)
-                #return
+                if iv.id not in donedata
+                    isssue_out = []
+                    dest = path.join(global.app_root,global.app_config.data_dir, "queue", "#{iv.journal_id}-#{iv.id}.json")
+                    if !fs.existsSync dest
+                        if iv.has_articles
+                            isssue_out = setArticles(iv,isssue_out)
+                        url = "http://#{global.remote_host}/zd/#{iv.id}.json"               
+                        isssue_out.push getCover(iv)
+                        isssue_out.push getPagesJSON(iv,url)
+                        isssue_out = getPages(url, isssue_out, iv) 
+                        
+                        log.debug "QUEUE CREATOR: #{iv.journal_id}-#{iv.id}.json"
+                        fs.writeFileSync dest, JSON.stringify(isssue_out)
+                        #return
     
 getNew = ()->
     dt = new Date()
-    data = "#{dt.getFullYear()}-#{dt.getMonth() + 1}-#{dt.getDate()}"
-    url = "http://#{global.remote_host}/zd/#{data}n.json"
+
+    month = ('0' + (dt.getMonth() + 1)).slice(-2);
+    date = ('0' + dt.getDate()).slice(-2);
+    year = dt.getFullYear();    
+    
+    data = "#{year}-#{month}-#{date}"
+    url = "http://#{global.remote_host}/static/api/zd/#{data}n.json"
     dest = path.join(global.app_root,global.app_config.data_dir, "new", "#{data}.json")
     res = requestSync('GET', url)
     fs.writeFileSync dest, res.getBody('utf8')
     
     
 handle = (callback)->
+    getNew()
     data = getCatalog()
     parseCatalog(data)    
     callback()
 
 
+periodic_handle = (end)->
+    handle ()->
+        log.debug 'Creator has finished a job!'
+        queue.handle ()->
+            log.debug 'Queue has finished a job!'
+            end()
+        
+
 
 poolling =
     handle: handle
+    periodic_handle: periodic_handle
     getNew: getNew
 
 module.exports = poolling #export for using outside

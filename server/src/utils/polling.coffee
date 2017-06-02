@@ -9,7 +9,7 @@ global.app_root = path.resolve __dirname, '../../..'
 catalog = require './polling_catalog'
 #issue = require './polling_issues'
 top10 = require './polling_top10'
- 
+creator = require './polling_creator'
 
 
 ##########Imploing pooling services##############
@@ -27,8 +27,13 @@ top_polling.run() #periodically invocation
 
 
 ##########Catalog#########
-catalog_polling =  polling(catalog.get_catalog_from_server, 60000*30)
-catalog_polling.run() #periodically invocation
+#catalog_polling =  polling(catalog.get_catalog_from_server, 60000*30)
+#catalog_polling.run() #periodically invocation
+
+
+##########Creator#########
+creator =  polling(creator.periodic_handle, 60000*30)
+creator.run() #periodically invocation
 
 
 
