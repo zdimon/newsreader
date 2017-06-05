@@ -8,7 +8,6 @@ log.level = process.env.LOG_LEVEL
 easyimg = require 'easyimage'
 requestSync = require('sync-request');
 rimraf = require 'rimraf'
-glob = require 'glob' 
 
 
 get_catalog = (id)->
