@@ -31,16 +31,16 @@ process_cleaning = (clb)->
     log.debug "CLEANER: starting..."
     for k,v of get_catalog()
         pt = path.join(global.app_root,global.app_config.data_dir, "journals", k)
-        #console.log pt
-        fs.readdirSync(pt).forEach (file)->
-            #console.log v
-            if parseInt(file) not in v
-                pathdel = path.join pt, file
-                rimraf pathdel, ()->
-                    log.debug "Removing #{pathdel}"
-                pathdel = path.join global.app_root,global.app_config.data_dir, "articles", k, file
-                rimraf pathdel, ()->
-                    log.debug "Removing #{pathdel}"                
+        if fs.existsSync pt
+            fs.readdirSync(pt).forEach (file)->
+                #console.log v
+                if parseInt(file) not in v
+                    pathdel = path.join pt, file
+                    rimraf pathdel, ()->
+                        log.debug "Removing #{pathdel}"
+                    pathdel = path.join global.app_root,global.app_config.data_dir, "articles", k, file
+                    rimraf pathdel, ()->
+                        log.debug "Removing #{pathdel}"                
 
         #for issue in v
         #    console.log issue
