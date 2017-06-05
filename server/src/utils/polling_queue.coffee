@@ -5,7 +5,7 @@ utils = require '../utils/utils'
 request = require('request');
 log = require('winston-color')
 log.level = process.env.LOG_LEVEL
-log.debug "Importing polling issue module"  
+log.debug "Importing polling queue module"  
 requestSync = require('sync-request');
 Stream = require('stream').Transform
     
@@ -58,10 +58,10 @@ process_dirs = (file)->
     
 
 
-    dest = path.join(issue_dir,"info.json")
+    #dest = path.join(issue_dir,"info.json")
     
-    if !fs.existsSync dest 
-        cont = fs.writeFileSync dest, JSON.stringify(issue)    
+    #if !fs.existsSync dest 
+    #    cont = fs.writeFileSync dest, JSON.stringify(issue)    
     
     if issue.has_articles
         article_dir = path.join(global.app_root, global.app_config.data_dir, 'articles', "#{journal_id}")
@@ -82,7 +82,12 @@ process_test = (lst)->
     lst.splice 0, 1
     process_test lst
 
-
+setAsProblem = (item)->
+    done_path = path.join global.app_root, global.app_config.data_dir, 'problem_journal.json'
+    jsondata = fs.readFileSync done_path, 'utf-8'        
+    jsondata = JSON.parse(jsondata)
+    jsondata.push item
+    fs.writeFileSync done_path, JSON.stringify(jsondata)    
 
 setAsDone = (issue_id)->
     done_path = path.join global.app_root, global.app_config.data_dir, 'done.json'
@@ -98,7 +103,7 @@ process_queue = (lst,clb)->
         clb()
         return
     url = lst[0].uri
-    log.debug "TASK QUEUE:  request #{lst[0].type} #{url}"
+    log.debug "TASK QUEUE:  process #{lst[0].type}"
     
     
     
@@ -107,6 +112,7 @@ process_queue = (lst,clb)->
         
         if url == 'http://pressa.ru/static/article/img/art_cover.png'
             dest = path.join(global.app_root, 'public', 'images', 'art_cover.png')
+            dest = dest.replace('.jpg','.png')
             fs.writeFileSync(lst[0].path, fs.readFileSync(dest))
             lst.splice 0, 1
             process_queue lst, clb
@@ -130,6 +136,9 @@ process_queue = (lst,clb)->
             req.on 'error', (err)->
                 if err.code == 'ECONNRESET'
                     log.error 'Timeout'
+                    setAsProblem(lst[0])
+                    
+                    
     else if lst[0].type in ['article-json', 'pages-json', 'page']
         log.debug "TASK QUEUE:  request json #{url}"
         req = http.get(url,(res)->
@@ -137,7 +146,7 @@ process_queue = (lst,clb)->
             res.on 'data', (chunk)-> #collect data
                 out = out + chunk
             res.on 'end', ()->
-                fs.writeFileSync lst[0].path, JSON.stringify(out)
+                fs.writeFileSync lst[0].path, out
                 lst.splice 0, 1
                 process_queue lst, clb
         )
@@ -150,6 +159,13 @@ process_queue = (lst,clb)->
         req.on 'error', (err)->
             if err.code == 'ECONNRESET'
                 log.error 'Timeout!!!'
+    else if lst[0].type in ['info']
+        info = lst[0].content
+        dest = path.join(global.app_root, global.app_config.data_dir, 'journals', "#{info.journal_id}", "#{info.id}", "info.json")   
+        if !fs.existsSync dest 
+            cont = fs.writeFileSync dest, JSON.stringify(info)
+        lst.splice 0, 1
+        process_queue lst, clb
     else
         lst.splice 0, 1
         process_queue lst, clb
@@ -185,12 +201,21 @@ handle = (clb)->
     else
         clb()
         
-    #process_test [1,2,3]
+
         
-    
+handle_one = (clb)->
+    log.debug 'Start'
+    jsondata = getIssueFile()
+    if jsondata
+        log.debug "GETING ONE ITEM: #{jsondata.length} items"
+        process_queue jsondata, ()->
+        clb()
+    else
+        log.debug 'No items to process!'
+        clb()
     
 poolling =
     handle: handle
-
+    handle_one: handle_one
 
 module.exports = poolling #export for using outside

@@ -5,14 +5,14 @@ log = require('winston-color')
 log.level = process.env.LOG_LEVEL
 global.app_config = require('./config')
 global.app_root = path.resolve __dirname, '../..'
-page = require './utils/polling_pages'
-articles = require './utils/polling_articles'
-catalog = require './utils/polling_catalog'
-issue = require './utils/polling_issues'
+
 top = require './utils/polling_top10'
 creator = require './utils/polling_creator'
 problem = require './utils/polling_problem'
 queue = require './utils/polling_queue'
+cleaner = require './utils/cleaner'
+problem = require './utils/polling_problem'
+
 log.debug "Testing....#{global.app_root}"
 
 ###
@@ -44,9 +44,9 @@ creator.handle ()->
 
 #creator.getNew()
 
-creator.handle ()->
-    log.debug 'Processor has finished a job!'
+#creator.handle ()->
+#    log.debug 'Processor has finished a job!'
     
     
-#queue.handle ()->
-#    log.debug 'Queue has finished a job!'
+problem.process_problem ()->
+    log.debug 'finished a job!'

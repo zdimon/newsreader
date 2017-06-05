@@ -6,11 +6,11 @@ global.app_root = path.resolve __dirname, '../../..'
 
 
 ##############Importing pooling modules#########
-catalog = require './polling_catalog'
-#issue = require './polling_issues'
+
 top10 = require './polling_top10'
 creator = require './polling_creator'
-
+cleaner = require './cleaner'
+problem = require './polling_problem'
 
 ##########Imploing pooling services##############
 
@@ -36,8 +36,17 @@ creator =  polling(creator.periodic_handle, 60000*60)
 creator.run() #periodically invocation
 
 
+##########Cleaner#########
+cleaner =  polling(cleaner.process_cleaning, 60000*60*24)
+cleaner.run() #periodically invocation
+
+
+##########Problem#########
+problem =  polling(problem.process_problem, 60000*60*24)
+problem.run() #periodically invocation
+
 
 ##########Article#########
-#article_polling =  polling(article.get_articles_from_server, 60000*30)
+#article_polling =  polling(problem.process_problem, 60000*30)
 #article_polling.run() #periodically invocation
 

@@ -101,7 +101,7 @@ parseCatalog = (jsondata)->
                         isssue_out.push getCover(iv)
                         isssue_out.push getPagesJSON(iv,url)
                         isssue_out = getPages(url, isssue_out, iv) 
-                        
+                        isssue_out.push {type: 'info', content: iv}
                         log.debug "QUEUE CREATOR: #{iv.journal_id}-#{iv.id}.json"
                         fs.writeFileSync dest, JSON.stringify(isssue_out)
                         #return

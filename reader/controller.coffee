@@ -33,45 +33,7 @@ angular.module 'readerApp'
         init($rootScope)
         $scope.journals_list = [1,2,3,4,5,6]
 
-        $scope.items = [
-          {
-            src:'/images/cover1.png',
-            sub: 'This is a <b>subtitle</b>'
-            thumb:'/images/high1.jpg'
-          },
-          {
-            src:'/images/cover2.png',
-            sub: ''
-          },
-          {
-            src:'/images/cover1.png',
-            thumb:'/images/high1.jpg'
-          }
-          {
-            src:'/images/cover1.png',
-            sub: 'This is a <b>subtitle</b>'
-          },
-          {
-            src:'/images/cover2.png',
-            sub: ''
-          },
-          {
-            src:'/images/cover1.png',
-            thumb:'/images/cover2.png'
-          }
-          {
-            src:'/images/cover1.png',
-            sub: 'This is a <b>subtitle</b>'
-          },
-          {
-            src:'/images/cover2.png',
-            sub: ''
-          },
-          {
-            src:'/images/cover1.png',
-            thumb:'/images/cover2.png'
-          }
-        ]
+       
 
     ]
 
@@ -121,7 +83,7 @@ angular.module 'readerApp'
             Catalog.get_catalog (rez)->
                 $rootScope.catalog = rez
                 $scope.catalog = $rootScope.catalog.categories[$stateParams.id]
-        console.log $scope.catalog
+        #console.log $scope.catalog
         $scope.go = (id)->
             $state.go 'reader.journal_detail',
                 catalog_id: $stateParams.id
@@ -146,7 +108,7 @@ angular.module 'readerApp'
                     issue_id: id
                     journal_id: $stateParams.journal_id
             else
-                console.log txt
+                #console.log txt
                 $state.go 'reader.issue_detail',
                     issue_id: id
                     journal_id: $stateParams.journal_id              
@@ -158,7 +120,9 @@ angular.module 'readerApp'
         init($rootScope)
         Issue.get_pages $stateParams.journal_id, $stateParams.issue_id, (rez)->
             $scope.issue = rez
+            #console.log rez
             $scope.pages = rez.pages
+            
         
         $scope.go = (page_id)->
             $state.go 'reader.page_detail',
@@ -173,11 +137,12 @@ angular.module 'readerApp'
         init($rootScope)
         
         Issue.get_pages $stateParams.journal_id, $stateParams.issue_id, (rez)->
-            console.log 'Pages'
+            #console.log 'Pages'
             $scope.issue = rez
             $scope.pages = rez.pages
-            $scope.page = rez.pages.pages[$stateParams.page_id]
-            console.log $scope.page
+            #console.log $scope.pages
+            $scope.page = $scope.pages.pages[$stateParams.page_id]
+            #console.log $scope.page
             $rootScope.show_forward = true
             $rootScope.show_backward = true
             $rootScope.go_forward = ()->
