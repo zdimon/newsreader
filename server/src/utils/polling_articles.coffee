@@ -33,7 +33,7 @@ download_images = (jsdata)->
         image_pathb = path.join global.app_root, global.app_config.data_dir, "articles", "#{i.journal_id}", "#{i.issue_id}", "#{i.id}_big.png"
         res = requestSync('GET', i.image)
         fs.writeFileSync image_pathb, res.getBody()
-        log.debug "ARTICLE: Image saved #{i.id}"
+        log.debug "ARTICLE: Damn image number #{i.id} journal #{i.journal_id} is saved!"
     
           
     

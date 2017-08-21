@@ -17,25 +17,29 @@ read_catalog = (path,clb)->
             clb(JSON.parse(data))
             
             
-process_big_pages = ()->
-    
-      
-process_pages = (pages)->
-    
+process_big_pages = (pages)->
     count = 0
     issue_path = path.join global.app_root, global.app_config.data_dir, "journals/#{pages.journal_id}/#{pages.issue_id}/thumbnail_done.dat"
     for pk,pv of pages.pages
         count = count + 1
+        im_url = "http://#{global.remote_host}/zd/page/#{pv.id}/blabla.json"
+        log.info im_url
+        log.verbose "PAGES: saving... #{pages.journal_id}-#{pages.issue_id}-#{pv.number}  fucking big page!"
+        image_path = path.join global.app_root, global.app_config.data_dir, "journals/#{pages.journal_id}/#{pages.issue_id}/pages/#{pv.number}.jpg"
+        res = requestSync('GET', im_url)
+        fs.writeFileSync image_path, res.getBody()       
+        if count == parseInt(pages.check_sum)
+            fs.writeFileSync issue_path, ''
+
+      
+process_pages = (pages)->
+    for pk,pv of pages.pages
         im_url = "http://#{global.remote_host}#{pv.cover}"
-        log.verbose "PAGES: saving... #{pages.journal_id}-#{pages.issue_id}-#{pv.number} page"
+        log.verbose "PAGES: saving... #{pages.journal_id}-#{pages.issue_id}-#{pv.number} small fucking page"
         image_path = path.join global.app_root, global.app_config.data_dir, "journals/#{pages.journal_id}/#{pages.issue_id}/thumbnails/#{pv.number}.jpg"
         res = requestSync('GET', im_url)
         fs.writeFileSync image_path, res.getBody()
-        #request(im_url).pipe(fs.createWriteStream(image_path)).on 'close', ()->
-        #    log.verbose "saved #{im_url}"        
-        if count == parseInt(pages.check_sum)
-            #console.log issue_path
-            fs.writeFileSync issue_path, ''
+
               
 process_issue = (issue)->
     url = "http://#{global.remote_host}/zd/#{issue.id}.json"
@@ -44,6 +48,7 @@ process_issue = (issue)->
     #console.log issue
         res = requestSync('GET', url)
         process_pages JSON.parse(res.getBody())
+        process_big_pages JSON.parse(res.getBody())
 
 
     
