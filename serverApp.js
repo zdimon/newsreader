@@ -13,6 +13,7 @@ var index = require('./server/dist/routes/index');
 var top10 = require('./server/dist/routes/top10');
 var catalog = require('./server/dist/routes/catalog');
 var articles = require('./server/dist/routes/articles');
+var pages = require('./server/dist/routes/issue');
 //var polling =  require('./server/dist/utils/polling');
 
 var app = express();
@@ -33,6 +34,7 @@ app.use('/', index);
 app.use('/top10', top10);
 app.use('/catalog', catalog)
 app.use('/articles', articles)
+app.use('/pages', pages)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -46,7 +48,7 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
+  console.log(err.message);
   // render the error page
   res.status(err.status || 500);
   res.render('error');

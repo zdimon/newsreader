@@ -3,7 +3,7 @@ script(type="text/ng-template" id="dist/templates/top_detail.html")
         ion-content(padding="true" class="has-header")
             div
                 h3 {{ article.title }}
-                a(ui-sref="reader.read({id: article.issue_id})" class="button button-balanced  button-block") Читать в номере
+ 
                 img(ng-src="/data/top10/images/{{ top_list.date }}/{{ article.id }}.png")
                 p {{ article.author }}
                 p(ng-bind-html="article.text" class="justify")

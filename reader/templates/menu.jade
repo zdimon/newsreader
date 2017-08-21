@@ -4,11 +4,30 @@ script(type="text/ng-template" id="dist/templates/menu.html")
             ion-nav-bar.bar-stable
                 ion-nav-back-button
                 ion-nav-buttons(side="left")
-                    button(class="button button-icon button-clear ion-navicon" menu-toggle="left")
+                    a(href="http://passline.ru" style="z-index: 10")
+                        div(style="position: absolute; top: 0; left: 65px;")        
+                            img(src="/images/logo_clean.png")
+                    button(class="button button-icon ion-navicon" menu-toggle="left")
     
+                ion-nav-buttons(side="right")
+
+                    button(class="button button-icon button-clear " style="width: 160px" ng-show="is_articles").
+                        Текстовый режим
+                    
+                    button(class="button button-icon button-clear " style="width: 160px" ng-show="is_graphics").
+                        Графический режим
+
+                    button(class="button button-icon button-clear ion-chevron-left" style="width: 70px" ng-show="show_backward" ng-click="go_backward({{backward_id}})")
+                        
+                    button(class="button button-icon button-clear ion-chevron-right" style="width: 70px" ng-show="show_forward" ng-click="go_forward({{forward_id}})")
+                        
+                        
+
+                                         
+                
             ion-nav-view(name="content")
     
-        ion-side-menu(side="left" id="side-menu21")
+        ion-side-menu(side="left")
             ion-header-bar.bar-stable
                 div.title.
                     пресса.ру
@@ -17,10 +36,8 @@ script(type="text/ng-template" id="dist/templates/menu.html")
                 ion-list(id="menu-list6")
                     ion-item(id="menu-list-item1" ui-sref="reader.index" menu-close="").
                         ТОП10
-                    ion-item(id="menu-list-item1" ui-sref="reader.catalog" menu-close="").
-                        Каталог                    
-                    ion-item(id="menu-list-item1" ui-sref="reader.catalog_detail({id: 145}) " menu-close="").
-                        Журналы
+                    ion-item(id="menu-list-item1" ui-sref="reader.catalog_detail({id: c.id})" menu-close="" ng-repeat="c in catalog.categories").
+                        {{ c.name }}
                     //-
                         ion-item(id="menu-list-item11" ui-sref="reader.magazines" menu-close="").
                             Газеты

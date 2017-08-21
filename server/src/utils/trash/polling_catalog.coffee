@@ -36,8 +36,17 @@ download_issues = (jsondata)->
         for jk, jv of v.journals
             for ik, iv of jv.issues
                 process_issue(iv)
-            
-            
+          
+       
+process_cover = (jsdata)->
+    image_path = path.join(global.app_root, global.app_config.data_dir, 'journals', "#{jsdata.journal_id}/#{jsdata.id}/cover.png")  
+    if !fs.existsSync image_path
+        log.debug "CATALOG: save cover #{image_path}"
+        res = requestSync('GET', jsdata.thumb)
+        try
+            fs.writeFileSync image_path, res.getBody()
+        catch
+            log.error "Error writing #{image_path}" 
 
 
 process_issue = (jsdata)->
@@ -61,27 +70,37 @@ process_issue = (jsdata)->
     #request(jsdata.thumb).pipe(fs.createWriteStream("#{issue_dir}/cover.png")).on 'close', ()->
     # save json file about journal if it does not exist
     dest = path.join(issue_dir,"info.json")
-    if !fs.existsSync dest
-        #ou = JSON.parse(jsdata)
-        cont = fs.writeFileSync dest, JSON.stringify(jsdata)
-        log.verbose "CATALOG: creating info.json for #{jsdata.journal_id}-#{jsdata.id}"
-        pages.process_issue(jsdata)
     
+    #if !fs.existsSync dest 
+    #ou = JSON.parse(jsdata) 
+    cont = fs.writeFileSync dest, JSON.stringify(jsdata)
+    log.verbose "CATALOG: creating info.json for #{jsdata.journal_id}-#{jsdata.id}"
+    pages.process_issue(jsdata)
+    process_cover(jsdata)
+    dest_pages = path.join(issue_dir,"pages.json")
+    if !fs.existsSync dest_pages
+        log.debug "NO PAGES! #{dest_pages}"
+        pages.save_page_json(jsdata)
 
-get_catalog_from_server = ()->
-
+get_catalog_from_server = (end)->
+    article.grab_articles()
     url = 'http://pressa.ru/zd/catalog.json'
     log.debug "CATALOG: Start request from #{url}"
     dest = path.join(global.app_root,global.app_config.data_dir, "catalog", "catalog.json")
     res = requestSync('GET', url)
-    out = res.getBody('utf8')
-    jsdata = JSON.parse(out)
-    fs.writeFileSync dest, out
-     
-    #download_images(jsdata)
-    article.get_articles_from_server()
-    download_issues(jsdata)
-    log.debug "CATALOG: finished"   
+    if res.statusCode==200
+        out = res.getBody('utf8')
+        jsdata = JSON.parse(out)
+        fs.writeFileSync dest, out
+         
+        #download_images(jsdata)
+        article.grab_articles()
+        download_issues(jsdata)
+        #issue.check_issues()
+        log.debug "CATALOG: finished"
+    else
+        log.error "Error geting calalog from #{url}"
+    end()
     ###
     req = http.get(url,(res)->
         out = ''
@@ -112,5 +131,7 @@ get_catalog_from_server = ()->
 
 poolling =
     get_catalog_from_server: get_catalog_from_server
+    process_issue: process_issue
+    process_cover: process_cover
 
 module.exports = poolling #export for using outside

@@ -42,3 +42,19 @@ angular.module 'readerApp'
         }
 
 ]
+
+
+.factory 'Issue', [  '$http', '$rootScope', ($http, $rootScope)->
+        get_pages = (journal_id, issue_id, callback)->
+
+            $http(
+                method: 'GET'
+                url: "#{SERVER_URL}/pages/#{journal_id}/#{issue_id}.json"
+            ).success(callback)
+
+        return {
+            get_pages
+        }
+
+]
+

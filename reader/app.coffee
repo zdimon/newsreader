@@ -12,7 +12,7 @@ angular.module('readerApp', ['ionic', 'ion-gallery'])
 
 ])
 
-.run ['$ionicPlatform', '$rootScope', 'Catalog', ($ionicPlatform, $rootScope, Catalog)->
+.run ['$ionicPlatform', '$rootScope', 'Catalog', '$ionicHistory', ($ionicPlatform, $rootScope, Catalog, $ionicHistory)->
     $ionicPlatform.ready ()->
         Catalog.get_catalog (rez)->
               $rootScope.$broadcast('get-catalog',rez);        
@@ -27,4 +27,11 @@ angular.module('readerApp', ['ionic', 'ion-gallery'])
         if window.StatusBar
             #org.apache.cordova.statusbar required
             StatusBar.styleDefault()
+            
+        $rootScope.$ionicGoBack = (backCount)->
+            $ionicHistory.goBack(backCount)
+            $rootScope.show_forward = false
+            $rootScope.show_backward = false
+            
+            
 ]

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 http = require 'http'
 fs = require 'fs'
 path = require 'path'
@@ -122,3 +123,5 @@ poolling =
     get_and_save_article: get_and_save_article
 
 module.exports = poolling #export for using outside
+
+

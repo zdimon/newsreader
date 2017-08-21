@@ -79,3 +79,12 @@ display: inline-block
   float: right;
   
 }
+
+
+.zoom-pane {
+width: 100% !important;
+height: 100% !important;
+}
+
+
+

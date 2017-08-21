@@ -2,7 +2,7 @@ script(type="text/ng-template" id="dist/templates/journal_detail.html")
     ion-view(title="{{ journal.name }}" id="page1")
         ion-content(padding="true" class="has-header")
             
-            div(ng-repeat="i in journal.issues" class="issue_item" ng-click="go(i.id)")
+            div(ng-repeat="i in journal.issues" class="issue_item" ng-click="go(i.id, i.has_articles)")
                 img(ng-src="data/journals/{{i.journal_id}}/{{i.id}}/cover.png")
                 div
                     {{i.name}}
