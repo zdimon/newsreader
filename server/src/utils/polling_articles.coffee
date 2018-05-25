@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 http = require 'http'
 fs = require 'fs'
 path = require 'path'
