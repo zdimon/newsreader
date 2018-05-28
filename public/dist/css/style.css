@@ -86,5 +86,11 @@ width: 100% !important;
 height: 100% !important;
 }
 
+div.padding {
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+}
+
+
 
 

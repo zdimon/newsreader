@@ -4,10 +4,10 @@ script(type="text/ng-template" id="dist/templates/menu.html")
             ion-nav-bar.bar-stable
                 ion-nav-back-button
                 ion-nav-buttons(side="left")
-                    a(href="http://passline.ru" style="z-index: 10")
-                        div(style="position: absolute; top: 0; left: 65px;")        
-                            img(src="/images/logo_clean.png")
                     button(class="button button-icon ion-navicon" menu-toggle="left")
+                    div(style="margin-top: -5px")        
+                        img(src="/images/logo_clean.png")
+                    
     
                 ion-nav-buttons(side="right")
 
@@ -29,15 +29,20 @@ script(type="text/ng-template" id="dist/templates/menu.html")
     
         ion-side-menu(side="left")
             ion-header-bar.bar-stable
-                div.title.
-                    пресса.ру
+                div.title
+                    | пресса.ру
+                    span(style="float: right")
+                        a( ng-if="lang=='ru'" href="#" ng-click="change_lang('ch')")
+                            img(src="/images/ch.png")
+                        a( ng-if="lang=='ch'" href="#" ng-click="change_lang('ru')")
+                            img(src="/images/ru.png")                            
     
             ion-content(padding="false" class="side-menu-left has-header")
                 ion-list(id="menu-list6")
                     ion-item(id="menu-list-item1" ui-sref="reader.index" menu-close="").
-                        ТОП10
+                        {{ trans('ТОП10') }}
                     ion-item(id="menu-list-item1" ui-sref="reader.catalog_detail({id: c.id})" menu-close="" ng-repeat="c in catalog.categories").
-                        {{ c.name }}
+                        {{ trans(c.name) }}
                     //-
                         ion-item(id="menu-list-item11" ui-sref="reader.magazines" menu-close="").
                             Газеты

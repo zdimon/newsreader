@@ -4,7 +4,7 @@ script(type="text/ng-template" id="dist/templates/top_detail.html")
             div
                 h3 {{ article.title }}
  
-                img(ng-src="/data/top10/images/{{ top_list.date }}/{{ article.id }}.png")
+                img(style="width: 100%" ng-src="/data/top10/images/{{ top_list.date }}/{{ article.id }}.png")
                 p {{ article.author }}
                 p(ng-bind-html="article.text" class="justify")
                 p(ng-bind-html="article.text_continue" class="justify")

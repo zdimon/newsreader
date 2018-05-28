@@ -2,6 +2,6 @@ script(type="text/ng-template" id="dist/templates/article_detail.html")
     ion-view(title="{{ article.title }}" id="page1")
         ion-content(padding="true" class="has-header" ng-swipe-left="swipeLeft()" ng-swipe-right="swipeRight()")
             h3 {{ article.title }}
-            img(ng-src="data/articles/{{article.journal_id}}/{{article.issue_id}}/{{article.id}}_big.jpg")
+            img(style="width: 100%" ng-src="data/articles/{{article.journal_id}}/{{article.issue_id}}/{{article.id}}_big.jpg")
             p(ng-bind-html="article.short_text" class="justify")
             p(ng-bind-html="article.text" class="justify")
