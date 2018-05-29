@@ -91,6 +91,8 @@ div.padding {
   padding-right: 15px !important;
 }
 
-
+.pointer {
+  cursor: pointer;
+}
 
 
