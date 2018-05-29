@@ -32,10 +32,12 @@ script(type="text/ng-template" id="dist/templates/menu.html")
                 div.title
                     | пресса.ру
                     span(style="float: right")
-                        a( ng-if="lang=='ru'" href="#" ng-click="change_lang('ch')")
+                        a( ng-if="lang!='ch'" href="#" ng-click="change_lang('ch')")
                             img(src="/images/ch.png")
-                        a( ng-if="lang=='ch'" href="#" ng-click="change_lang('ru')")
-                            img(src="/images/ru.png")                            
+                        a( ng-if="lang!='ru'" href="#" ng-click="change_lang('ru')")
+                            img(src="/images/ru.png") 
+                        a( ng-if="lang!='en'" href="#" ng-click="change_lang('en')")
+                            img(src="/images/en.png")                              
     
             ion-content(padding="false" class="side-menu-left has-header")
                 ion-list(id="menu-list6")

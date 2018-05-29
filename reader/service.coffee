@@ -60,7 +60,7 @@ angular.module 'readerApp'
 
 .factory 'Translator',  ()->
 
-        messages = {
+        messages_ch = {
             'ТОП10': '前10名'
             "Газеты": "报纸"
             'Журналы': "期刊"
@@ -74,12 +74,30 @@ angular.module 'readerApp'
             "Научно-популярные": "科普"
             "Досуг и развлечения": "休闲和娱乐"
         }
+        
+        messages_en = {
+            'ТОП10': 'TOP10'
+            "Газеты": "Newspapers"
+            'Журналы': "Magazines"
+            'Женские': "For women"
+            "Мужские": "For men"
+            "Детские": "For children"
+            "Дом и семья": "House and family"
+            "Спорт": "Sport"
+            "Общество и политика": "Society and politics"
+            "Бизнес и финансы": "Business & Finance"
+            "Научно-популярные": "Popular science"
+            "Досуг и развлечения": "Leisure and entertainment"
+        }
 
         translate = (key)->
             if getLang() == 'ch'
-                return messages[key]
-            else
-                return key
+                return messages_ch[key]
+                
+            if getLang() == 'en'
+                return messages_en[key]
+            
+            return key
 
         getLang = ()->
             matches = document.cookie.match(new RegExp(
