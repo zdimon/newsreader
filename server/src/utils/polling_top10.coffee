@@ -9,6 +9,14 @@ log.debug "Importing pooling top 10 module"
 easyimg = require 'easyimage'
 requestSync = require('sync-request');
 
+
+done_path = path.join global.app_root, global.app_config.data_dir, 'done.json'
+ 
+
+
+
+    
+
 makeresponse = (options, onResult)->
     dest = path.join(global.app_root, global.app_config.data_dir, "top10/#{utils.getNowDate()}.json")
     fs.stat dest, (err,stat)-> #only if the file does not exist
