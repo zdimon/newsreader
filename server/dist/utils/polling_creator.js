@@ -31,6 +31,10 @@
 
   done_path = path.join(global.app_root, global.app_config.data_dir, 'done.json');
 
+  if (!fs.existsSync(done_path)) {
+    fs.writeFile(done_path, "");
+  }
+
   donedata = fs.readFileSync(done_path, 'utf-8');
 
   donedata = JSON.parse(donedata);
