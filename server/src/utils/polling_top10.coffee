@@ -52,15 +52,30 @@ get_top10_from_server = (end)->
 
 download_image = (jsdata)->
     date_dir =  path.join(global.app_root, global.app_config.data_dir, 'top10','images',jsdata.date)
+    image_date_dir =  path.join(global.app_root, global.app_config.data_dir, 'top10','images')
+    
+    if !fs.existsSync image_date_dir
+        log.verbose "debug", "Creating #{image_date_dir}"
+        fs.mkdirSync image_date_dir    
+    
     if !fs.existsSync date_dir
         log.verbose "debug", "Creating #{date_dir}"
-        fs.mkdirSync date_dir
+        fs.mkdirSync date_dir 
+            
+        
     for i in jsdata.articles
+    
         image_path = path.join(date_dir,"#{i.id}.png")
         image_path_crop = path.join(date_dir,"#{i.id}_crop.png")
+        
         res = requestSync('GET', i.small_image)
-        fs.writeFileSync image_path, res.getBody()        
+        fs.writeFileSync image_path, res.getBody() 
+        
+        res = requestSync('GET', i.small_image_square)
+        fs.writeFileSync image_path_crop, res.getBody()        
+        
         log.verbose "saved #{i.small_image}"
+        ###
         opt = {
             src: image_path,
             dst: image_path_crop,
@@ -73,6 +88,7 @@ download_image = (jsdata)->
             log.debug "Image croped #{file.width}x#{file.height}"
         , (err)->
             console.log err
+        ###
        
                
                 

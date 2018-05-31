@@ -79,8 +79,13 @@
   };
 
   download_image = function(jsdata) {
-    var date_dir, i, image_path, image_path_crop, j, len, opt, ref, res, results;
+    var date_dir, i, image_date_dir, image_path, image_path_crop, j, len, ref, res, results;
     date_dir = path.join(global.app_root, global.app_config.data_dir, 'top10', 'images', jsdata.date);
+    image_date_dir = path.join(global.app_root, global.app_config.data_dir, 'top10', 'images');
+    if (!fs.existsSync(image_date_dir)) {
+      log.verbose("debug", "Creating " + image_date_dir);
+      fs.mkdirSync(image_date_dir);
+    }
     if (!fs.existsSync(date_dir)) {
       log.verbose("debug", "Creating " + date_dir);
       fs.mkdirSync(date_dir);
@@ -93,20 +98,24 @@
       image_path_crop = path.join(date_dir, i.id + "_crop.png");
       res = requestSync('GET', i.small_image);
       fs.writeFileSync(image_path, res.getBody());
-      log.verbose("saved " + i.small_image);
+      res = requestSync('GET', i.small_image_square);
+      fs.writeFileSync(image_path_crop, res.getBody());
+      results.push(log.verbose("saved " + i.small_image));
+
+      /*
       opt = {
-        src: image_path,
-        dst: image_path_crop,
-        x: 0,
-        y: 0,
-        cropwidth: 80,
-        cropheight: 80
-      };
-      results.push(easyimg.crop(opt).then(function(file) {
-        return log.debug("Image croped " + file.width + "x" + file.height);
-      }, function(err) {
-        return console.log(err);
-      }));
+          src: image_path,
+          dst: image_path_crop,
+          x: 0,
+          y:0,
+          cropwidth:80,
+          cropheight:80
+      }                
+      easyimg.crop(opt).then (file)->
+          log.debug "Image croped #{file.width}x#{file.height}"
+      , (err)->
+          console.log err
+       */
     }
     return results;
   };
