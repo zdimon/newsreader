@@ -12,6 +12,14 @@ creator = require './polling_creator'
 cleaner = require './cleaner'
 problem = require './polling_problem'
 
+
+#####Creating data dir
+
+data_dir = path.join(global.app_root, global.app_config.data_dir)
+if !fs.existsSync data_dir
+    log.verbose "Creating #{data_dir}"
+    fs.mkdirSync data_dir
+
 ##########Imploing pooling services##############
 
 ##########Issue###########
