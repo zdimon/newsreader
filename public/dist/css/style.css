@@ -38,6 +38,7 @@ ion-list.manual-list-fullwidth div.list > .item, .list.card.manual-card-fullwidt
 
 .justify {
     text-align: justify;
+    max-width: 1440px;
 }
 
 .journal_tail {
