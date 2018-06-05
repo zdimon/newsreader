@@ -76,7 +76,7 @@ download_image = (jsdata)->
         image_path = path.join(date_dir,"#{i.id}.png")
         image_path_crop = path.join(date_dir,"#{i.id}_crop.png")
         
-        res = requestSync('GET', i.small_image)
+        res = requestSync('GET', i.image)
         fs.writeFileSync image_path, res.getBody() 
         
         res = requestSync('GET', i.small_image_square)
