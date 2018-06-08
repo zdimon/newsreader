@@ -121,3 +121,27 @@ The information should be retrieved and saved on the server side.
 It makes possible to work offline without internet connection.
 
 As soon as the server get the internet connection it makes a request and retrievs new data from the pressa.ru service.
+
+
+## Installing on CentOS system.
+
+yum install epel-release
+yum upgrade
+yum install nano git npm nodejs supervisor nginx 
+npm install -g supervisor coffeescript jade easyimage
+git clone https://github.com/zdimon/newsreader.git
+cd newsreader
+npm installakela40k, 6:23 PMenable supervisord service
+systemctl enable supervisord
+start supervisord service
+systemctl start supervisord
+
+make shure you have open 3000 port if you want standalone access
+firewall-cmd --permanent --zone=public --add-port=3000/tcp
+
+
+
+
+
+
+
