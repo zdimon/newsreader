@@ -119,6 +119,7 @@ getNew = ()->
     
     data = "#{year}-#{month}-#{date}"
     url = "http://#{global.remote_host}/static/api/zd/#{data}n.json"
+    console.log(url)
     dest = path.join(global.app_root,global.app_config.data_dir, "new", "#{data}.json")
     res = requestSync('GET', url)
     fs.writeFileSync dest, res.getBody('utf8')
