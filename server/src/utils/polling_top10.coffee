@@ -14,6 +14,35 @@ done_path = path.join global.app_root, global.app_config.data_dir, 'done.json'
  
 
 
+makeresponse_portal = (options, onResult)->
+    dest = path.join(global.app_root, global.app_config.data_dir, "top10/portal.json")
+    fs.stat dest, (err,stat)-> #only if the file does not exist
+        if err != null
+            console.log('Requesting....')
+            req = http.get(options,(res)->
+                out = ''
+                res.on 'data', (chunk)-> #collect data
+                    out = out + chunk
+                res.on 'end', ()->
+                    #console.log out
+                    jsdata = JSON.parse(out)
+                   
+                    #if parseInt(Object.keys(jsdata.articles).length) > 9
+                    fs.writeFile dest, out, (err)-> # write to disk
+                        if err
+                            log.error(err)
+                        console.log "The file #{dest} was saved!"
+                    onResult(res.statusCode,out) #apply callback
+            )
+            req.on 'socket', (socket)-> # Timeout
+                socket.setTimeout 10000
+                socket.on 'timeout', ()->
+                    req.abort()
+            req.on 'error', (err)->
+                if err.code == 'ECONNRESET'
+                    console.log 'Timeour occurs'
+
+
 
     
 
@@ -57,6 +86,17 @@ get_top10_from_server = (end)->
     )
     end()
     
+
+get_top10_portal_from_server = (end)->
+    log.debug "TOP10 portal: start"
+    options =
+      host: global.remote_host,
+      path: "/zd/top.json"
+    makeresponse_portal(options, (code,res)->
+        console.log "Request is compleated with code #{code}"
+    )
+    end()
+
 
 download_image = (jsdata)->
     date_dir =  path.join(global.app_root, global.app_config.data_dir, 'top10','images',jsdata.date)
@@ -138,6 +178,7 @@ crop = ()->
 
 out =
     get_top10_from_server: get_top10_from_server
+    get_top10_portal_from_server: get_top10_portal_from_server
     crop: crop
 
 module.exports = out

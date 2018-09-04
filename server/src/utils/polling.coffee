@@ -25,6 +25,12 @@ top_polling =  polling(top10.get_top10_from_server, 60000*30)
 top_polling.run() #periodically invocation
 
 
+
+##########Top 10 portal##########
+top_polling_portal =  polling(top10.get_top10_portal_from_server, 60000*30)
+top_polling_portal.run() #periodically invocation
+
+
 #setTimeout top10.get_top10_from_server, 1000
 
 
