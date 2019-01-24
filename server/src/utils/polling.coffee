@@ -21,7 +21,7 @@ problem = require './polling_problem'
 #issue_polling.run() #periodically invocation
 
 ##########Top 10##########
-top_polling =  polling(top10.get_top10_from_server, 60000*30)
+top_polling =  polling(top10.get_top10_from_server, 60000*600)
 top_polling.run() #periodically invocation
 
 
@@ -40,7 +40,7 @@ top_polling_portal.run() #periodically invocation
 
 
 ##########Creator#########
-creator =  polling(creator.periodic_handle, 60000*60)
+creator =  polling(creator.periodic_handle, 60000*720)
 creator.run() #periodically invocation
 
 
